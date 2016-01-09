@@ -3,14 +3,14 @@
 1. Criar projeto Laravel com composer (~: composer create-project laravel/laravel [nome] "5.1.*")
 
 2. Adicionar o trecho abaixo em config/app.php ['providers']
-<pre>
+```
 /*
  * Awesovel Service Provider
  */
 //Awesovel\Providers\AwesovelServiceProvider::class,
-</pre>
+```
 
-3. Adicionar "Awesovel\\": "vendor/awesovel/src" to composer.json."autoload"."psr-4"
+3. Adicionar "Awesovel\/": "vendor/awesovel/src" to composer.json."autoload"."psr-4"
 
 4. Atualizar o autoload do projeto com o composer (~: composer dump-autoload)
 
