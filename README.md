@@ -11,7 +11,7 @@
  */
 //Awesovel\Providers\AwesovelServiceProvider::class,
 ```
-3- Adicionar "Awesovel\/": "vendor/awesovel/src" to composer.json."autoload"."psr-4"
+3- Adicionar "Awesovel\": "vendor/awesovel/src" to composer.json."autoload"."psr-4"
 ```
 
 ```
