@@ -11,9 +11,16 @@
  */
 //Awesovel\Providers\AwesovelServiceProvider::class,
 ```
-3- Adicionar "Awesovel\": "vendor/awesovel/src" to composer.json."autoload"."psr-4"
+3- Adicionar autoload ao composer.json
 ```
-
+  ...
+  , "autoload": {
+    ...
+    , "psr-4": {
+      "...": "app/"
+      , "Awesovel\\": "vendor/awesovel/src"
+    }
+  },
 ```
 4- Atualizar o autoload do projeto com o composer
 ```
