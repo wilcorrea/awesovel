@@ -1,4 +1,4 @@
-# awesowel
+# awesovel
 
 1- Criar projeto Laravel com composer 
 ```
