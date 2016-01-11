@@ -1,11 +1,11 @@
 <?php
 
-namespace Awesovel\Models;
+namespace Awesovel\Defaults;
 
 use Awesovel\Provider;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Model as EloquentModel;
 
-class AwesovelModel extends Model {
+class Model extends EloquentModel {
 
   /**
    *
@@ -35,7 +35,7 @@ class AwesovelModel extends Model {
    */
   public function setConfig($module, $entity) {
 
-    $config = \Awesovel\Helpers\AwesovelConfig::parse($module, $entity);
+    $config = \Awesovel\Helpers\Config::parse($module, $entity);
 
     foreach ($config as $prop => $value) {
       $this->$prop = $value;
@@ -137,7 +137,7 @@ class AwesovelModel extends Model {
   public function relationshipDefaultModel($item) {
 
     $relationship = $item->relationship;
-    $related = \Awesovel\Helpers\AwesovelPath::name($relationship->module, $relationship->entity);
+    $related = \Awesovel\Helpers\Path::name($relationship->module, $relationship->entity);
     $type = $relationship->type;
 
     switch ($type) {

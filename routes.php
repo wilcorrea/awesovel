@@ -9,11 +9,11 @@
   | and give it the controller to call when that URI is requested.
   |
  */
-// Interpunct: ·
+// Interpunct in version: ·
 
 Route::get('/api/{version}/{module}/{entity}/{operation}/{id?}/{relationships?}', function($version, $module, $entity, $operation, $id = null, $relationships = null) {
 
-  $path = \Awesovel\Helpers\AwesovelPath::name($module, $entity);
+  $path = \Awesovel\Helpers\Path::name($module, $entity);
 
   $class = new $path();
 
@@ -39,7 +39,7 @@ Route::get('/api/{version}/{module}/{entity}/{operation}/{id?}/{relationships?}'
 
   if ($version === 'debug') {
 
-    dd(json_decode(json_encode($request)));
+    dd(\Awesovel\Helpers\Json::decode(\Awesovel\Helpers\Json::encode($request)));
   } else {
 
     return $request;

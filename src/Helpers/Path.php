@@ -2,7 +2,7 @@
 
 namespace Awesovel\Helpers;
 
-class AwesovelPath {
+class Path {
 
   /**
    * 

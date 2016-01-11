@@ -2,6 +2,6 @@
 
 namespace Awesovel\Helpers;
 
-class AslString {
+class String {
   
 }
