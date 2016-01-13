@@ -11,37 +11,26 @@
  */
 // Interpunct in version: ·
 
-Route::get('/api/{version}/{module}/{entity}/{operation}/{id?}/{relationships?}', function($version, $module, $entity, $operation, $id = null, $relationships = null) {
+Route::get('/api/{version}/{module}/{entity}/{operation}/{id?}/{relationships?}', function ($version, $module, $entity, $operation, $id = null, $relationships = null) {
 
-  $path = \Awesovel\Helpers\Path::name($module, $entity);
+    $controller = new \Awesovel\Defaults\Controller($module, $entity);
 
-  $class = new $path();
+    return $controller->api(
+        $version,
+        $operation,
+        $id,
+        $relationships
+    );
+});
 
-  if (is_null($id)) {
+/*
+ * Resources
+ */
+//list, add, view, set
+//index, create, show, edit
+Route::get('/app/{module}/{entity}/{operation?}/{id?}', function ($module, $entity, $operation = null, $id = null) {
 
-    $request = $class::$operation();
-  } else {
+    $controller = new \Awesovel\Defaults\Controller($module, $entity);
 
-    $request = $class::$operation($id);
-  }
-
-  if ($relationships) {
-
-    if (is_array($request)) {
-      $request = $request[0];
-    }
-
-    $relationships = explode(',', $relationships);
-    foreach ($relationships as $relationship) {
-      $request->$relationship = $request->$relationship;
-    }
-  }
-
-  if ($version === 'debug') {
-
-    dd(\Awesovel\Helpers\Json::decode(\Awesovel\Helpers\Json::encode($request)));
-  } else {
-
-    return $request;
-  }
+    return $controller->resolve($operation, $id);
 });

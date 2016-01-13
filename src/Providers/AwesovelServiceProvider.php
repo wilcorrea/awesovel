@@ -21,7 +21,7 @@ class AwesovelServiceProvider extends ServiceProvider
     /**
      * Define your route model bindings, pattern filters, etc.
      *
-     * @param  \Illuminate\Routing\Router  $router
+     * @param  \Illuminate\Routing\Router $router
      * @return void
      */
     public function boot(Router $router)
@@ -29,18 +29,18 @@ class AwesovelServiceProvider extends ServiceProvider
         //
 
         parent::boot($router);
-        
+
         if (!defined('APP_NAMESPACE')) {
-          define('APP_NAMESPACE', substr($this->getAppNamespace(), 0, -1));
+            define('APP_NAMESPACE', substr($this->getAppNamespace(), 0, -1));
         }
-        
+
         $this->_namespace = APP_NAMESPACE . '\Src\Controllers';
     }
 
     /**
      * Define the routes for the application.
      *
-     * @param  \Illuminate\Routing\Router  $router
+     * @param  \Illuminate\Routing\Router $router
      * @return void
      */
     public function map(Router $router)
