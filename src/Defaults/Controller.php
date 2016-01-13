@@ -95,7 +95,7 @@ class Controller extends RoutingController
     public function index()
     {
         return view(
-            'awesovel.layouts.list',
+            'awesovel.layouts.index',
             $this->data,
             $this->errors
         );

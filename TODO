@@ -1,0 +1,7 @@
+[ ] Entender funcionamento das operações disponíveis no controller
+[ ] Mapear as entradas de resource no ServiceProvider (rotas)
+[ ] Preparar layouts base
+[ ] Preparar operações no Json (operações padrão)
+[ ] Verificar como utilizar o artisan vendor:publish
+[ ] Verificar como adicionar comandos ao artisan
+[ ] Verificar como adicionar o projeto ao repositório do composer
