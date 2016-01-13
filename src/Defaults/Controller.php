@@ -2,6 +2,7 @@
 
 namespace Awesovel\Defaults;
 
+use Awesovel\Helpers\Json;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller as RoutingController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -17,7 +18,6 @@ class Controller extends RoutingController
     private $entity;
     private $model;
 
-    private $layout;
     private $data;
     private $errors;
 
@@ -56,7 +56,7 @@ class Controller extends RoutingController
 
         if ($version === 'debug') {
 
-            dd(\Awesovel\Helpers\Json::decode(\Awesovel\Helpers\Json::encode($request)));
+            dd(Json::decode(Json::encode($request)));
         } else {
 
             return $request;
@@ -66,12 +66,15 @@ class Controller extends RoutingController
     public function resolve($operation = null, $id = null)
     {
 
+        /*
+         * TODO: recover from config.json
+         */
         if (is_null($operation)) {
             $operation = 'index';
         }
 
-        $layout = "list";
-        $data = [
+        $layout = "index";
+        $this->data = [
             'data' => [
                 $this->api('', 'all', $id)
             ],
@@ -79,13 +82,9 @@ class Controller extends RoutingController
                 'title' => 'Listagem'
             ]
         ];
-        $errors = [];
+        $this->errors = [];
 
-        return view(
-            'awesovel.layouts.' . $layout,
-            $data,
-            $errors
-        );
+        return $this->$layout();
     }
 
     /**
@@ -95,7 +94,11 @@ class Controller extends RoutingController
      */
     public function index()
     {
-        //
+        return view(
+            'awesovel.layouts.list',
+            $this->data,
+            $this->errors
+        );
     }
 
     /**
@@ -104,17 +107,6 @@ class Controller extends RoutingController
      * @return \Illuminate\Http\Response
      */
     public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
     {
         //
     }
@@ -137,6 +129,17 @@ class Controller extends RoutingController
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
+    {
+        //
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
     {
         //
     }
