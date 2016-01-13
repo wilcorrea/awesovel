@@ -2,6 +2,8 @@
 
 namespace Awesovel\Defaults;
 
+use Awesovel\Helpers\Config;
+use Awesovel\Helpers\Path;
 use Awesovel\Provider;
 use Illuminate\Database\Eloquent\Model as EloquentModel;
 
@@ -38,7 +40,7 @@ class Model extends EloquentModel
     public function setConfig($module, $entity)
     {
 
-        $config = \Awesovel\Helpers\Config::parse($module, $entity);
+        $config = Config::parse($module, $entity);
 
         foreach ($config as $prop => $value) {
             $this->$prop = $value;
@@ -79,16 +81,6 @@ class Model extends EloquentModel
         return parent::all($columns);
     }
 
-    public static function get($id, $columns = ['*'])
-    {
-
-        if (func_num_args() === 1) {
-            $columns = self::fields();
-        }
-
-        return parent::find($id, $columns);
-    }
-
     /**
      *
      * @param type $name
@@ -110,6 +102,21 @@ class Model extends EloquentModel
         }
 
         return parent::__call($name, $args);
+    }
+
+    /**
+     * @param $id
+     * @param array $columns
+     * @return mixed
+     */
+    public static function get($id, $columns = ['*'])
+    {
+
+        if (func_num_args() === 1) {
+            $columns = self::fields();
+        }
+
+        return parent::find($id, $columns);
     }
 
     /**
@@ -146,7 +153,7 @@ class Model extends EloquentModel
     {
 
         $relationship = $item->relationship;
-        $related = \Awesovel\Helpers\Path::name($relationship->module, $relationship->entity);
+        $related = Path::name($relationship->module, $relationship->entity);
         $type = $relationship->type;
 
         switch ($type) {
