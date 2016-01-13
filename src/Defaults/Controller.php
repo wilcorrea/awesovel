@@ -3,24 +3,21 @@
 namespace Awesovel\Defaults;
 
 use Awesovel\Helpers\Json;
-use Illuminate\Foundation\Bus\DispatchesJobs;
-use Illuminate\Routing\Controller as RoutingController;
-use Illuminate\Foundation\Validation\ValidatesRequests;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-
 use Awesovel\Helpers\Path;
+use Awesovel\Controllers\AwesovelRouteController;
 
-class Controller extends RoutingController
+class Controller extends AwesovelRouteController
 {
-    use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
     private $module;
     private $entity;
     private $model;
 
-    private $data;
-    private $errors;
-
+    /**
+     * Controller constructor.
+     * @param $module
+     * @param $entity
+     */
     public function __construct($module, $entity)
     {
         $this->module = $module;
@@ -31,6 +28,16 @@ class Controller extends RoutingController
         $this->model = new $path();
     }
 
+    /**
+     *
+     * Process api operations of Model
+     *
+     * @param $version
+     * @param $operation
+     * @param null $id
+     * @param null $relationships
+     * @return mixed
+     */
     public function api($version, $operation, $id = null, $relationships = null)
     {
 
@@ -63,6 +70,13 @@ class Controller extends RoutingController
         }
     }
 
+    /**
+     * Resolve app requests
+     *
+     * @param null $operation
+     * @param null $id
+     * @return mixed
+     */
     public function resolve($operation = null, $id = null)
     {
 
@@ -85,52 +99,6 @@ class Controller extends RoutingController
         $this->errors = [];
 
         return $this->$layout();
-    }
-
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        return view(
-            'awesovel.layouts.index',
-            $this->data,
-            $this->errors
-        );
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
     }
 
     /**

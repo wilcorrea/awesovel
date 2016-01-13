@@ -2,15 +2,20 @@
 
 namespace Awesovel\Helpers;
 
-class Config {
-  
-  public static function parse($module, $entity) {
+use Awesovel\Helpers\Path;
+use Awesovel\Helpers\Json;
 
-    $filename = \Awesovel\Helpers\Path::path(['Src', $module, 'Config', $entity . '.json']);
+class Config
+{
 
-    $content = file_get_contents($filename);
+    public static function parse($module, $entity)
+    {
 
-    return \Awesovel\Helpers\Json::decode($content);
-  }
+        $filename = Path::path(['Src', $module, 'Config', $entity . '.gen']);
+
+        $content = file_get_contents($filename);
+
+        return Json::decode($content);
+    }
 
 }

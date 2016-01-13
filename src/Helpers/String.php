@@ -2,6 +2,7 @@
 
 namespace Awesovel\Helpers;
 
-class String {
-  
+class Stringy
+{
+
 }

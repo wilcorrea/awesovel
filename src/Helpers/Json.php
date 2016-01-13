@@ -2,26 +2,29 @@
 
 namespace Awesovel\Helpers;
 
-class Json {
- 
-  /**
-   * 
-   * @param string $string
-   * @return type
-   */
-  public static function decode($string) {
+class Json
+{
 
-    return json_decode($string);
-  }
+    /**
+     *
+     * @param string $string
+     * @return type
+     */
+    public static function decode($string)
+    {
 
-  /**
-   * 
-   * @param string $object
-   * @return type
-   */
-  public static function encode($object) {
+        return json_decode($string);
+    }
 
-    return json_encode($object);
-  }
+    /**
+     *
+     * @param string $object
+     * @return type
+     */
+    public static function encode($object)
+    {
+
+        return json_encode($object);
+    }
 
 }
