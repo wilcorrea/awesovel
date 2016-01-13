@@ -1,6 +1,6 @@
 #!/usr/bin/env php
 <?php
-
+ 
 // add "Awesovel\\": "vendor/awesovel/src" to composer.json."autoload"."psr-4"
 
 // add 
