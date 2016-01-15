@@ -1,0 +1,39 @@
+{
+  "default": {
+    "title": "Categoria",
+    "items": {
+      "ctg_codigo": {
+        "label": "Código",
+        "title": "",
+        "options": [
+        ]
+      },
+      "ctg_descricao": {
+        "label": "Nome"
+      }
+    }
+  },
+  "index": {
+    "title": "Listagem",
+    "operations": {
+      "create": "Nova"
+    },
+    "items": {
+      "ctg_codigo": {
+        "label": "Código",
+        "title": "",
+        "options": [
+        ]
+      },
+      "ctg_descricao": {
+        "label": "Descrição"
+      }
+    }
+  },
+  "create": {
+    "title": "Nova Categoria",
+    "operations": {
+      "index": "Voltar"
+    }
+  }
+}

@@ -8,11 +8,12 @@
 
 namespace Awesovel\Controllers;
 
-use Awesovel\Helpers\Json;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+
+use Awesovel\Helpers\Path;
 
 class AwesovelRouteController extends Controller
 {
@@ -30,17 +31,58 @@ class AwesovelRouteController extends Controller
     protected $errors;
 
     /**
+     * @var
+     */
+    protected $module;
+
+    /**
+     * @var
+     */
+    protected $entity;
+
+    /**
+     * @var \Awesovel\Defaults\Model
+     */
+    protected $model;
+
+    /**
+     * @var StdClass
+     */
+    protected $operation;
+
+    /**
+     * @var array
+     */
+    protected $parameters;
+
+    /**
+     * Controller constructor.
+     * @param $module
+     * @param $entity
+     */
+    public function __construct($module, $entity)
+    {
+        $this->module = $module;
+        $this->entity = $entity;
+
+        $path = Path::name($module, $entity);
+
+        $this->model = new $path();
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        return view(
-            'awesovel.layouts.index',
-            $this->data,
-            $this->errors
-        );
+
+        $total = isset($this->parameters['total']) ? $this->parameters['total'] : config('awesovel')['total'];
+
+        $this->data['collection'] = $this->api('HEAD', 'paginate', $total);
+
+        return $this->view('awesovel.layouts.index', ['items' => $this->model->getItems()]);
     }
 
     /**
@@ -50,11 +92,9 @@ class AwesovelRouteController extends Controller
      */
     public function create()
     {
-        return view(
-            'awesovel.layouts.create',
-            $this->data,
-            $this->errors
-        );
+        $this->data['collection'] = new StdClass();
+
+        return $this->view('awesovel.layouts.create');
     }
 
     /**
@@ -65,11 +105,9 @@ class AwesovelRouteController extends Controller
      */
     public function show($id)
     {
-        return view(
-            'awesovel.layouts.show',
-            $this->data,
-            $this->errors
-        );
+        $this->data['collection'] = $this->api('HEAD', 'find', $id);
+
+        return $this->view('awesovel.layouts.show');
     }
 
     /**
@@ -80,11 +118,19 @@ class AwesovelRouteController extends Controller
      */
     public function edit($id)
     {
-        return view(
-            'awesovel.layouts.edit',
-            $this->data,
-            $this->errors
-        );
+        $this->data['collection'] = $this->api('HEAD', 'find', $id);
+
+        return $this->view('awesovel.layouts.edit');
+    }
+
+    /**
+     * @param $layout
+     * @param $parameters
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    private function view($layout, $parameters = null) {
+
+        return view($layout, $this->data, $this->errors, $parameters);
     }
 
 }

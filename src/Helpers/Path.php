@@ -2,6 +2,8 @@
 
 namespace Awesovel\Helpers;
 
+use Awesovel\Providers\AwesovelServiceProvider;
+
 class Path
 {
 
@@ -20,7 +22,7 @@ class Path
             $layer = 'Model';
         }
 
-        return APP_NAMESPACE . '\\Src\\' . $module . '\\' . $layer . '\\' . $entity;
+        return AwesovelServiceProvider::$NAMESPACE . '\\Src\\' . $module . '\\' . $layer . '\\' . $entity;
     }
 
     /**

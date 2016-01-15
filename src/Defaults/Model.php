@@ -2,7 +2,7 @@
 
 namespace Awesovel\Defaults;
 
-use Awesovel\Helpers\Config;
+use Awesovel\Helpers\Parse;
 use Awesovel\Helpers\Path;
 use Awesovel\Provider;
 use Illuminate\Database\Eloquent\Model as EloquentModel;
@@ -28,7 +28,7 @@ class Model extends EloquentModel
         parent::__construct($attributes);
 
         if ($module && $entity) {
-            $this->setConfig($module, $entity);
+            $this->setScaffold($module, $entity);
         }
     }
 
@@ -37,10 +37,10 @@ class Model extends EloquentModel
      * @param type $module
      * @param type $entity
      */
-    public function setConfig($module, $entity)
+    public function setScaffold($module, $entity)
     {
 
-        $config = Config::parse($module, $entity);
+        $config = Parse::scaffold($module, $entity);
 
         foreach ($config as $prop => $value) {
             $this->$prop = $value;
@@ -166,6 +166,14 @@ class Model extends EloquentModel
             default:
                 break;
         }
+    }
+
+    /**
+     * @return array
+     */
+    public function getItems()
+    {
+        return $this->items;
     }
 
 }

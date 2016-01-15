@@ -3,30 +3,11 @@
 namespace Awesovel\Defaults;
 
 use Awesovel\Helpers\Json;
-use Awesovel\Helpers\Path;
 use Awesovel\Controllers\AwesovelRouteController;
+use Awesovel\Helpers\Parse;
 
 class Controller extends AwesovelRouteController
 {
-
-    private $module;
-    private $entity;
-    private $model;
-
-    /**
-     * Controller constructor.
-     * @param $module
-     * @param $entity
-     */
-    public function __construct($module, $entity)
-    {
-        $this->module = $module;
-        $this->entity = $entity;
-
-        $path = Path::name($module, $entity);
-
-        $this->model = new $path();
-    }
 
     /**
      *
@@ -36,65 +17,70 @@ class Controller extends AwesovelRouteController
      * @param $operation
      * @param null $id
      * @param null $relationships
+     * @param null $json
      * @return mixed
      */
-    public function api($version, $operation, $id = null, $relationships = null)
+    public function api($version, $operation, $id = null, $relationships = null, $json = null)
     {
 
         if (is_null($id)) {
 
-            $request = $this->model->$operation();
+            $collection = $this->model->$operation();
         } else {
 
-            $request = $this->model->$operation($id);
+            $collection = $this->model->$operation($id);
         }
 
         if ($relationships) {
 
-            if (is_array($request)) {
-                $request = $request[0];
+            if (is_array($collection)) {
+                $collection = $collection[0];
             }
 
             $relationships = explode(',', $relationships);
             foreach ($relationships as $relationship) {
-                $request->$relationship = $request->$relationship;
+                $collection->$relationship = $collection->$relationship;
             }
         }
 
         if ($version === 'debug') {
 
-            dd(Json::decode(Json::encode($request)));
+            dd(Json::decode(Json::encode($collection)));
         } else {
 
-            return $request;
+            if ($json) {
+                $collection = Json::decode(Json::encode($collection));
+            }
+            return $collection;
         }
     }
 
     /**
      * Resolve app requests
      *
-     * @param null $operation
+     * @param null $index
      * @param null $id
+     * @param null $language
+     * @param null $parameters
      * @return mixed
      */
-    public function resolve($operation = null, $id = null)
+    public function resolve($index = null, $id = null, $language = null, $parameters = [])
     {
 
-        /*
-         * TODO: recover from config.json
-         */
-        if (is_null($operation)) {
-            $operation = 'index';
+        if (is_null($index)) {
+            $index = 'index';
         }
 
-        $layout = "index";
+        $this->operation = Parse::operation($this->module, $this->entity, $index, $language);
+
+        $this->parameters = $parameters;
+
+        $this->parameters['id'] = $id;
+
+        $layout = $this->operation->layout;
+
         $this->data = [
-            'data' => [
-                $this->api('', 'all', $id)
-            ],
-            'operation' => (object)[
-                'title' => 'Listagem'
-            ]
+            'operation' => $this->operation
         ];
         $this->errors = [];
 

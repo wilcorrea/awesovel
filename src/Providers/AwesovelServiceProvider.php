@@ -16,7 +16,12 @@ class AwesovelServiceProvider extends ServiceProvider
      *
      * @var string
      */
-    protected $_namespace = '';
+    public static $NAMESPACE;
+
+    /**
+     * @var string
+     */
+    public static $LANGUAGE;
 
     /**
      * Define your route model bindings, pattern filters, etc.
@@ -30,11 +35,9 @@ class AwesovelServiceProvider extends ServiceProvider
 
         parent::boot($router);
 
-        if (!defined('APP_NAMESPACE')) {
-            define('APP_NAMESPACE', substr($this->getAppNamespace(), 0, -1));
-        }
+        self::$NAMESPACE = substr($this->getAppNamespace(), 0, -1);
 
-        $this->_namespace = APP_NAMESPACE . '\Src\Controllers';
+        self::$LANGUAGE = config('awesovel')['language'];
     }
 
     /**
@@ -45,7 +48,7 @@ class AwesovelServiceProvider extends ServiceProvider
      */
     public function map(Router $router)
     {
-        $router->group(['namespace' => $this->_namespace], function ($router) {
+        $router->group(['namespace' => self::$NAMESPACE], function ($router) {
             require base_path('vendor/awesovel/routes.php');
         });
     }

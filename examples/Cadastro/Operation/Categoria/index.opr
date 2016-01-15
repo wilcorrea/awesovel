@@ -1,0 +1,23 @@
+{
+  "id":"index",
+  "layout": "index",
+  "items": {
+    "ctg_codigo": {},
+    "ctg_descricao": {}
+  },
+  "operations": [
+    {
+      "position": "",
+      "condition": [
+
+      ],
+      "id": "create",
+      "action": "create",
+      "parameters": {
+
+      },
+      "className": "",
+      "classIcon": ""
+    }
+  ]
+}

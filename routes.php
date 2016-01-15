@@ -28,9 +28,9 @@ Route::get('/api/{version}/{module}/{entity}/{operation}/{id?}/{relationships?}'
  */
 //list, add, view, set
 //index, create, show, edit
-Route::get('/app/{module}/{entity}/{operation?}/{id?}', function ($module, $entity, $operation = null, $id = null) {
+Route::get('/app/{language}/{module}/{entity}/{operation?}/{id?}', function ($language, $module, $entity, $operation = null, $id = null) {
 
     $controller = new \Awesovel\Defaults\Controller($module, $entity);
 
-    return $controller->resolve($operation, $id);
+    return $controller->resolve($operation, $id, $language, (Input::all()));
 });
