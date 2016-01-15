@@ -82,7 +82,8 @@ class AwesovelRouteController extends Controller
 
         $this->data['collection'] = $this->api('HEAD', 'paginate', $total);
 
-        return $this->view('awesovel.layouts.index', ['items' => $this->model->getItems()]);
+
+        return $this->view($this->operation->layout, ['items' => $this->model->getItems()]);
     }
 
     /**
@@ -92,9 +93,9 @@ class AwesovelRouteController extends Controller
      */
     public function create()
     {
-        $this->data['collection'] = new StdClass();
+        $this->data['collection'] = (object)[];
 
-        return $this->view('awesovel.layouts.create');
+        return $this->view($this->operation->layout);
     }
 
     /**
@@ -107,7 +108,7 @@ class AwesovelRouteController extends Controller
     {
         $this->data['collection'] = $this->api('HEAD', 'find', $id);
 
-        return $this->view('awesovel.layouts.show');
+        return $this->view($this->operation->layout);
     }
 
     /**
@@ -120,7 +121,44 @@ class AwesovelRouteController extends Controller
     {
         $this->data['collection'] = $this->api('HEAD', 'find', $id);
 
-        return $this->view('awesovel.layouts.edit');
+        return $this->view($this->operation->layout);
+    }
+
+    /**
+     * Show the form for remove the specified resource.
+     *
+     * @param  int $id
+     * @return \Illuminate\Http\Response
+     */
+    public function remove($id)
+    {
+        $this->data['collection'] = $this->api('HEAD', 'find', $id);
+
+        return $this->view($this->operation->layout);
+    }
+
+    /**
+     * @return object
+     */
+    private function actions() {
+
+        $positions = [
+            'top' => [],
+            'middle' => [],
+            'bottom' => []
+        ];
+
+        foreach ($this->operation->operations as $operation) {
+
+            foreach ($positions as $key => $available) {
+
+                if (is_array($operation->position) && in_array($key, $operation->position)) {
+                    $positions[$key][] = $operation;
+                }
+            }
+        }
+
+        return (object) $positions;
     }
 
     /**
@@ -130,7 +168,21 @@ class AwesovelRouteController extends Controller
      */
     private function view($layout, $parameters = null) {
 
-        return view($layout, $this->data, $this->errors, $parameters);
+        $this->data['_colletion'] = null;
+        $this->data['actions'] = $this->actions();
+
+        $this->data['module'] = $this->module;
+        $this->data['entity'] = $this->entity;
+
+        return view($this->layout($layout), $this->data, $this->errors, $parameters);
+    }
+
+    /**
+     * @param $index
+     * @return string
+     */
+    private function layout($index) {
+        return 'awesovel.' . config('awesovel')['view'] . '.layouts.' . $index;
     }
 
 }

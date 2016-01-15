@@ -17,7 +17,7 @@ class Parse
     public static function scaffold($module, $entity)
     {
 
-        $filename = Path::path(['Src', $module, 'Scaffold', $entity . '.gen']);
+        $filename = Path::path([config('awesovel')['root'], $module, 'Scaffold', $entity . '.gen']);
 
         $content = file_get_contents($filename);
 
@@ -37,7 +37,7 @@ class Parse
             $language = AwesovelServiceProvider::$LANGUAGE;
         }
 
-        $filename = Path::path(['Src', $module, 'Operation', $entity, $index . '.opr']);
+        $filename = Path::path([config('awesovel')['root'], $module, 'Operation', $entity, $index . '.opr']);
 
         $content = file_get_contents($filename);
 
@@ -54,13 +54,13 @@ class Parse
      */
     private static function language($operation, $module, $entity, $spell)
     {
-        $root = 'default';
+        $__default = 'default';
 
-        if ($spell === $root) {
+        if ($spell === $__default) {
             $spell = AwesovelServiceProvider::$LANGUAGE;
         }
 
-        $filename = Path::path(['Src', $module, 'Language', $entity, $spell . '.lng']);
+        $filename = Path::path([config('awesovel')['root'], $module, 'Language', $entity, $spell . '.lng']);
 
         $content = file_get_contents($filename);
 
@@ -68,7 +68,7 @@ class Parse
 
         $id = $operation->id;
 
-        $default = $translations->$root;
+        $default = $translations->$__default;
 
         $language = $default;
 
@@ -76,20 +76,59 @@ class Parse
             $language = $translations->$id;
         }
 
+        /*
+         * recover spell to label
+         */
+        $operation->label = $language->label;
+
+        /*
+         * recover spell to items
+         */
         foreach ($operation->items as $key => $item) {
 
             if (isset($language->items->$key)) {
 
-                $operation->items->$key = $language->items->$key;
+                foreach ($language->items->$key as $__property => $__stub) {
+
+                    $operation->items->$key->$__property = $language->items->$key->$__property;
+                }
             } else if (isset($default->items->$key)) {
 
-                $operation->items->$key = $default->items->$key;
+                foreach ($default->items->$key as $__property => $__stub) {
+
+                    $operation->items->$key->$__property = $default->items->$key;
+                }
             }
 
             $operation->items->$key->id = $key;
         }
 
-        $operation->title = $language->title;
+        /*
+         * recover spell to operations
+         */
+        foreach ($operation->operations as $key => $__operation) {
+
+            $id = $__operation->id;
+
+            $properties = ['label' => $default->label, 'title' => ""];
+
+            foreach ($properties as $property => $__default) {
+
+                $__operation->$property = $__default;
+
+                if (isset($language->operations) && isset($language->operations->$id) && isset($language->operations->$id->$property)) {
+
+                    $__operation->$property = $language->operations->$id->$property;
+
+                } else if (isset($translations->$id) && isset($translations->$id->$property)) {
+
+                    $__operation->$property  = $translations->$id->$property;
+                }
+            }
+
+
+            $operation->operations[$key] = $__operation;
+        }
 
         return $operation;
     }

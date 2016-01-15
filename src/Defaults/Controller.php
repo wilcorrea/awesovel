@@ -77,14 +77,13 @@ class Controller extends AwesovelRouteController
 
         $this->parameters['id'] = $id;
 
-        $layout = $this->operation->layout;
-
         $this->data = [
-            'operation' => $this->operation
+            'operation' => $this->operation,
+            'language' => $language
         ];
         $this->errors = [];
 
-        return $this->$layout();
+        return $this->$index($id);
     }
 
     /**

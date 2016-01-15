@@ -1,4 +1,8 @@
 {
   "language": "pt-BR",
-  "total": 2
+  "total": 6,
+  "view": "html",
+  "root": "Src",
+  "app": "app",
+  "api": "api"
 }

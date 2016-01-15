@@ -1,6 +1,6 @@
 {
   "default": {
-    "title": "Categoria",
+    "label": "Categoria",
     "items": {
       "ctg_codigo": {
         "label": "Código",
@@ -14,9 +14,25 @@
     }
   },
   "index": {
-    "title": "Listagem",
+    "label": "Listagem",
+    "title": "",
     "operations": {
-      "create": "Nova"
+      "create": {
+        "label": "Nova Categoria",
+        "title": "Nova Categoria"
+      },
+      "show": {
+        "label": "",
+        "title": "Visualizar Categoria"
+      },
+      "edit": {
+        "label": "",
+        "title": "Editar Categoria"
+      },
+      "remove": {
+        "label": "",
+        "title": "Remover Categoria"
+      }
     },
     "items": {
       "ctg_codigo": {
@@ -31,9 +47,39 @@
     }
   },
   "create": {
-    "title": "Nova Categoria",
+    "label": "Nova Categoria",
     "operations": {
-      "index": "Voltar"
+      "index": {
+        "label": "Voltar",
+        "title": ""
+      }
+    }
+  },
+  "edit": {
+    "label": "Editar",
+    "operations": {
+      "index": {
+        "label": "Voltar",
+        "title": ""
+      }
+    }
+  },
+  "show": {
+    "label": "Visualizar",
+    "operations": {
+      "index": {
+        "label": "Voltar",
+        "title": ""
+      }
+    }
+  },
+  "remove": {
+    "label": "Remover",
+    "operations": {
+      "index": {
+        "label": "Voltar",
+        "title": ""
+      }
     }
   }
 }

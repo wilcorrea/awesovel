@@ -8,10 +8,12 @@
   | It's a breeze. Simply tell Laravel the URIs it should respond to
   | and give it the controller to call when that URI is requested.
   |
+  |  Api allows
+  |
  */
 // Interpunct in version: ·
 
-Route::get('/api/{version}/{module}/{entity}/{operation}/{id?}/{relationships?}', function ($version, $module, $entity, $operation, $id = null, $relationships = null) {
+Route::get('/' . config('awesovel')['api'] . '/{version}/{module}/{entity}/{operation}/{id?}/{relationships?}', function ($version, $module, $entity, $operation, $id = null, $relationships = null) {
 
     $controller = new \Awesovel\Defaults\Controller($module, $entity);
 
@@ -28,9 +30,12 @@ Route::get('/api/{version}/{module}/{entity}/{operation}/{id?}/{relationships?}'
  */
 //list, add, view, set
 //index, create, show, edit
-Route::get('/app/{language}/{module}/{entity}/{operation?}/{id?}', function ($language, $module, $entity, $operation = null, $id = null) {
+Route::get('/' . config('awesovel')['app'] . '/{language}/{module}/{entity}/{operation?}/{id?}', function ($language, $module, $entity, $operation = null, $id = null) {
 
     $controller = new \Awesovel\Defaults\Controller($module, $entity);
 
     return $controller->resolve($operation, $id, $language, (Input::all()));
 });
+
+
+Route::resource('photo', 'CodeDelivery\Http\Controllers\PhotoController');

@@ -7,17 +7,40 @@
   },
   "operations": [
     {
-      "position": "",
-      "condition": [
-
-      ],
       "id": "create",
-      "action": "create",
-      "parameters": {
-
-      },
+      "href": "create",
+      "type": "view",
+      "position": ["top", "bottom"],
+      "parameters": [],
       "className": "",
-      "classIcon": ""
+      "classIcon": "glyphicon glyphicon-plus"
+    },{
+      "id": "show",
+      "href": "show",
+      "type": "view",
+      "position": ["middle"],
+      "conditions": [],
+      "parameters": ["ctg_codigo"],
+      "className": "",
+      "classIcon": "glyphicon glyphicon-search"
+    },{
+      "id": "edit",
+      "href": "edit",
+      "type": "view",
+      "position": ["middle"],
+      "conditions": [],
+      "parameters": ["ctg_codigo"],
+      "className": "",
+      "classIcon": "glyphicon glyphicon-edit"
+    },{
+      "id": "remove",
+      "href": "remove",
+      "type": "view",
+      "position": ["middle"],
+      "conditions": [],
+      "parameters": ["ctg_codigo"],
+      "className": "",
+      "classIcon": "glyphicon glyphicon-trash"
     }
   ]
 }

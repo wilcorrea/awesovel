@@ -1,0 +1,17 @@
+{
+  "id":"create",
+  "layout": "form",
+  "items": {
+    "ctg_codigo": {},
+    "ctg_descricao": {}
+  },
+  "operations": [
+    {
+      "position": ["top"],
+      "id": "index",
+      "href": "index",
+      "className": "",
+      "classIcon": ""
+    }
+  ]
+}
