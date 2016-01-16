@@ -51,6 +51,8 @@
 ```
 8- Alterar o nome da Aplicação para não conflitar com o nome do vendor Awesowel, ou seja, as classes em Src vão usar o "namespace" padrão e as classes do core padrão irão usar o "namespace" Awesowel
 ```
-~: php artisan app:name [nome]
+~[nome]: php artisan app:name [app name]
 ```
+9- Siga as instruções para instalar https://github.com/bestmomo/scafold no seu projeto
+
 
