@@ -45,14 +45,18 @@
 ```
 ~/[nome]: cp vendor/awesovel/config/awesovel.php config/awesovel.php
 ```
-7- Copie a vasta de views para o diretório resouces do seu projeto
+7- Copie a pasta de views para o diretório resouces do seu projeto
 ```
-~/[nome]: cp -rf vendor/awesovel/views/awesovel/ resources/views/awesovel
+~/[nome]: cp -rf vendor/awesovel/resources/views/ resources/views/awesovel
 ```
-8- Alterar o nome da Aplicação para não conflitar com o nome do vendor Awesowel, ou seja, as classes em Src vão usar o "namespace" padrão e as classes do core padrão irão usar o "namespace" Awesowel
+8- Copie a pasta de assets para o diretório resouces do seu projeto
+```
+~/[nome]: cp -rf vendor/awesovel/resources/assets/ resources/assets/awesovel
+```
+9- Alterar o nome da Aplicação para não conflitar com o nome do vendor Awesowel, ou seja, as classes em Src vão usar o "namespace" padrão e as classes do core padrão irão usar o "namespace" Awesowel
 ```
 ~[nome]: php artisan app:name [app name]
 ```
-9- Siga as instruções para instalar https://github.com/bestmomo/scafold no seu projeto
+10- Siga as instruções para instalar https://github.com/bestmomo/scafold no seu projeto
 
 

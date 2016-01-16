@@ -1,10 +1,16 @@
 body {
     background-color: #f0f0f0;
 }
-
+.btn {
+    text-transform: none;
+}
 footer.footer {
     background-color: #fff;
 }
 footer .text-muted {
     color: #515151;
+}
+
+textarea, textarea.form-control, input.form-control, input[type=text], input[type=password], input[type=email], input[type=number], [type=text].form-control, [type=password].form-control, [type=email].form-control, [type=tel].form-control, [contenteditable].form-control {
+    padding: 6px 12px;
 }

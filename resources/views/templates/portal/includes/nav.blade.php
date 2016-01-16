@@ -9,15 +9,15 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="{{ url('/') }}">!Brand!</a>
+            <a class="navbar-brand" href="{{ go('home') }}">!Brand!</a>
         </div>
 
         <div class="collapse navbar-collapse" id="navbar">
 
             <ul class="nav navbar-nav">
-                <li><a href="{{ url('/home') }}">Welcome</a></li>
-                <li><a href="{{ url('/about') }}">About</a></li>
-                <li><a href="{{ url('/contact') }}">Contact</a></li>
+                <li><a href="{{ go('app') }}">App</a></li>
+                <li><a href="{{ go('about') }}">About</a></li>
+                <li><a href="{{ go('contact') }}">Contact</a></li>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
                     <ul class="dropdown-menu">
@@ -35,17 +35,17 @@
             <ul class="nav navbar-nav navbar-right">
                 @if(auth()->guest())
                     @if(!Request::is('auth/login'))
-                        <li><a href="{{ url('/auth/login') }}">Login</a></li>
+                        <li><a href="{{ go('/auth/login') }}">Login</a></li>
                     @endif
                     @if(!Request::is('auth/register'))
-                        <li><a href="{{ url('/auth/register') }}">Register</a></li>
+                        <li><a href="{{ go('/auth/register') }}">Register</a></li>
                     @endif
                 @else
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
                            aria-expanded="false">{{ auth()->user()->email }} <span class="caret"></span></a>
                         <ul class="dropdown-menu" role="menu">
-                            <li><a href="{{ url('/auth/logout') }}">Logout</a></li>
+                            <li><a href="{{ go('/auth/logout') }}">Logout</a></li>
                         </ul>
                     </li>
                 @endif

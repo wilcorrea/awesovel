@@ -13,6 +13,15 @@
  */
 // Interpunct in version: ·
 
+function go($slug, $print = false) {
+
+    $language = config('awesovel')['language'];
+
+    $go = url(implode('/', [$language, $slug]));
+
+    return $go;
+}
+
 Route::get('/' . config('awesovel')['api'] . '/{version}/{module}/{entity}/{operation}/{id?}/{relationships?}', function ($version, $module, $entity, $operation, $id = null, $relationships = null) {
 
     $controller = new \Awesovel\Defaults\Controller($module, $entity);
