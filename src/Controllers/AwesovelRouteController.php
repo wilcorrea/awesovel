@@ -8,6 +8,7 @@
 
 namespace Awesovel\Controllers;
 
+use Awesovel\Helpers\Parse;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -62,10 +63,10 @@ class AwesovelRouteController extends Controller
      */
     public function __construct($module, $entity)
     {
-        $this->module = $module;
-        $this->entity = $entity;
+        $this->module = Parse::camelize($module, true);
+        $this->entity = Parse::camelize($entity, true);
 
-        $path = Path::name($module, $entity);
+        $path = Path::name($this->module, $this->entity);
 
         $this->model = new $path();
     }
@@ -182,7 +183,7 @@ class AwesovelRouteController extends Controller
      * @return string
      */
     private function layout($index) {
-        return 'awesovel.' . config('awesovel')['view'] . '.layouts.' . $index;
+        return implode('.', [config('awesovel')['view'], 'layouts', $index]);
     }
 
 }

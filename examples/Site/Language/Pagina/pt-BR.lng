@@ -1,0 +1,85 @@
+{
+  "default": {
+    "label": "Página",
+    "items": {
+      "pgn_codigo": {
+        "label": "Código",
+        "title": "",
+        "options": [
+        ]
+      },
+      "pgn_title": {
+        "label": "Nome"
+      }
+    }
+  },
+  "index": {
+    "label": "Listagem",
+    "title": "",
+    "operations": {
+      "create": {
+        "label": "Nova Página",
+        "title": "Nova Página"
+      },
+      "show": {
+        "label": "",
+        "title": "Visualizar Página"
+      },
+      "edit": {
+        "label": "",
+        "title": "Editar Página"
+      },
+      "remove": {
+        "label": "",
+        "title": "Remover Página"
+      }
+    },
+    "items": {
+      "pgn_codigo": {
+        "label": "Código",
+        "title": "",
+        "options": [
+        ]
+      },
+      "pgn_title": {
+        "label": "Descrição"
+      }
+    }
+  },
+  "create": {
+    "label": "Nova Página",
+    "operations": {
+      "index": {
+        "label": "Voltar",
+        "title": ""
+      }
+    }
+  },
+  "edit": {
+    "label": "Editar",
+    "operations": {
+      "index": {
+        "label": "Voltar",
+        "title": ""
+      }
+    }
+  },
+  "show": {
+    "label": "Visualizar",
+    "operations": {
+      "index": {
+        "label": "Voltar",
+        "title": ""
+      }
+    }
+  },
+  "remove": {
+    "label": "Remover",
+    "operations": {
+      "index": {
+        "label": "Voltar",
+        "title": ""
+      }
+    }
+  }
+}

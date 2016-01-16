@@ -1,8 +1,10 @@
 {
+  "name": "Sistema Concursos",
   "language": "pt-BR",
   "total": 6,
-  "view": "html",
   "root": "Src",
+  "view": "awesovel.app.html",
   "app": "app",
+  "static": "static",
   "api": "api"
 }

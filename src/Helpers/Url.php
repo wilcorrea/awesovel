@@ -23,7 +23,7 @@ class Url
     public static function link($language, $module, $entity, $button, $data = null)
     {
 
-        $link = implode('/', ['', 'app', $language, $module, $entity, $button->href]);
+        $link = implode('/', ['', 'app', $language, Parse::uncamelize($module), Parse::uncamelize($entity), $button->href]);
 
         $parameters = [];
 
@@ -37,6 +37,6 @@ class Url
 
         $link = implode('/', [$link, implode('|', $parameters)]);
 
-        return $link;
+        return asset($link);
     }
 }

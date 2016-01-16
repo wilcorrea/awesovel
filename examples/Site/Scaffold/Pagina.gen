@@ -1,0 +1,19 @@
+{
+  "table": "TBL_PAGINA",
+  "primaryKey": "pgn_codigo",
+  "alias": {
+    "list": "index"
+  },
+  "items": [
+    {
+      "id": "pgn_codigo",
+      "type": "int",
+      "behavior": "pk"
+    },
+    {
+      "id": "pgn_title",
+      "type": "string",
+      "behavior": ""
+    }
+  ]
+}

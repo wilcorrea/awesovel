@@ -38,4 +38,11 @@ Route::get('/' . config('awesovel')['app'] . '/{language}/{module}/{entity}/{ope
 });
 
 
-Route::resource('photo', 'CodeDelivery\Http\Controllers\PhotoController');
+/**
+ * Otherwise
+ */
+Route::get('{slug?}', function ($slug = 'home') {
+
+    return \Awesovel\Controllers\AwesovelMiddlewareController::route($slug);
+
+})->where('slug', '.+');

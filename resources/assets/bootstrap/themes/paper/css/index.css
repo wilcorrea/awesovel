@@ -1,0 +1,10 @@
+body {
+    background-color: #f0f0f0;
+}
+
+footer.footer {
+    background-color: #fff;
+}
+footer .text-muted {
+    color: #515151;
+}

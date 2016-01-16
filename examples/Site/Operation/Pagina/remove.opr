@@ -1,0 +1,17 @@
+{
+  "id":"remove",
+  "layout": "form",
+  "items": {
+    "pgn_codigo": {},
+    "pgn_title": {}
+  },
+  "operations": [
+    {
+      "position": ["top"],
+      "id": "index",
+      "href": "index",
+      "className": "",
+      "classIcon": ""
+    }
+  ]
+}

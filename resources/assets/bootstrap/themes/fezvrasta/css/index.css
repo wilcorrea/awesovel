@@ -1,0 +1,9 @@
+.btn, .input-group-btn .btn {
+    padding: 8px 20px;
+    margin: 0px 1px;
+    background: #ffffff;
+}
+.btn-group-raised .btn, .btn-group-raised .btn.btn-default, .btn-group-raised .input-group-btn .btn, .btn-group-raised .input-group-btn .btn.btn-default, .btn.btn-fab, .btn.btn-fab.btn-default, .btn.btn-raised, .btn.btn-raised.btn-default, .input-group-btn .btn.btn-fab, .input-group-btn .btn.btn-fab.btn-default, .input-group-btn .btn.btn-raised, .input-group-btn .btn.btn-raised.btn-default {
+    background-color: #fff;
+    color: rgba(0,0,0,.87);
+}
