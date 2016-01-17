@@ -2,7 +2,8 @@
 
 @section('content')
 
-    <section class="container-fluid">
+    <section class="app container-fluid">
+
         <div class="row">
 
             <div class="col-sm-2">

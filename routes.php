@@ -1,57 +1,34 @@
 <?php
+
 /*
   |--------------------------------------------------------------------------
-  | Application Routes
+  | Api Resources
   |--------------------------------------------------------------------------
   |
-  | Here is where you can register all of the routes for an application.
-  | It's a breeze. Simply tell Laravel the URIs it should respond to
-  | and give it the controller to call when that URI is requested.
-  |
-  |  Api allows
+  | That requests are parsed to control the assets
+  | All requests need pass here
   |
  */
-// Interpunct in version: ·
-
-function go($slug, $print = false) {
-
-    $language = config('awesovel')['language'];
-
-    $go = url(implode('/', [$language, $slug]));
-
-    return $go;
-}
 
 Route::get('/' . config('awesovel')['api'] . '/{version}/{module}/{entity}/{operation}/{id?}/{relationships?}', function ($version, $module, $entity, $operation, $id = null, $relationships = null) {
 
     $controller = new \Awesovel\Defaults\Controller($module, $entity);
 
-    return $controller->api(
-        $version,
-        $operation,
-        $id,
-        $relationships
-    );
+    return $controller->api($version, $operation, $id, $relationships);
 });
 
 /*
- * Resources
- */
-//list, add, view, set
-//index, create, show, edit
-Route::get('/' . config('awesovel')['app'] . '/{language}/{module}/{entity}/{operation?}/{id?}', function ($language, $module, $entity, $operation = null, $id = null) {
-
-    $controller = new \Awesovel\Defaults\Controller($module, $entity);
-
-    return $controller->resolve($operation, $id, $language, (Input::all()));
-});
-
-
-/**
- * Otherwise
+  |--------------------------------------------------------------------------
+  | Middleware to parse url
+  |--------------------------------------------------------------------------
+  |
+  | That requests are parsed to control the assets
+  | All requests need pass here
+  |
  */
 Route::get('{slug?}', function ($slug = 'home') {
 
-    return \Awesovel\Controllers\AwesovelMiddlewareController::route($slug);
+
+    return \Awesovel\Controllers\AwesovelGetController::route($slug);
 
 })->where('slug', '.+');
