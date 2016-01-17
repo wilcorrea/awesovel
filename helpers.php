@@ -26,6 +26,18 @@ function awesovel_asset($path)
 }
 
 /**
+ * Create the paths to app layouts
+ *
+ * @param string $index
+ * @return string
+ */
+function awesovel_app($index = 'index')
+{
+
+    return implode('.', [config('awesovel')['view'], $index]);
+}
+
+/**
  * Create the paths to layouts
  *
  * @param string $root
@@ -48,18 +60,6 @@ function awesovel_template($index = 'index')
 {
 
     return awesovel_layouts(config('awesovel')['template'], $index);
-}
-
-/**
- * Create the paths to app layouts
- *
- * @param string $index
- * @return string
- */
-function awesovel_layout($index = 'index')
-{
-
-    return awesovel_layouts(config('awesovel')['view'], $index);
 }
 
 /**
@@ -98,20 +98,27 @@ function awesovel_route($slug, $print = false)
  * @param $data
  * @return string
  */
-function awesovel_link($module, $entity, $button, $data = null)
+function awesovel_link($module, $entity, $button = null, $data = null)
 {
 
-    $link = implode('/', [config('awesovel')['app'], \Awesovel\Helpers\Parse::uncamelize($module), \Awesovel\Helpers\Parse::uncamelize($entity), $button->href]);
+    $href = $button;
 
     $parameters = [];
 
-    if (isset($button->parameters) && $button->parameters && $data) {
-        foreach ($button->parameters as $parameter) {
-            if (isset($data->$parameter)) {
-                $parameters[] = $data->$parameter;
+    if (is_object($button)) {
+
+        $href = (isset($button->href)) ? $button->href : '';
+
+        if (isset($button->parameters) && $button->parameters && $data) {
+            foreach ($button->parameters as $parameter) {
+                if (isset($data->$parameter)) {
+                    $parameters[] = $data->$parameter;
+                }
             }
         }
     }
+
+    $link = implode('/', [config('awesovel')['app'], \Awesovel\Helpers\Parse::uncamelize($module), \Awesovel\Helpers\Parse::uncamelize($entity), $href]);
 
     $link = implode('/', [$link, implode('|', $parameters)]);
 

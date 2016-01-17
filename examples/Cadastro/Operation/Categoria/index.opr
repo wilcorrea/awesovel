@@ -1,6 +1,6 @@
 {
   "id":"index",
-  "layout": "index",
+  "layout": "grid",
   "items": {
     "ctg_codigo": {},
     "ctg_descricao": {}
