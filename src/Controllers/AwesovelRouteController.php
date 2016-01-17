@@ -175,15 +175,7 @@ class AwesovelRouteController extends Controller
         $this->data['module'] = $this->module;
         $this->data['entity'] = $this->entity;
 
-        return view($this->layout($layout), $this->data, $this->errors, $parameters);
-    }
-
-    /**
-     * @param $index
-     * @return string
-     */
-    private function layout($index) {
-        return implode('.', [config('awesovel')['view'], 'layouts', $index]);
+        return view(awesovel_layout($layout), $this->data, $this->errors, $parameters);
     }
 
 }
