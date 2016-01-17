@@ -1,18 +1,25 @@
-<h4>Favoritos</h4>
+<h5>
+    <a href="{{ awesovel_route('app') }}"> Home </a>
+</h5>
 
 <ul class="nav nav-stacked">
-    <li><a href="http://www.bootply.com/85861" target="ext"><i class="glyphicon glyphicon-flash"></i> Alerts</a>
+    <li>
+        <a href="{{ awesovel_link('Cadastro', 'Categoria', 'index') }}">
+            <i class="glyphicon glyphicon-flash"></i> Categorias
+        </a>
     </li>
-    <li><a href="http://www.bootply.com/85861" target="ext"><i class="glyphicon glyphicon-link"></i>
-            Links</a></li>
-    <li><a href="http://www.bootply.com/85861" target="ext"><i class="glyphicon glyphicon-list-alt"></i>
-            Reports</a></li>
-    <li><a href="http://www.bootply.com/85861" target="ext"><i class="glyphicon glyphicon-book"></i>
-            Books</a></li>
-    <li><a href="http://www.bootply.com/85861" target="ext"><i class="glyphicon glyphicon-briefcase"></i>
-            Tools</a></li>
-    <li><a href="http://www.bootply.com/85861" target="ext"><i class="glyphicon glyphicon-time"></i>
-            Real-time</a></li>
-    <li><a href="http://www.bootply.com/85861" target="ext"><i class="glyphicon glyphicon-plus"></i>
-            Advanced..</a></li>
+    <li>
+        <a href="{{ awesovel_link('Site', 'Pagina', 'index') }}">
+            <i class="glyphicon glyphicon-link"></i> Páginas
+        </a>
+    </li>
+    <li>
+        <a href=".">
+            <i class="glyphicon glyphicon-list-alt"></i> Reports
+        </a>
+    </li>
+    <li>
+        <a href=".">
+            <i class="glyphicon glyphicon-plus"></i> Advanced.. </a>
+    </li>
 </ul>

@@ -150,7 +150,7 @@ class AwesovelGetController
                     return (new Controller($module, $entity))->resolve($operation, $id, $language, (Input::all()));
                 } else {
 
-                    self::request($language);
+                    return view(awesovel_app('index'), ["page"=>(object)['header'=>false]]);
                 }
                 break;
             /*

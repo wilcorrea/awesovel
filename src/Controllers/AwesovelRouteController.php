@@ -175,7 +175,7 @@ class AwesovelRouteController extends Controller
         $this->data['module'] = $this->module;
         $this->data['entity'] = $this->entity;
 
-        return view(awesovel_layout($layout), $this->data, $this->errors, $parameters);
+        return view(awesovel_app('layouts.' . $layout), $this->data, $this->errors, $parameters);
     }
 
 }

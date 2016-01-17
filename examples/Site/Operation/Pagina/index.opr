@@ -1,6 +1,6 @@
 {
   "id":"index",
-  "layout": "index",
+  "layout": "grid",
   "items": {
     "pgn_codigo": {},
     "pgn_title": {}
