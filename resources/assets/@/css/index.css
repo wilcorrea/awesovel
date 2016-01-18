@@ -25,6 +25,11 @@
     text-shadow: 1px 1px 1px rgba(0,0,0,0.5) !important;
 }
 
+.navbar-collapse-top .navbar-right li a {
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
 section.app {
     margin-top: 65px;
 }

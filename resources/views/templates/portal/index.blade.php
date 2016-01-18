@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="{{ \Awesovel\Providers\AwesovelServiceProvider::$LANGUAGE }}">
     <head>
-        @include('awesovel.templates.portal.root.head')
+        @include('awesovel.templates.portal.head.index')
     </head>
 
     <body>
@@ -16,6 +16,6 @@
 
         @include('awesovel.templates.portal.includes.footer')
 
-        @include('awesovel.templates.portal.root.script')
+        @include('awesovel.templates.portal.resources.scripts')
     </body>
 </html>
