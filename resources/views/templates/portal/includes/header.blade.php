@@ -1,4 +1,4 @@
-<div class="header-panel">
+<div class="header-panel brand-mark">
 
     <div class="container">
 

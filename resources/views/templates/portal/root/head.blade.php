@@ -18,9 +18,9 @@
 <link href="{{ awesovel_asset('bootstrap/css/index.css') }}" rel="stylesheet">
 
 <!-- fezvrasta theme -->
-{{--<link href="{{ asset('bootstrap/themes/fezvrasta/css/bootstrap-material-design.min.css') }}" rel="stylesheet" type="text/css">--}}
-{{--<link href="{{ asset('bootstrap/themes/fezvrasta/css/ripples.min.css') }}" rel="stylesheet" type="text/css">--}}
-{{--<link href="{{ asset('bootstrap/themes/fezvrasta/css/index.css') }}" rel="stylesheet" type="text/css">--}}
+{{--<link href="{{ awesovel_asset('bootstrap/themes/fezvrasta/css/bootstrap-material-design.min.css') }}" rel="stylesheet" type="text/css">--}}
+{{--<link href="{{ awesovel_asset('bootstrap/themes/fezvrasta/css/ripples.min.css') }}" rel="stylesheet" type="text/css">--}}
+{{--<link href="{{ awesovel_asset('bootstrap/themes/fezvrasta/css/index.css') }}" rel="stylesheet" type="text/css">--}}
 
 <!-- paper theme -->
 <link href="{{ awesovel_asset('bootstrap/themes/paper/css/paper.min.css') }}" rel="stylesheet">
