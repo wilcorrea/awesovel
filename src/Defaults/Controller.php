@@ -61,7 +61,7 @@ class Controller extends AwesovelRouteController
      * @param null $index
      * @param null $id
      * @param null $language
-     * @param null $parameters
+     * @param array $parameters
      * @return mixed
      */
     public function resolve($index = null, $id = null, $language = null, $parameters = [])

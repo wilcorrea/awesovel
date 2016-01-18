@@ -52,9 +52,9 @@ class AwesovelRequestController
      */
     public static function render($filename) {
 
-        $extension = File::extension($filename);
-        $type = null;
+        $type = mime_content_type($filename);
 
+        $extension = File::extension($filename);
         switch ($extension) {
 
             case 'css':
@@ -64,7 +64,7 @@ class AwesovelRequestController
 
             case 'js':
 
-                $type = "text/css";
+                $type = "application/javascript";
                 break;
         }
 
