@@ -11,6 +11,7 @@ namespace Awesovel\Controllers;
 
 use Awesovel\Controllers\AwesovelRequestController;
 use Awesovel\Defaults\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
 
 class AwesovelGetController
@@ -108,6 +109,8 @@ class AwesovelGetController
             */
             case 'auth':
 
+                array_shift($route);
+
                 return self::auth($route);
 
                 break;
@@ -123,6 +126,8 @@ class AwesovelGetController
             |
             */
             case 'password':
+
+                array_shift($route);
 
                 return self::password($route);
 
@@ -170,22 +175,61 @@ class AwesovelGetController
     }
 
     /**
+     *
      * @param $route
+     *
+     * @return \Illuminate\View\View
      */
     public static function auth($route) {
 
-//                Route::get('auth/login', 'Auth\AuthController@getLogin');
-//                Route::get('auth/logout', 'Auth\AuthController@getLogout');
-//                Route::get('auth/register', 'Auth\AuthController@getRegister');
+        $service = isset($route[0]) ? $route[0] : '';
+
+        switch($service) {
+
+            case 'register':
+
+                return view(awesovel_template('auth.register'));
+                break;
+
+            case 'login':
+
+                return view(awesovel_template('auth.login'));
+                break;
+
+            case 'logout':
+
+                Auth::logout();
+
+                return redirect('/');
+
+                break;
+        }
     }
 
     /**
+     *
      * @param $route
+     *
+     * @return \Illuminate\View\View
      */
     public static function password($route) {
 
-//                Route::get('password/email', 'Auth\PasswordController@getEmail');
-//                Route::get('password/reset/{token}', 'Auth\PasswordController@getReset');
+        $service = isset($route[0]) ? $route[0] : '';
+
+        switch($service) {
+
+            case 'email':
+
+                return view(awesovel_template('auth.password'));
+                break;
+
+            case 'reset':
+
+                $token = isset($route[1]) ? $route[1] : null;
+
+                return view(awesovel_template('auth.reset'))->with('token', $token);
+                break;
+        }
     }
 
 }
