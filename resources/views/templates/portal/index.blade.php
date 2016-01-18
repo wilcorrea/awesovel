@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ \Awesovel\Providers\AwesovelServiceProvider::$LANGUAGE }}">
     <head>
         @include('awesovel.templates.portal.root.head')
     </head>

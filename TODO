@@ -1,6 +1,7 @@
+[x] Mapear as entradas de resource no ServiceProvider (rotas)
+[x] Preparar layouts base
+
 [ ] Entender funcionamento das operações disponíveis no controller
-[ ] Mapear as entradas de resource no ServiceProvider (rotas)
-[ ] Preparar layouts base
 [ ] Preparar operações no Json (operações padrão)
 [ ] Verificar como utilizar o artisan vendor:publish
 [ ] Verificar como adicionar comandos ao artisan

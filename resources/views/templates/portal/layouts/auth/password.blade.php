@@ -1,4 +1,4 @@
-@extends('app')
+@extends('awesovel.app')
 
 @section('content')
 

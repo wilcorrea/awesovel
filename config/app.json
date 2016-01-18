@@ -1,5 +1,6 @@
 {
   "name": "Sistema Concursos",
+  "theme": "awesovel.themes.paper",
   "language": "pt-BR",
   "languages": ["pt-BR"],
   "total": 6,

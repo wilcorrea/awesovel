@@ -11,6 +11,7 @@ namespace Awesovel\Controllers;
 
 use Awesovel\Controllers\AwesovelRequestController;
 use Awesovel\Defaults\Controller;
+use Awesovel\Providers\AwesovelServiceProvider;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
 
@@ -82,6 +83,8 @@ class AwesovelGetController
 
                     $language = array_shift($route);
                 }
+
+                AwesovelServiceProvider::$LANGUAGE = $language;
 
                 return self::request($language, $route);
                 break;
