@@ -9,7 +9,7 @@
 ~: cd [nome]/vendor
 ~/[nome]/vendor: git clone https://github.com/wilcorrea/awesovel.git awesovel
 ```
-3- Adicionar novas entradas no "psr-4" ("Awesovel\\": "vendor/awesovel/src") e "files" ("vendor/awesovel/helpers.php") na propriedade "autoload" do arquivo "composer.json" do seu projeto
+3- Adicionar novas entradas no "psr-4" ("Awesovel": "vendor/awesovel/src") e "files" ("vendor/awesovel/helpers.php") na propriedade "autoload" do arquivo "composer.json" do seu projeto
 ```
   (...)
   , "autoload": {
