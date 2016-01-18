@@ -60,6 +60,3 @@
 ```
 ~[nome]: php artisan app:name [app name]
 ```
-10- Siga as instruções para instalar https://github.com/bestmomo/scafold no seu projeto
-
-
