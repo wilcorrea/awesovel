@@ -1,14 +1,14 @@
 {
   "default": {
-    "label": "Página",
+    "label": "Categoria",
     "items": {
-      "pgn_codigo": {
+      "id": {
         "label": "Código",
         "title": "",
         "options": [
         ]
       },
-      "pgn_title": {
+      "name": {
         "label": "Nome"
       }
     }
@@ -18,36 +18,36 @@
     "title": "",
     "operations": {
       "create": {
-        "label": "Nova Página",
-        "title": "Nova Página"
+        "label": "Nova Categoria",
+        "title": "Nova Categoria"
       },
       "show": {
         "label": "",
-        "title": "Visualizar Página"
+        "title": "Visualizar Categoria"
       },
       "edit": {
         "label": "",
-        "title": "Editar Página"
+        "title": "Editar Categoria"
       },
       "remove": {
         "label": "",
-        "title": "Remover Página"
+        "title": "Remover Categoria"
       }
     },
     "items": {
-      "pgn_codigo": {
+      "id": {
         "label": "Código",
         "title": "",
         "options": [
         ]
       },
-      "pgn_title": {
-        "label": "Descrição"
+      "name": {
+        "label": "Nome"
       }
     }
   },
   "create": {
-    "label": "Nova Página",
+    "label": "Nova Categoria",
     "operations": {
       "index": {
         "label": "Voltar",

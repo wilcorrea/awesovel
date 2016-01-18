@@ -1,9 +1,9 @@
 {
-  "id":"remove",
+  "id":"edit",
   "layout": "form",
   "items": {
-    "pgn_codigo": {},
-    "pgn_title": {}
+    "id": {},
+    "description": {}
   },
   "operations": [
     {

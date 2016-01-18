@@ -2,8 +2,8 @@
   "id":"index",
   "layout": "grid",
   "items": {
-    "ctg_codigo": {},
-    "ctg_descricao": {}
+    "id": {},
+    "name": {}
   },
   "operations": [
     {
@@ -20,7 +20,7 @@
       "type": "view",
       "position": ["middle"],
       "conditions": [],
-      "parameters": ["ctg_codigo"],
+      "parameters": ["id"],
       "className": "",
       "classIcon": "glyphicon glyphicon-search"
     },{
@@ -29,7 +29,7 @@
       "type": "view",
       "position": ["middle"],
       "conditions": [],
-      "parameters": ["ctg_codigo"],
+      "parameters": ["id"],
       "className": "",
       "classIcon": "glyphicon glyphicon-edit"
     },{
@@ -38,7 +38,7 @@
       "type": "view",
       "position": ["middle"],
       "conditions": [],
-      "parameters": ["ctg_codigo"],
+      "parameters": ["id"],
       "className": "",
       "classIcon": "glyphicon glyphicon-trash"
     }

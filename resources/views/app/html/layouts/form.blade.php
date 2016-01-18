@@ -9,7 +9,7 @@
             @include('awesovel.app.html.partials.button')
         @endforeach
 
-        {{ var_dump($collection) }}
+        {{ var_dump($operation->items) }}
 
         @foreach($actions->bottom as $button)
             @include('awesovel.app.html.partials.button')

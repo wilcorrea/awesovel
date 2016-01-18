@@ -18,12 +18,12 @@
 
                 <table class="table table-striped table-bordered">
                     <thead>
-                    <tr>
-                        <th>{{ "Opções" }}</th>
-                        @foreach($operation->items as $item)
-                            <th>{{ $item->label }}</th>
-                        @endforeach
-                    </tr>
+                        <tr>
+                            <th>{{ "Opções" }}</th>
+                            @foreach($operation->items as $item)
+                                <th>{{ $item->label }}</th>
+                            @endforeach
+                        </tr>
                     </thead>
                     <tbody>
                     @foreach($collection as $_colletion)
@@ -45,8 +45,6 @@
         </div>
 
         {!! $collection->render() !!}
-
-        @include('awesovel.app.html.partials.pagination')
 
         <br style="clear: both" />
 

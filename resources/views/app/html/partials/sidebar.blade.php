@@ -4,7 +4,7 @@
 
 <ul class="nav nav-stacked">
     <li>
-        <a href="{{ awesovel_link('Cadastro', 'Categoria', 'index') }}">
+        <a href="{{ awesovel_link('Register', 'Category', 'index') }}">
             <i class="glyphicon glyphicon-flash"></i> Categorias
         </a>
     </li>

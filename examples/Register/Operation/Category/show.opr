@@ -1,9 +1,9 @@
 {
-  "id":"create",
+  "id":"show",
   "layout": "form",
   "items": {
-    "ctg_codigo": {},
-    "ctg_descricao": {}
+    "id": {},
+    "description": {}
   },
   "operations": [
     {
