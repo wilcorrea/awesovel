@@ -191,12 +191,12 @@ class AwesovelGetController
 
             case 'register':
 
-                return view(awesovel_template('auth.register'));
+                return view(awesovel_template('auth.register'), ["page"=>(object)['header'=>true]]);
                 break;
 
             case 'login':
 
-                return view(awesovel_template('auth.login'));
+                return view(awesovel_template('auth.login'), ["page"=>(object)['header'=>true]]);
                 break;
 
             case 'logout':
@@ -223,14 +223,14 @@ class AwesovelGetController
 
             case 'email':
 
-                return view(awesovel_template('auth.password'));
+                return view(awesovel_template('auth.password'), ["page"=>(object)['header'=>true]]);
                 break;
 
             case 'reset':
 
                 $token = isset($route[1]) ? $route[1] : null;
 
-                return view(awesovel_template('auth.reset'))->with('token', $token);
+                return view(awesovel_template('auth.reset'), ["page"=>(object)['header'=>true]])->with('token', $token);
                 break;
         }
     }
