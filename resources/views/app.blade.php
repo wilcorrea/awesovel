@@ -1,1 +1,1 @@
-@include('awesovel.templates.portal.index')
+@include(config('awesovel')['template'] . '.index')

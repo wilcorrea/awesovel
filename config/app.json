@@ -1,12 +1,12 @@
 {
   "name": "Sistema Concursos",
-  "theme": "awesovel.themes.paper",
   "language": "pt-BR",
   "languages": ["pt-BR"],
   "total": 6,
   "root": "Src",
   "view": "awesovel.app.html",
   "template": "awesovel.templates.portal",
+  "theme": "awesovel.templates.portal.themes.paper",
   "app": "app",
   "static": "static",
   "api": "api"
