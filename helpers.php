@@ -14,6 +14,25 @@
 */
 
 /**
+ *
+ * @param $index
+ * @param null $default
+ *
+ * @return null
+ */
+function awesovel_config($index, $default = null) {
+
+    $config = $default;
+
+    if (isset(config('awesovel')[$index])) {
+
+        $config = config('awesovel')[$index];
+    }
+
+    return $config;
+}
+
+/**
  * Generate path to assets route
  *
  * @param $path
@@ -34,7 +53,7 @@ function awesovel_asset($path)
 function awesovel_app($index = 'index')
 {
 
-    return implode('.', [config('awesovel')['view'], $index]);
+    return implode('.', [awesovel_config('view'), $index]);
 }
 
 /**
@@ -59,7 +78,7 @@ function awesovel_layouts($root, $index = 'index')
 function awesovel_template($index = 'index')
 {
 
-    return awesovel_layouts(config('awesovel')['template'], $index);
+    return awesovel_layouts(awesovel_config('template'), $index);
 }
 
 /**
@@ -75,9 +94,9 @@ function awesovel_route($slug, $print = false)
 
     $go = url($slug);
 
-    if (is_array(config('awesovel')['languages']) && count(config('awesovel')['languages']) > 1) {
+    if (is_array(awesovel_config('languages')) && count(awesovel_config('languages')) > 1) {
 
-        $language = config('awesovel')['language'];
+        $language = awesovel_config('language');
 
         $go = url(implode('/', [$language, $slug]));
     }
@@ -118,7 +137,7 @@ function awesovel_link($module, $entity, $button = null, $data = null)
         }
     }
 
-    $link = implode('/', [config('awesovel')['app'], \Awesovel\Helpers\Parse::uncamelize($module), \Awesovel\Helpers\Parse::uncamelize($entity), $href]);
+    $link = implode('/', [awesovel_config('app'), \Awesovel\Helpers\Parse::uncamelize($module), \Awesovel\Helpers\Parse::uncamelize($entity), $href]);
 
     $link = implode('/', [$link, implode('|', $parameters)]);
 

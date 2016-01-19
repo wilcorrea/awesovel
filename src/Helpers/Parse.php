@@ -17,7 +17,7 @@ class Parse
     public static function scaffold($module, $entity)
     {
 
-        $filename = Path::app([config('awesovel')['root'], $module, 'Scaffold', $entity . '.gen']);
+        $filename = Path::app([awesovel_config('root'), $module, 'Scaffold', $entity . '.gen']);
 
         $content = file_get_contents($filename);
 
@@ -37,7 +37,7 @@ class Parse
             $language = AwesovelServiceProvider::$LANGUAGE;
         }
 
-        $filename = Path::app([config('awesovel')['root'], $module, 'Operation', $entity, $index . '.opr']);
+        $filename = Path::app([awesovel_config('root'), $module, 'Operation', $entity, $index . '.opr']);
 
         $content = file_get_contents($filename);
 
@@ -60,7 +60,7 @@ class Parse
             $spell = AwesovelServiceProvider::$LANGUAGE;
         }
 
-        $filename = Path::app([config('awesovel')['root'], $module, 'Language', $entity, $spell . '.lng']);
+        $filename = Path::app([awesovel_config('root'), $module, 'Language', $entity, $spell . '.lng']);
 
         $content = file_get_contents($filename);
 

@@ -3,12 +3,6 @@
     <li>
         <a href="{{ awesovel_route('app') }}">App</a>
     </li>
-    <li>
-        <a href="{{ awesovel_route('about') }}">About</a>
-    </li>
-    <li>
-        <a href="{{ awesovel_route('contact') }}">Contact</a>
-    </li>
     <li class="dropdown">
 
         <a href="." class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
@@ -43,7 +37,7 @@
             <li><a href="{{ awesovel_route('auth/login') }}">Login</a></li>
         @endif
         @if(!Request::is('auth/login') && !Request::is('auth/register'))
-            <li><a> | </a></li>
+            <li class="hidden-xs"><a> | </a></li>
         @endif
         @if(!Request::is('auth/register'))
             <li><a href="{{ awesovel_route('auth/register') }}">Register</a></li>
