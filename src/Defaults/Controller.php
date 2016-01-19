@@ -3,10 +3,10 @@
 namespace Awesovel\Defaults;
 
 use Awesovel\Helpers\Json;
-use Awesovel\Controllers\AwesovelRouteController;
+use Awesovel\Controllers\AwesovelAppController;
 use Awesovel\Helpers\Parse;
 
-class Controller extends AwesovelRouteController
+class Controller extends AwesovelAppController
 {
 
     /**

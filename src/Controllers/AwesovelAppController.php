@@ -16,7 +16,7 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 use Awesovel\Helpers\Path;
 
-class AwesovelRouteController extends Controller
+class AwesovelAppController extends Controller
 {
 
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
