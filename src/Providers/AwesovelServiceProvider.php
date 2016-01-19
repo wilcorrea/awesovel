@@ -31,11 +31,9 @@ class AwesovelServiceProvider extends ServiceProvider
      */
     public function boot(Router $router)
     {
-        //
-
         parent::boot($router);
 
-        self::$NAMESPACE = substr($this->getAppNamespace(), 0, -1);
+        $this->initNamespace();
 
         self::$LANGUAGE = config('awesovel')['language'];
     }
@@ -48,9 +46,16 @@ class AwesovelServiceProvider extends ServiceProvider
      */
     public function map(Router $router)
     {
+        $this->initNamespace();
+
         $router->group(['namespace' => self::$NAMESPACE], function ($router) {
             require base_path('vendor/awesovel/routes.php');
         });
+    }
+
+    private function initNamespace()
+    {
+        self::$NAMESPACE = '\\' . substr($this->getAppNamespace(), 0, -1);
     }
 
 }

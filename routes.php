@@ -10,22 +10,24 @@
   |
  */
 
+$namespace = \Awesovel\Providers\AwesovelServiceProvider::$NAMESPACE;
+
 // Authentication routes...
-//Route::get('auth/login', 'CodeDelivery\Http\Controllers\Auth\AuthController@getLogin');
-Route::post('auth/login', 'CodeDelivery\Http\Controllers\Auth\AuthController@postLogin');
-//Route::get('auth/logout', 'CodeDelivery\Http\Controllers\Auth\AuthController@getLogout');
+//Route::get('auth/login', $namespace . '\Http\Controllers\Auth\AuthController@getLogin');
+Route::post('auth/login', $namespace . '\Http\Controllers\Auth\AuthController@postLogin');
+//Route::get('auth/logout', $namespace . '\Http\Controllers\Auth\AuthController@getLogout');
 
 // Registration routes...
-//Route::get('auth/register', 'CodeDelivery\Http\Controllers\Auth\AuthController@getRegister');
-Route::post('auth/register', 'CodeDelivery\Http\Controllers\Auth\AuthController@postRegister');
+//Route::get('auth/register', $namespace . '\Http\Controllers\Auth\AuthController@getRegister');
+Route::post('auth/register', $namespace . '\Http\Controllers\Auth\AuthController@postRegister');
 
 // Password reset link request routes...
-//Route::get('password/email', 'CodeDelivery\Http\Controllers\Auth\PasswordController@getEmail');
-Route::post('password/email', 'CodeDelivery\Http\Controllers\Auth\PasswordController@postEmail');
+//Route::get('password/email', $namespace . '\Http\Controllers\Auth\PasswordController@getEmail');
+Route::post('password/email', $namespace . '\Http\Controllers\Auth\PasswordController@postEmail');
 
 // Password reset routes...
-//Route::get('password/reset/{token}', 'CodeDelivery\Http\Controllers\Auth\PasswordController@getReset');
-Route::post('password/reset', 'CodeDelivery\Http\Controllers\Auth\PasswordController@postReset');
+//Route::get('password/reset/{token}', $namespace . '\Http\Controllers\Auth\PasswordController@getReset');
+Route::post('password/reset', $namespace . '\Http\Controllers\Auth\PasswordController@postReset');
 
 
 Route::get('/' . config('awesovel')['api'] . '/{version}/{module}/{entity}/{operation}/{id?}/{relationships?}', function ($version, $module, $entity, $operation, $id = null, $relationships = null) {

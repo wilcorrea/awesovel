@@ -1,6 +1,14 @@
 {
-  "id":"index",
+  "id": "index",
   "layout": "grid",
+  "config": {
+    "items": {
+      "id": {
+        "width": 50,
+        "parser": "jsFunction"
+      }
+    }
+  },
   "items": {
     "id": {},
     "name": {}
@@ -10,35 +18,53 @@
       "id": "create",
       "href": "create",
       "type": "view",
-      "position": ["top", "bottom"],
+      "position": [
+        "top",
+        "bottom"
+      ],
       "parameters": [],
       "className": "",
       "classIcon": "glyphicon glyphicon-plus"
-    },{
+    },
+    {
       "id": "show",
       "href": "show",
       "type": "view",
-      "position": ["middle"],
+      "position": [
+        "middle"
+      ],
       "conditions": [],
-      "parameters": ["id"],
+      "parameters": [
+        "id"
+      ],
       "className": "",
       "classIcon": "glyphicon glyphicon-search"
-    },{
+    },
+    {
       "id": "edit",
       "href": "edit",
       "type": "view",
-      "position": ["middle"],
+      "position": [
+        "middle"
+      ],
       "conditions": [],
-      "parameters": ["id"],
+      "parameters": [
+        "id"
+      ],
       "className": "",
       "classIcon": "glyphicon glyphicon-edit"
-    },{
+    },
+    {
       "id": "remove",
       "href": "remove",
       "type": "view",
-      "position": ["middle"],
+      "position": [
+        "middle"
+      ],
       "conditions": [],
-      "parameters": ["id"],
+      "parameters": [
+        "id"
+      ],
       "className": "",
       "classIcon": "glyphicon glyphicon-trash"
     }

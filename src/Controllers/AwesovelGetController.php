@@ -14,6 +14,7 @@ use Awesovel\Defaults\Controller;
 use Awesovel\Providers\AwesovelServiceProvider;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Redirect;
 
 class AwesovelGetController
 {
@@ -22,7 +23,8 @@ class AwesovelGetController
      * @param $path
      * @return \Illuminate\Http\Response
      */
-    public static function route($path) {
+    public static function route($path)
+    {
 
         $route = explode('/', $path);
 
@@ -69,12 +71,9 @@ class AwesovelGetController
 
                 $use_language = false;
 
-                if (is_array(config('awesovel')['languages'])) {
+                if (count(config('awesovel')['languages']) > 1) {
 
-                    if (count(config('awesovel')['languages']) > 1) {
-
-                        $use_language = true;
-                    }
+                    $use_language = true;
                 }
 
                 $language = config('awesovel')['language'];
@@ -97,7 +96,8 @@ class AwesovelGetController
      *
      * @return \Illuminate\Http\View
      */
-    public static function request($language, $route = null) {
+    public static function request($language, $route = null)
+    {
 
         $service = isset($route[0]) ? $route[0] : '';
 
@@ -148,6 +148,11 @@ class AwesovelGetController
             */
             case config('awesovel')['app']:
 
+                if (!Auth::check()) {
+
+                    return redirect()->guest('auth/login');
+                }
+
                 if (isset($route[1]) && isset($route[2])) {
 
                     $module = $route[1];
@@ -158,7 +163,7 @@ class AwesovelGetController
                     return (new Controller($module, $entity))->resolve($operation, $id, $language, (Input::all()));
                 } else {
 
-                    return view(awesovel_app('index'), ["page"=>(object)['header'=>false]]);
+                    return view(awesovel_app('index'), ["page" => (object)['header' => false]]);
                 }
                 break;
             /*
@@ -171,7 +176,7 @@ class AwesovelGetController
             */
             default:
 
-                return view(awesovel_template('index'), ["page"=>(object)['header'=>true]]);
+                return view(awesovel_template('index'), ["page" => (object)['header' => true]]);
                 break;
         }
 
@@ -183,20 +188,21 @@ class AwesovelGetController
      *
      * @return \Illuminate\View\View
      */
-    public static function auth($route) {
+    public static function auth($route)
+    {
 
         $service = isset($route[0]) ? $route[0] : '';
 
-        switch($service) {
+        switch ($service) {
 
             case 'register':
 
-                return view(awesovel_template('auth.register'), ["page"=>(object)['header'=>true]]);
+                return view(awesovel_template('auth.register'), ["page" => (object)['header' => true]]);
                 break;
 
             case 'login':
 
-                return view(awesovel_template('auth.login'), ["page"=>(object)['header'=>true]]);
+                return view(awesovel_template('auth.login'), ["page" => (object)['header' => true]]);
                 break;
 
             case 'logout':
@@ -215,22 +221,23 @@ class AwesovelGetController
      *
      * @return \Illuminate\View\View
      */
-    public static function password($route) {
+    public static function password($route)
+    {
 
         $service = isset($route[0]) ? $route[0] : '';
 
-        switch($service) {
+        switch ($service) {
 
             case 'email':
 
-                return view(awesovel_template('auth.password'), ["page"=>(object)['header'=>true]]);
+                return view(awesovel_template('auth.password'), ["page" => (object)['header' => true]]);
                 break;
 
             case 'reset':
 
                 $token = isset($route[1]) ? $route[1] : null;
 
-                return view(awesovel_template('auth.reset'), ["page"=>(object)['header'=>true]])->with('token', $token);
+                return view(awesovel_template('auth.reset'), ["page" => (object)['header' => true]])->with('token', $token);
                 break;
         }
     }
