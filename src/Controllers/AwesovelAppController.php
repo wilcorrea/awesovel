@@ -79,7 +79,7 @@ class AwesovelAppController extends Controller
     public function index()
     {
 
-        $total = isset($this->parameters['total']) ? $this->parameters['total'] : config('awesovel')['total'];
+        $total = isset($this->parameters['total']) ? $this->parameters['total'] : awesovel_config('total');
 
         $this->data['collection'] = $this->api('HEAD', 'paginate', $total);
 

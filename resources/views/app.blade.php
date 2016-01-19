@@ -1,1 +1,1 @@
-@include(config('awesovel')['template'] . '.index')
+@include(awesovel_config('template') . '.index')

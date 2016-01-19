@@ -2,7 +2,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
 
-<title>{{ config('awesovel')['name'] }}</title>
+<title>{{ awesovel_config('name') }}</title>
 
 <!-- Google Fonts -->
 {{--https://design.google.com/icons/--}}
@@ -17,7 +17,7 @@
 <link href="{{ awesovel_asset('bootstrap/css/sticky-footer-fixed.css') }}" rel="stylesheet">
 <link href="{{ awesovel_asset('bootstrap/css/index.css') }}" rel="stylesheet">
 
-@include(config('awesovel')['theme'])
+@include(awesovel_config('theme'))
 
 <!-- Font Awesome -->
 <link href="{{ awesovel_asset('font-awesome/css/font-awesome.min.css') }}" rel="stylesheet">

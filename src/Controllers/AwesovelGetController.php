@@ -40,7 +40,7 @@ class AwesovelGetController
             | All requests need pass here
             |
             */
-            case config('awesovel')['static']:
+            case awesovel_config('static'):
 
                 array_shift($route);
 
@@ -55,7 +55,7 @@ class AwesovelGetController
             | All requests need pass here
             |
             */
-            case config('awesovel')['api']:
+            case awesovel_config('api'):
 
                 //return AwesovelRequestController::stt($route);
                 break;
@@ -76,7 +76,7 @@ class AwesovelGetController
                     $use_language = true;
                 }
 
-                $language = config('awesovel')['language'];
+                $language = AwesovelServiceProvider::$LANGUAGE;
 
                 if ($use_language) {
 
@@ -146,7 +146,7 @@ class AwesovelGetController
             | All requests need pass here
             |
             */
-            case config('awesovel')['app']:
+            case awesovel_config('app'):
 
                 if (!Auth::check()) {
 

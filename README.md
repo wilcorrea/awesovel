@@ -52,11 +52,35 @@
 ```
 ~/[nome]: cp -rf vendor/awesovel/resources/views/ resources/views/awesovel
 ```
+  ou
+```
+~/[nome]: ls -s ~/[nome]/vendor/awesovel/resources/views/ ~/[nome]/resources/views/awesovel
+```
 8- Copie a pasta de assets para o diretório resouces do seu projeto
 ```
 ~/[nome]: cp -rf vendor/awesovel/resources/assets/ resources/assets/awesovel
+```
+  ou
+```
+~/[nome]: ls -s ~/[nome]/vendor/awesovel/resources/assets/ ~/[nome]/resources/assets/awesovel
 ```
 9- Alterar o nome da Aplicação para não conflitar com o nome do vendor Awesowel, ou seja, as classes em Src vão usar o "namespace" padrão e as classes do core padrão irão usar o "namespace" Awesowel
 ```
 ~[nome]: php artisan app:name [app name]
 ```
+10- Crie a pasta "Src" em "app" e insira as classes que precisa seguindo o padrao
+```
+Src
+  |- Module
+    |- Entidade
+```
+  ou para ver nossos exemplos
+```
+~/[nome]: ls -s ~/[nome]/vendor/awesovel/examples/ ~/[nome]/app/Src
+```
+  e em seguida importe o banco "database.sql" para sua base de dados
+  
+Nao se esqueça de configurar o ".env" corretamente
+
+ 
+

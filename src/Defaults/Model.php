@@ -11,6 +11,10 @@ class Model extends EloquentModel
 {
 
     /**
+     * @var string
+     */
+    protected $connection = 'mysql';
+    /**
      *
      * @var type
      */
@@ -26,6 +30,8 @@ class Model extends EloquentModel
     {
 
         parent::__construct($attributes);
+
+        $this->connection = awesovel_config('database');
 
         if ($module && $entity) {
             $this->setScaffold($module, $entity);

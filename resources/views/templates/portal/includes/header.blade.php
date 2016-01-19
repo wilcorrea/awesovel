@@ -2,7 +2,7 @@
 
     <div class="container">
 
-        <h1 class="font-play">{{ config('awesovel')['name'] }}</h1>
+        <h1 class="font-play">{{ awesovel_config('name') }}</h1>
 
         <p></p>
 
