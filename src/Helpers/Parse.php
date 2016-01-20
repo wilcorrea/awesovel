@@ -17,7 +17,7 @@ class Parse
     public static function scaffold($module, $entity)
     {
 
-        $filename = Path::app([awesovel_config('root'), $module, 'Scaffold', $entity . '.gen']);
+        $filename = Path::app([awesovel_config('root'), $module, 'Scaffold', $entity, $entity . '.gen']);
 
         $content = file_get_contents($filename);
 
@@ -31,28 +31,28 @@ class Parse
      * @param null $language
      * @return type
      */
-    public static function operation($module, $entity, $index, $language = null)
+    public static function form($module, $entity, $index, $language = null)
     {
         if (is_null($language)) {
             $language = AwesovelServiceProvider::$LANGUAGE;
         }
 
-        $filename = Path::app([awesovel_config('root'), $module, 'Operation', $entity, $index . '.opr']);
+        $filename = Path::app([awesovel_config('root'), $module, 'Scaffold', $entity, 'Form', $index . '.frm']);
 
         $content = file_get_contents($filename);
 
-        $operation = Json::decode($content);
+        $form = Json::decode($content);
 
-        return self::language($operation, $module, $entity, $language);
+        return self::language($form, $module, $entity, $language);
     }
 
     /**
-     * @param $operation
+     * @param $form
      * @param $module
      * @param $entity
      * @param $spell
      */
-    private static function language($operation, $module, $entity, $spell)
+    private static function language($form, $module, $entity, $spell)
     {
         $__default = 'default';
 
@@ -60,13 +60,13 @@ class Parse
             $spell = AwesovelServiceProvider::$LANGUAGE;
         }
 
-        $filename = Path::app([awesovel_config('root'), $module, 'Language', $entity, $spell . '.lng']);
+        $filename = Path::app([awesovel_config('root'), $module, 'Scaffold', $entity, 'Language', $spell . '.lng']);
 
         $content = file_get_contents($filename);
 
         $translations = Json::decode($content);
 
-        $id = $operation->id;
+        $id = $form->id;
 
         $default = $translations->$__default;
 
@@ -79,58 +79,58 @@ class Parse
         /*
          * recover spell to label
          */
-        $operation->label = $language->label;
+        $form->label = $language->label;
 
         /*
          * recover spell to items
          */
-        foreach ($operation->items as $key => $item) {
+        foreach ($form->items as $key => $item) {
 
             if (isset($language->items->$key)) {
 
                 foreach ($language->items->$key as $__property => $__stub) {
 
-                    $operation->items->$key->$__property = $language->items->$key->$__property;
+                    $form->items->$key->$__property = $language->items->$key->$__property;
                 }
             } else if (isset($default->items->$key)) {
 
                 foreach ($default->items->$key as $__property => $__stub) {
 
-                    $operation->items->$key->$__property = $default->items->$key;
+                    $form->items->$key->$__property = $default->items->$key;
                 }
             }
 
-            $operation->items->$key->id = $key;
+            $form->items->$key->id = $key;
         }
 
         /*
-         * recover spell to operations
+         * recover spell to actions
          */
-        foreach ($operation->operations as $key => $__operation) {
+        foreach ($form->actions as $key => $__action) {
 
-            $id = $__operation->id;
+            $id = $__action->id;
 
             $properties = ['label' => $default->label, 'title' => ""];
 
             foreach ($properties as $property => $__default) {
 
-                $__operation->$property = $__default;
+                $__action->$property = $__default;
 
-                if (isset($language->operations) && isset($language->operations->$id) && isset($language->operations->$id->$property)) {
+                if (isset($language->actions) && isset($language->actions->$id) && isset($language->actions->$id->$property)) {
 
-                    $__operation->$property = $language->operations->$id->$property;
+                    $__action->$property = $language->actions->$id->$property;
 
                 } else if (isset($translations->$id) && isset($translations->$id->$property)) {
 
-                    $__operation->$property = $translations->$id->$property;
+                    $__action->$property = $translations->$id->$property;
                 }
             }
 
 
-            $operation->operations[$key] = $__operation;
+            $form->actions[$key] = $__action;
         }
 
-        return $operation;
+        return $form;
     }
 
     /**

@@ -3,17 +3,27 @@
 @section('layout')
 
     <div class="row card">
-        <h3>{{ $operation->label }}</h3>
 
-        @foreach($actions->top as $button)
-            @include('awesovel.app.html.partials.button')
-        @endforeach
+        <form id="form" method="post" action="{{ awesovel_link($module, $entity) }}">
 
-        {{ var_dump($operation->items) }}
+            <h3>{{ $operation->label }}</h3>
 
-        @foreach($actions->bottom as $button)
-            @include('awesovel.app.html.partials.button')
-        @endforeach
+            @foreach($actions->top as $action)
+                @include('awesovel.app.html.partials.action')
+            @endforeach
+
+            <hr>
+            <div>
+                {{ var_dump($operation->items) }}
+            </div>
+            <hr>
+
+            @foreach($actions->bottom as $action)
+                @include('awesovel.app.html.partials.action')
+            @endforeach
+
+            <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
+        </form>
     </div>
 
 @endsection

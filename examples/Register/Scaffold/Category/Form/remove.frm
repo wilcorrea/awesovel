@@ -1,5 +1,5 @@
 {
-  "id":"show",
+  "id":"remove",
   "layout": "form",
   "items": {
     "id": {},
@@ -9,7 +9,7 @@
     {
       "position": ["top"],
       "id": "index",
-      "href": "index",
+      "action": "index",
       "className": "",
       "classIcon": ""
     }

@@ -16,7 +16,7 @@
   "index": {
     "label": "Listagem",
     "title": "",
-    "operations": {
+    "actions": {
       "create": {
         "label": "Nova Categoria",
         "title": "Nova Categoria"
@@ -48,7 +48,11 @@
   },
   "create": {
     "label": "Nova Categoria",
-    "operations": {
+    "actions": {
+      "create": {
+        "label": "Salvar",
+        "title": ""
+      },
       "index": {
         "label": "Voltar",
         "title": ""
@@ -57,7 +61,7 @@
   },
   "edit": {
     "label": "Editar",
-    "operations": {
+    "actions": {
       "index": {
         "label": "Voltar",
         "title": ""
@@ -66,7 +70,7 @@
   },
   "show": {
     "label": "Visualizar",
-    "operations": {
+    "actions": {
       "index": {
         "label": "Voltar",
         "title": ""
@@ -75,7 +79,7 @@
   },
   "remove": {
     "label": "Remover",
-    "operations": {
+    "actions": {
       "index": {
         "label": "Voltar",
         "title": ""

@@ -6,8 +6,8 @@
 
         <h3>{{ $operation->label }}</h3>
 
-        @foreach($actions->top as $button)
-            @include('awesovel.app.html.partials.button')
+        @foreach($actions->top as $action)
+            @include('awesovel.app.html.partials.action')
         @endforeach
 
         <br><br>
@@ -29,8 +29,8 @@
                     @foreach($collection as $_colletion)
                         <tr>
                             <td>
-                                @foreach($actions->middle as $button)
-                                    @include('awesovel.app.html.partials.button')
+                                @foreach($actions->middle as $action)
+                                    @include('awesovel.app.html.partials.action')
                                 @endforeach
                             </td>
                             @foreach($operation->items as $item)
@@ -48,8 +48,8 @@
 
         <br style="clear: both" />
 
-        @foreach($actions->bottom as $button)
-            @include('awesovel.app.html.partials.button')
+        @foreach($actions->bottom as $action)
+            @include('awesovel.app.html.partials.action')
         @endforeach
     </div>
 

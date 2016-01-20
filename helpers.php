@@ -120,13 +120,13 @@ function awesovel_route($slug, $print = false)
 function awesovel_link($module, $entity, $button = null, $data = null)
 {
 
-    $href = $button;
+    $action = $button;
 
     $parameters = [];
 
     if (is_object($button)) {
 
-        $href = (isset($button->href)) ? $button->href : '';
+        $action = (isset($button->action)) ? $button->action : '';
 
         if (isset($button->parameters) && $button->parameters && $data) {
             foreach ($button->parameters as $parameter) {
@@ -137,7 +137,7 @@ function awesovel_link($module, $entity, $button = null, $data = null)
         }
     }
 
-    $link = implode('/', [awesovel_config('app'), \Awesovel\Helpers\Parse::uncamelize($module), \Awesovel\Helpers\Parse::uncamelize($entity), $href]);
+    $link = implode('/', [awesovel_config('app'), \Awesovel\Helpers\Parse::uncamelize($module), \Awesovel\Helpers\Parse::uncamelize($entity), $action]);
 
     $link = implode('/', [$link, implode('|', $parameters)]);
 

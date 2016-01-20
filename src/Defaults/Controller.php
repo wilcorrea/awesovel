@@ -71,7 +71,7 @@ class Controller extends AwesovelAppController
             $index = 'index';
         }
 
-        $this->operation = Parse::operation($this->module, $this->entity, $index, $language);
+        $this->operation = Parse::form($this->module, $this->entity, $index, $language);
 
         $this->parameters = $parameters;
 

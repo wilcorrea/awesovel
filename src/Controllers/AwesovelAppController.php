@@ -149,12 +149,12 @@ class AwesovelAppController extends Controller
             'bottom' => []
         ];
 
-        foreach ($this->operation->operations as $operation) {
+        foreach ($this->operation->actions as $action) {
 
             foreach ($positions as $key => $available) {
 
-                if (is_array($operation->position) && in_array($key, $operation->position)) {
-                    $positions[$key][] = $operation;
+                if (is_array($action->position) && in_array($key, $action->position)) {
+                    $positions[$key][] = $action;
                 }
             }
         }

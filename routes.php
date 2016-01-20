@@ -10,7 +10,11 @@
   |
  */
 
-$namespace = \Awesovel\Providers\AwesovelServiceProvider::$NAMESPACE;
+use \Awesovel\Controllers\AwesovelGetController;
+use \Awesovel\Controllers\AwesovelPostController;
+use \Awesovel\Providers\AwesovelServiceProvider;
+
+$namespace = AwesovelServiceProvider::$NAMESPACE;
 
 // Authentication routes...
 Route::post('auth/login', $namespace .'\Http\Controllers\Auth\AuthController@postLogin');
@@ -34,16 +38,33 @@ Route::post('password/reset', $namespace .'\Http\Controllers\Auth\PasswordContro
 
 /*
   |--------------------------------------------------------------------------
-  | Middleware to parse url
+  | Middleware to parse GET requests
   |--------------------------------------------------------------------------
   |
   | That requests are parsed to control the assets
   | All requests need pass here
   |
  */
-Route::get('{slug?}', function ($slug = 'home') {
+
+Route::get('{path?}', function ($path = 'home') {
 
 
-    return \Awesovel\Controllers\AwesovelGetController::route($slug);
+    return AwesovelGetController::route($path);
 
-})->where('slug', '.+');
+})->where('path', '.+');
+
+/*
+  |--------------------------------------------------------------------------
+  | Middleware to parse POST requests
+  |--------------------------------------------------------------------------
+  |
+  | That requests are parsed to control the assets
+  | All requests need pass here
+  |
+ */
+Route::post('{path?}', function ($path = null) {
+
+
+    return AwesovelPostController::route($path);
+
+})->where('path', '.+');

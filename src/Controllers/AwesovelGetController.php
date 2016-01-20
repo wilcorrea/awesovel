@@ -11,10 +11,12 @@ namespace Awesovel\Controllers;
 
 use Awesovel\Controllers\AwesovelRequestController;
 use Awesovel\Defaults\Controller;
+use Awesovel\Helpers\File;
+use Awesovel\Helpers\Path;
 use Awesovel\Providers\AwesovelServiceProvider;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
-use Illuminate\Support\Facades\Redirect;
 
 class AwesovelGetController
 {
@@ -44,20 +46,7 @@ class AwesovelGetController
 
                 array_shift($route);
 
-                return AwesovelRequestController::stt($route);
-                break;
-            /*
-            |--------------------------------------------------------------------------
-            | Api Requests
-            |--------------------------------------------------------------------------
-            |
-            | That requests are parsed to control the assets
-            | All requests need pass here
-            |
-            */
-            case awesovel_config('api'):
-
-                //return AwesovelRequestController::stt($route);
+                return self::resources($route);
                 break;
             /*
             |--------------------------------------------------------------------------
@@ -71,8 +60,7 @@ class AwesovelGetController
 
                 $use_language = false;
 
-                if (count(config('awesovel')['languages']) > 1) {
-
+                if (count(awesovel_config('languages')) > 1) {
                     $use_language = true;
                 }
 
@@ -85,7 +73,7 @@ class AwesovelGetController
 
                 AwesovelServiceProvider::$LANGUAGE = $language;
 
-                return self::request($language, $route);
+                return self::standard($language, $route);
                 break;
         }
     }
@@ -96,7 +84,7 @@ class AwesovelGetController
      *
      * @return \Illuminate\Http\View
      */
-    public static function request($language, $route = null)
+    public static function standard($language, $route = null)
     {
 
         $service = isset($route[0]) ? $route[0] : '';
@@ -240,6 +228,61 @@ class AwesovelGetController
                 return view(awesovel_template('auth.reset'), ["page" => (object)['header' => true]])->with('token', $token);
                 break;
         }
+    }
+
+    /**
+     * Parse static requests
+     *
+     * @param $route
+     * @return Response
+     */
+    public static function resources($route)
+    {
+
+        $filename = "";
+
+        $root = isset($route[0]) ? $route[0] : null;
+
+        switch ($root) {
+            case 'assets':
+
+                array_shift($route);
+
+                $filename = Path::assets($route);
+                break;
+        }
+
+        if (File::exists($filename)) {
+
+            return self::render($filename);
+        }
+    }
+
+    /**
+     * Load file by extension
+     *
+     * @param $filename
+     * @return Response
+     */
+    public static function render($filename) {
+
+        $type = mime_content_type($filename);
+
+        $extension = File::extension($filename);
+        switch ($extension) {
+
+            case 'css':
+
+                $type = "text/css";
+                break;
+
+            case 'js':
+
+                $type = "application/javascript";
+                break;
+        }
+
+        return (new Response(File::get($filename), '200'))->header('Content-Type', $type);
     }
 
 }

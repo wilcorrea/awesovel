@@ -5,7 +5,7 @@
     "items": {
       "id": {
         "width": 50,
-        "parser": "jsFunction"
+        "parser": "void"
       }
     }
   },
@@ -13,11 +13,11 @@
     "id": {},
     "name": {}
   },
-  "operations": [
+  "actions": [
     {
       "id": "create",
-      "href": "create",
-      "type": "view",
+      "action": "create",
+      "type": "frontend",
       "position": [
         "top",
         "bottom"
@@ -28,8 +28,8 @@
     },
     {
       "id": "show",
-      "href": "show",
-      "type": "view",
+      "action": "show",
+      "type": "frontend",
       "position": [
         "middle"
       ],
@@ -42,8 +42,8 @@
     },
     {
       "id": "edit",
-      "href": "edit",
-      "type": "view",
+      "action": "edit",
+      "type": "frontend",
       "position": [
         "middle"
       ],
@@ -56,8 +56,8 @@
     },
     {
       "id": "remove",
-      "href": "remove",
-      "type": "view",
+      "action": "remove",
+      "type": "frontend",
       "position": [
         "middle"
       ],
@@ -67,6 +67,17 @@
       ],
       "className": "",
       "classIcon": "glyphicon glyphicon-trash"
+    }
+  ],
+  "events": [
+    {
+      "before": {
+        "module": "",
+        "entity": "",
+        "operation": "read",
+        "parameters": ""
+      },
+      "after":""
     }
   ]
 }
