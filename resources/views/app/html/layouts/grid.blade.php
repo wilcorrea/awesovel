@@ -4,10 +4,13 @@
 
     <div class="row card">
 
-        <h3>{{ $operation->label }}</h3>
 
-        @foreach($actions->top as $button)
-            @include('awesovel.app.html.partials.button')
+{{--{{ dd($operation) }}--}}
+
+        <h3>{{ isset($operation->label) ? $operation->label : '' }}</h3>
+
+        @foreach($actions->top as $action)
+            @include('awesovel.app.html.partials.action')
         @endforeach
 
         <br><br>
@@ -21,20 +24,22 @@
                         <tr>
                             <th>{{ "Opções" }}</th>
                             @foreach($operation->items as $item)
-                                <th>{{ $item->label }}</th>
+                                <th>{{ isset($item->label) ? $item->label : '' }}</th>
                             @endforeach
                         </tr>
                     </thead>
                     <tbody>
-                    @foreach($collection as $_colletion)
+                    @foreach($collection as $_collection)
                         <tr>
                             <td>
-                                @foreach($actions->middle as $button)
-                                    @include('awesovel.app.html.partials.button')
+                                @foreach($actions->middle as $action)
+                                    @include('awesovel.app.html.partials.action')
                                 @endforeach
                             </td>
+
                             @foreach($operation->items as $item)
-                                <td> {{ \Awesovel\Helpers\Parse::out($_colletion, $item->id)  }} </td>
+
+                                <td> {{ awesovel_out($_collection, $item->id)  }} </td>
                             @endforeach
                         </tr>
                     @endforeach
@@ -48,8 +53,8 @@
 
         <br style="clear: both" />
 
-        @foreach($actions->bottom as $button)
-            @include('awesovel.app.html.partials.button')
+        @foreach($actions->bottom as $action)
+            @include('awesovel.app.html.partials.action')
         @endforeach
     </div>
 

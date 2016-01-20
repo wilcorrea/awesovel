@@ -71,19 +71,19 @@ class Controller extends AwesovelAppController
             $index = 'index';
         }
 
-        $this->operation = Parse::operation($this->module, $this->entity, $index, $language);
+        $this->action = Parse::operation($this->module, $this->entity, $index, $language);
 
         $this->parameters = $parameters;
 
         $this->parameters['id'] = $id;
 
         $this->data = [
-            'operation' => $this->operation,
+            'operation' => $this->action,
             'language' => $language
         ];
         $this->errors = [];
 
-        return $this->$index($id);
+        return $this->view($index, $id);
     }
 
     /**

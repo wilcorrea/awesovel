@@ -17,9 +17,14 @@ class Parse
     public static function scaffold($module, $entity)
     {
 
-        $filename = Path::app([awesovel_config('root'), $module, 'Scaffold', $entity . '.gen']);
+        $filename = Path::app([awesovel_config('root_app'), $module, 'Scaffold', $entity, $entity . '.gen']);
 
-        $content = file_get_contents($filename);
+        $content = null;
+
+        if (File::exists($filename)) {
+
+            $content = File::get($filename);
+        }
 
         return Json::decode($content);
     }
@@ -28,31 +33,33 @@ class Parse
      * @param $module
      * @param $entity
      * @param $index
-     * @param null $language
+     *
      * @return type
      */
-    public static function operation($module, $entity, $index, $language = null)
+    public static function form($module, $entity, $index)
     {
-        if (is_null($language)) {
-            $language = AwesovelServiceProvider::$LANGUAGE;
+
+        $filename = Path::app([awesovel_config('root_app'), $module, 'Scaffold', $entity, 'Form', $index . '.frm']);
+
+        $content = null;
+
+        if (File::exists($filename)) {
+
+            $content = File::get($filename);
         }
 
-        $filename = Path::app([awesovel_config('root'), $module, 'Operation', $entity, $index . '.opr']);
-
-        $content = file_get_contents($filename);
-
-        $operation = Json::decode($content);
-
-        return self::language($operation, $module, $entity, $language);
+        return Json::decode($content);
     }
 
     /**
-     * @param $operation
      * @param $module
      * @param $entity
      * @param $spell
+     * @param string $index
+     *
+     * @return mixed
      */
-    private static function language($operation, $module, $entity, $spell)
+    private static function language($module, $entity, $spell, $index = 'default')
     {
         $__default = 'default';
 
@@ -60,86 +67,94 @@ class Parse
             $spell = AwesovelServiceProvider::$LANGUAGE;
         }
 
-        $filename = Path::app([awesovel_config('root'), $module, 'Language', $entity, $spell . '.lng']);
+        $filename = Path::app([awesovel_config('root_app'), $module, 'Scaffold', $entity, 'Language', $spell . '.lng']);
 
-        $content = file_get_contents($filename);
+        $language = null;
 
-        $translations = Json::decode($content);
+        if (File::exists($filename)) {
 
-        $id = $operation->id;
+            $content = File::get($filename);
 
-        $default = $translations->$__default;
+            $translations = Json::decode($content);
 
-        $language = $default;
+            if (isset($translations->$index)) {
 
-        if (isset($translations->$id)) {
-            $language = $translations->$id;
+                $language = $translations->$index;
+            } else if (isset($translations->forms->$index)) {
+
+                $language = $translations->forms->$index;
+            }
         }
 
-        /*
-         * recover spell to label
-         */
-        $operation->label = $language->label;
+        return $language;
+    }
 
-        /*
-         * recover spell to items
-         */
-        foreach ($operation->items as $key => $item) {
 
-            if (isset($language->items->$key)) {
+    /**
+     *
+     * @param $module
+     * @param $entity
+     * @param $index
+     * @param $spell
+     *
+     * @return array|object
+     */
+    public static function operation($module, $entity, $index, $spell)
+    {
+        $operation = null;
 
-                foreach ($language->items->$key as $__property => $__stub) {
+        $form = self::form($module, $entity, $index);
 
-                    $operation->items->$key->$__property = $language->items->$key->$__property;
-                }
-            } else if (isset($default->items->$key)) {
+        if ($form) {
 
-                foreach ($default->items->$key as $__property => $__stub) {
+            $scaffold = self::scaffold($module, $entity);
 
-                    $operation->items->$key->$__property = $default->items->$key;
+            foreach ($scaffold->items as $key => $value) {
+                if (!isset($form->items->$key)) {
+                    unset($scaffold->items->$key);
                 }
             }
 
-            $operation->items->$key->id = $key;
-        }
+            $form->items = self::merge($scaffold->items, $form->items);
 
-        /*
-         * recover spell to operations
-         */
-        foreach ($operation->operations as $key => $__operation) {
+            $language_default = self::language($module, $entity, $spell, 'default');
+            $language_form = self::language($module, $entity, $spell, $index);
 
-            $id = $__operation->id;
+            $language = self::merge($language_default, $language_form);
 
-            $properties = ['label' => $default->label, 'title' => ""];
-
-            foreach ($properties as $property => $__default) {
-
-                $__operation->$property = $__default;
-
-                if (isset($language->operations) && isset($language->operations->$id) && isset($language->operations->$id->$property)) {
-
-                    $__operation->$property = $language->operations->$id->$property;
-
-                } else if (isset($translations->$id) && isset($translations->$id->$property)) {
-
-                    $__operation->$property = $translations->$id->$property;
+            foreach ($language->items as $key => $value) {
+                if (!isset($form->items->$key)) {
+                    unset($language->items->$key);
                 }
             }
 
+            foreach ($language->actions as $key => $value) {
+                if (!isset($form->actions->$key)) {
+                    unset($language->actions->$key);
+                }
+            }
 
-            $operation->operations[$key] = $__operation;
+            //dd([$language->actions, $form->actions]);
+
+            $operation = self::merge($language, $form);
+
+            //dd([$operation, $form, $scaffold, $language]);
         }
 
         return $operation;
     }
 
+
     /**
+     *
      * @param $data
      * @param $id
+     *
+     * @return string
      */
     public static function out($data, $id)
     {
-        return $data->$id;
+        return isset($data->$id) ? $data->$id : '';
     }
 
     /**
@@ -171,6 +186,48 @@ class Parse
         $func = create_function('$c', 'return strtoupper($c[1]);');
 
         return preg_replace_callback('/\-([a-z])/', $func, $str);
+    }
+
+    /**
+     * @param \stdClass $object1
+     * @param \stdClass $object2
+     * @return array|object
+     */
+    private static function merge($object1, $object2, $override = true)
+    {
+        if ($override) {
+
+            $merged = array_replace_recursive(self::convert($object1), self::convert($object2));
+        } else {
+
+            $merged = array_intersect_key(self::convert($object1), self::convert($object2));
+        }
+
+        return self::convert($merged, false);
+    }
+
+    /**
+     * @param array|\stdClass $convert
+     * @param bool $isObject
+     *
+     * @return array|\stdClass
+     */
+    private static function convert($convert, $isObject = true)
+    {
+        if (is_array($convert)) {
+            foreach ($convert as $key => $value) {
+                $convert[$key] = self::convert($value, $isObject);
+            }
+            if (!$isObject && !isset($convert[0])) {
+                $convert = (object)$convert;
+            }
+        } else if (is_a($convert, 'stdClass')) {
+            if ($isObject) {
+                $convert = self::convert((array)$convert, $isObject);
+            }
+        }
+
+        return $convert;
     }
 
 }

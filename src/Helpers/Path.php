@@ -22,7 +22,7 @@ class Path
             $layer = 'Model';
         }
 
-        return AwesovelServiceProvider::$NAMESPACE . '\\Src\\' . $module . '\\' . $layer . '\\' . $entity;
+        return AwesovelServiceProvider::$NAMESPACE . '\\' . awesovel_config('root_app_namespace') . '\\' . $module . '\\' . $layer . '\\' . $entity;
     }
 
     /**

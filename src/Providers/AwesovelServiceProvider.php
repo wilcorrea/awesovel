@@ -2,12 +2,13 @@
 
 namespace Awesovel\Providers;
 
+use Illuminate\Console\AppNamespaceDetectorTrait;
 use Illuminate\Routing\Router;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 
 class AwesovelServiceProvider extends ServiceProvider
 {
-    use \Illuminate\Console\AppNamespaceDetectorTrait;
+    use AppNamespaceDetectorTrait;
 
     /**
      * This namespace is applied to the controller routes in your routes file.
@@ -39,9 +40,9 @@ class AwesovelServiceProvider extends ServiceProvider
     /**
      *
      */
-    private function init() {
-
-        self::$NAMESPACE = substr($this->getAppNamespace(), 0, -1);
+    private function init()
+    {
+        self::$NAMESPACE = '\\' . substr($this->getAppNamespace(), 0, -1);
 
         self::$LANGUAGE = config('awesovel')['language'];
     }
@@ -54,17 +55,11 @@ class AwesovelServiceProvider extends ServiceProvider
      */
     public function map(Router $router)
     {
-
         $this->init();
 
         $router->group(['namespace' => self::$NAMESPACE], function ($router) {
             require base_path('vendor/awesovel/routes.php');
         });
-    }
-
-    private function initNamespace()
-    {
-        self::$NAMESPACE = '\\' . substr($this->getAppNamespace(), 0, -1);
     }
 
 }

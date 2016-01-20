@@ -24,6 +24,9 @@
 
 <!-- JQuery -->
 <script src="{{ awesovel_asset('jquery/jquery.min.js') }}"></script>
+<script src="{{ awesovel_asset('jquery/plugins/jquery.mousewheel.min.js') }}"></script>
+<script src="{{ awesovel_asset('jquery/plugins/jquery.simplr.smoothscroll.js') }}"></script>
+<script src="{{ awesovel_asset('jquery/plugins/jquery.browser.js') }}"></script>
 
 <link href="{{ awesovel_asset('@/css/index.css') }}" rel="stylesheet">
 

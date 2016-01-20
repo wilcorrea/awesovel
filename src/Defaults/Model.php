@@ -169,6 +169,10 @@ class Model extends EloquentModel
             case 'one-to-many':
 
                 return $this->hasMany($related, $relationship->key, $relationship->local);
+                break;
+            case 'many-to-one':
+
+                return $this->belongsTo($related, $relationship->key, $relationship->local);
             default:
                 break;
         }
