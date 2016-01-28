@@ -87,7 +87,7 @@ class AwesovelPostController
 
                 if (!Auth::check()) {
 
-                    //return redirect()->guest('auth/login');
+                    return redirect()->guest('auth/login');
                 }
 
                 return var_dump(Input::all());
