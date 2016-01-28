@@ -1,0 +1,14 @@
+<div class="form-group">
+    
+    <label class="control-label" for="{{ options.id }}" title="{{ to.placeholder }}" ng-show="to.label">
+        {{ to.label }}</label>
+
+    <div>
+        <div class="checkbox">
+            <label ng-repeat="_option in to.items track by $index">
+                <input type="checkbox" ng-readonly="to.readonly" ng-disabled="to.disabled"
+                       ng-model="model[options.key][_option.index]" ng-change="vm.onchange(options, model, _option)"> <small>{{_option.label}}</small>
+            </label>
+        </div>
+    </div>
+</div>

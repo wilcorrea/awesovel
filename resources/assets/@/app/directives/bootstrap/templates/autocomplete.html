@@ -1,0 +1,28 @@
+<div class="form-group">
+
+    <label class="control-label" for="{{ options.id }}" title="{{ to.placeholder }}" ng-show="to.label">
+        {{ to.label }} {{ to.required ? '*' : '' }}</label>
+
+    <div class="form-control--container" ng-class="to._active ? 'form-control--container-is-active' : ''">
+        <md-autocomplete
+                ng-disabled="self.isDisabled"
+                md-no-cache="self.noCache"
+                md-selected-item="self.selectedItem"
+                md-search-text-change="self.searchTextChange(self.searchText)"
+                md-search-text="self.searchText"
+                md-selected-item-change="self.selectedItemChange(item)"
+                md-items="item in self.querySearch(self.searchText)"
+                md-item-text="item.display"
+                md-min-length="0"
+                placeholder="What is your favorite US state?">
+            <md-item-template>
+                <span md-highlight-text="self.searchText" md-highlight-flags="^i">{{ item.display }}</span>
+            </md-item-template>
+            <md-not-found>
+                <a ng-click="self.newState(self.searchText)" href="javascript:void(0);">Create a new one!</a>
+                No states matching "{{ self.searchText }}" were found
+            </md-not-found>
+        </md-autocomplete>
+
+    </div>
+</div>

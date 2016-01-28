@@ -1,14 +1,21 @@
 {
-  "brand": "Awesovel",
-  "name": "Awesovel Scaffold Engine",
+  "brand": "Sistema",
+  "name": "Sistema Concursos",
   "language": "pt-BR",
   "languages": ["pt-BR"],
   "total": 6,
-  "root": "Src",
-  "view": "awesovel.app.html",
+
   "template": "awesovel.templates.portal",
   "theme": "awesovel.templates.portal.themes.paper",
+  "view": "awesovel.app.html",
+
+  "root_app": "Src/App",
+  "root_app_namespace": "Src\\App",
+  "root_pages": "Src/Pages",
+  "root_pages_namespace": "Src\\Pages",
+
   "app": "app",
   "static": "static",
-  "api": "api"
+  "api": "api",
+  "breaker": "!"
 }

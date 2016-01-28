@@ -4,7 +4,10 @@
 
     <div class="row card">
 
-        <h3>{{ $operation->label }}</h3>
+
+{{--{{ dd($operation) }}--}}
+
+        <h3>{{ isset($operation->label) ? $operation->label : '' }}</h3>
 
         @foreach($actions->top as $action)
             @include('awesovel.app.html.partials.action')
@@ -20,31 +23,19 @@
                     <thead>
                         <tr>
                             <th>{{ "Opções" }}</th>
-                            @foreach($operation->items as $item)
-                                <th>{{ $item->label }}</th>
-                            @endforeach
                         </tr>
                     </thead>
                     <tbody>
-                    @foreach($collection as $_colletion)
                         <tr>
                             <td>
-                                @foreach($actions->middle as $action)
-                                    @include('awesovel.app.html.partials.action')
-                                @endforeach
+                                &nbsp;
                             </td>
-                            @foreach($operation->items as $item)
-                                <td> {{ \Awesovel\Helpers\Parse::out($_colletion, $item->id)  }} </td>
-                            @endforeach
                         </tr>
-                    @endforeach
                     </tbody>
                 </table>
 
             </div>
         </div>
-
-        {!! $collection->render() !!}
 
         <br style="clear: both" />
 

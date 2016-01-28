@@ -12,6 +12,7 @@ namespace Awesovel\Controllers;
 use Awesovel\Controllers\AwesovelRequestController;
 use Awesovel\Defaults\Controller;
 use Awesovel\Helpers\File;
+use Awesovel\Helpers\Parse;
 use Awesovel\Helpers\Path;
 use Awesovel\Providers\AwesovelServiceProvider;
 use Illuminate\Http\Response;
@@ -30,6 +31,12 @@ class AwesovelGetController
 
         $route = explode('/', $path);
 
+        foreach ($route as $i => $r) {
+            if (!$r || $r === '.' || $r === '..') {
+                unset($route[$i]);
+            }
+        }
+
         $root = $route[0];
 
         switch ($root) {
@@ -44,9 +51,28 @@ class AwesovelGetController
             */
             case awesovel_config('static'):
 
+                AwesovelServiceProvider::$ENVIRONMENT = 'static';
+
                 array_shift($route);
 
                 return self::resources($route);
+                break;
+            /*
+            |--------------------------------------------------------------------------
+            | Static Requests
+            |--------------------------------------------------------------------------
+            |
+            | That requests are parsed to control the assets
+            | All requests need pass here
+            |
+            */
+            case 'ng':
+
+                AwesovelServiceProvider::$ENVIRONMENT = 'static';
+
+                array_shift($route);
+
+                return self::angular($route);
                 break;
             /*
             |--------------------------------------------------------------------------
@@ -79,6 +105,40 @@ class AwesovelGetController
     }
 
     /**
+     *
+     * Sets up the components to Angular API
+     *
+     * @param $route
+     *
+     * @return string
+     */
+    public static function angular($route) {
+
+        $angular = '';
+
+        $service = $route[0];
+        switch ($service) {
+
+            case 'controller':
+
+                if (count($route) >= 4) {
+
+                    $module = $route[1];
+                    $entity = $route[2];
+                    $form = $route[3];
+                    $template = $route[4];
+
+                    $angular = File::get(Path::base(['resources', 'assets', 'awesovel', 'angular', 'templates', $template]));
+
+                    $angular = str_replace('{{entity}}', $entity, $angular);
+                }
+                break;
+        }
+
+        return $angular;
+    }
+
+    /**
      * @param $language
      * @param $route
      *
@@ -88,6 +148,19 @@ class AwesovelGetController
     {
 
         $service = isset($route[0]) ? $route[0] : '';
+
+        $s = '\\';
+        $namespace = implode($s, [AwesovelServiceProvider::$NAMESPACE, 'Src', 'Pages']);
+
+        $input = Input::all();
+
+        $class = implode($s,
+            [
+                $namespace,
+                implode($s, ['Home']) . 'Controller'
+            ]);
+
+        $homeController = new $class();
 
         switch ($service) {
             /*
@@ -100,9 +173,13 @@ class AwesovelGetController
             */
             case 'auth':
 
+                AwesovelServiceProvider::$ENVIRONMENT = 'auth';
+
                 array_shift($route);
 
-                return self::auth($route);
+                $page = ["page" => $homeController->page($route, $language, $input)];
+
+                return self::auth($route, $page);
 
                 break;
             /*
@@ -118,9 +195,13 @@ class AwesovelGetController
             */
             case 'password':
 
+                AwesovelServiceProvider::$ENVIRONMENT = 'password';
+
                 array_shift($route);
 
-                return self::password($route);
+                $page = ["page" => $homeController->page($route, $language, $input)];
+
+                return self::password($route, $page);
 
                 break;
             /*
@@ -136,9 +217,11 @@ class AwesovelGetController
             */
             case awesovel_config('app'):
 
+                AwesovelServiceProvider::$ENVIRONMENT = 'app';
+
                 if (!Auth::check()) {
 
-                    return redirect()->guest('auth/login');
+                    //return redirect()->guest('auth/login');
                 }
 
                 if (isset($route[1]) && isset($route[2])) {
@@ -148,10 +231,16 @@ class AwesovelGetController
                     $operation = isset($route[3]) ? $route[3] : null;
                     $id = isset($route[4]) ? $route[4] : null;
 
-                    return (new Controller($module, $entity))->resolve($operation, $id, $language, (Input::all()));
+                    $controller = new Controller($module, $entity);
+
+                    return $controller->resolve($operation, $id, $language, $input);
                 } else {
 
-                    return view(awesovel_app('index'), ["page" => (object)['header' => false]]);
+                    $page = ["page" => $homeController->page($route, $language, $input)];
+
+                    $page['page']->header = false;
+
+                    return view(awesovel_app('index'), $page);
                 }
                 break;
             /*
@@ -164,7 +253,51 @@ class AwesovelGetController
             */
             default:
 
-                return view(awesovel_template('index'), ["page" => (object)['header' => true]]);
+                AwesovelServiceProvider::$ENVIRONMENT = 'pages';
+
+                $page_route = [];
+                $parameters = [];
+
+                $broken = false;
+
+                foreach ($route as $r) {
+
+                    if (!$broken && $r === awesovel_config('breaker')) {
+                        $broken = true;
+                    }
+
+                    if (!$broken) {
+
+                        $page_route[] = $r;
+                    } else if ($r !== awesovel_config('breaker')) {
+
+                        $parameters[] = $r;
+                    }
+                }
+
+                $page_path = [];
+                foreach ($page_route as $p) {
+
+                    $page_path[] = Parse::camelize($p, true);
+                }
+
+
+                $class = implode($s,
+                    [
+                        $namespace,
+                        implode($s, $page_path) . 'Controller'
+                    ]);
+
+                $page_data = ["page" => (object)["header" => true]];
+
+                if (class_exists($class)) {
+
+                    $controller = new $class();
+
+                    $page_data = ["page" => $controller->page($route, $language, $input, $parameters)];
+                }
+
+                return view(awesovel_page($page_route), $page_data);
                 break;
         }
 
@@ -173,10 +306,11 @@ class AwesovelGetController
     /**
      *
      * @param $route
+     * @param $page
      *
      * @return \Illuminate\View\View
      */
-    public static function auth($route)
+    public static function auth($route, $page)
     {
 
         $service = isset($route[0]) ? $route[0] : '';
@@ -185,12 +319,12 @@ class AwesovelGetController
 
             case 'register':
 
-                return view(awesovel_template('auth.register'), ["page" => (object)['header' => true]]);
+                return view(awesovel_template('auth.register'), $page);
                 break;
 
             case 'login':
 
-                return view(awesovel_template('auth.login'), ["page" => (object)['header' => true]]);
+                return view(awesovel_template('auth.login'), $page);
                 break;
 
             case 'logout':
@@ -206,10 +340,11 @@ class AwesovelGetController
     /**
      *
      * @param $route
+     * @param $page
      *
      * @return \Illuminate\View\View
      */
-    public static function password($route)
+    public static function password($route, $page)
     {
 
         $service = isset($route[0]) ? $route[0] : '';
@@ -218,14 +353,14 @@ class AwesovelGetController
 
             case 'email':
 
-                return view(awesovel_template('auth.password'), ["page" => (object)['header' => true]]);
+                return view(awesovel_template('auth.password'), $page);
                 break;
 
             case 'reset':
 
                 $token = isset($route[1]) ? $route[1] : null;
 
-                return view(awesovel_template('auth.reset'), ["page" => (object)['header' => true]])->with('token', $token);
+                return view(awesovel_template('auth.reset'), $page)->with('token', $token);
                 break;
         }
     }
@@ -264,7 +399,8 @@ class AwesovelGetController
      * @param $filename
      * @return Response
      */
-    public static function render($filename) {
+    public static function render($filename)
+    {
 
         $type = mime_content_type($filename);
 

@@ -45,6 +45,20 @@ function awesovel_asset($path)
 }
 
 /**
+ * Generate path to assets route
+ *
+ * @param $collection
+ * @param $id
+ *
+ * @return string
+ */
+function awesovel_out($collection, $id)
+{
+
+    return \Awesovel\Helpers\Parse::out($collection, $id);
+}
+
+/**
  * Create the paths to app layouts
  *
  * @param string $index
@@ -79,6 +93,25 @@ function awesovel_template($index = 'index')
 {
 
     return awesovel_layouts(awesovel_config('template'), $index);
+}
+
+/**
+ * Create the paths to cms layouts
+ *
+ * @param array $route
+ * @return string
+ */
+function awesovel_page($route)
+{
+    $template = awesovel_config('template');
+
+    $page = implode('.', [$template, 'pages', implode('.', $route)]);
+
+    if (!View::exists($page)) {
+        $page = awesovel_layouts($template, '404');
+    }
+
+    return $page;
 }
 
 /**
@@ -142,4 +175,13 @@ function awesovel_link($module, $entity, $button = null, $data = null)
     $link = implode('/', [$link, implode('|', $parameters)]);
 
     return awesovel_route($link);
+}
+
+/**
+ *
+ * @return mixed
+ */
+function awesovel_environment()
+{
+    return \Awesovel\Providers\AwesovelServiceProvider::$ENVIRONMENT;
 }

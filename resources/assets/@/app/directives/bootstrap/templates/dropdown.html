@@ -1,0 +1,29 @@
+<div class="form-group">
+
+    <label class="control-label" for="{{ options.id }}" title="{{ to.placeholder }}" ng-show="to.label">
+        {{ to.label }} {{ to.required ? '*' : '' }}</label>
+
+    <input type="hidden" ng-model="model[options.key]"/>
+
+    <div class="form-dropdown--wraper">
+
+        <div class="form-control--container" ng-class="to._active ? 'form-control--container-is-active' : ''">
+            <input type="text" class="form-control" id="{{ options.id }}" ng-readonly="true" ng-disabled="to.disabled"
+                   ng-model="to.dropdown" ng-change="vm.onchange(options, model)"
+                   onfocus="angular.element(this).scope().vm.onfocus(angular.element(this))"
+                   onblur="angular.element(this).scope().vm.onblur(angular.element(this))">
+            <span class="form-control--bar"></span>
+        </div>
+
+        <button id="{{ options.id }}_button" class="mdl-button mdl-js-button mdl-button--icon">
+            <!--<i class="material-icons">more_vert</i>-->
+            <i class="material-icons">arrow_drop_down</i>
+        </button>
+        <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="{{ options.id }}_button">
+            <li ng-repeat="_option in to.items" class="mdl-menu__item"
+                ng-click="vm.dropdown(_option, model, options.key, to)">{{ _option.label }}
+            </li>
+        </ul>
+    </div>
+
+</div>

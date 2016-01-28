@@ -1,0 +1,106 @@
+{
+  "language": "pt-BR",
+  "default": {
+    "label": "Categoria",
+    "items": {
+      "id": {
+        "label": "Código",
+        "title": "",
+        "options": [
+        ]
+      },
+      "name": {
+        "label": "Nome"
+      },
+      "active": {
+        "label": "Ativo"
+      }
+    },
+    "actions": {
+      "add": {
+        "label": "Nova",
+        "title": ""
+      },
+      "index": {
+        "label": "Voltar",
+        "title": ""
+      }
+    }
+  },
+  "forms": {
+    "index": {
+      "label": "Listagem",
+      "title": "",
+      "items": {
+        "id": {
+          "label": "Código",
+          "title": "",
+          "options": [
+          ]
+        },
+        "name": {
+          "label": "Nome"
+        }
+      },
+      "actions": {
+        "add": {
+          "label": "Nova Categoria",
+          "title": "Nova Categoria"
+        },
+        "show": {
+          "label": "",
+          "title": "Visualizar Categoria"
+        },
+        "edit": {
+          "label": "",
+          "title": "Editar Categoria"
+        },
+        "remove": {
+          "label": "",
+          "title": "Remover Categoria"
+        }
+      }
+    },
+    "add": {
+      "label": "Nova Categoria",
+      "actions": {
+        "create": {
+          "label": "Salvar",
+          "title": ""
+        },
+        "index": {
+          "label": "Voltar",
+          "title": ""
+        }
+      }
+    },
+    "edit": {
+      "label": "Editar",
+      "actions": {
+        "index": {
+          "label": "Voltar",
+          "title": ""
+        }
+      }
+    },
+    "show": {
+      "label": "Visualizar",
+      "actions": {
+        "index": {
+          "label": "Voltar",
+          "title": ""
+        }
+      }
+    },
+    "remove": {
+      "label": "Remover",
+      "actions": {
+        "index": {
+          "label": "Voltar",
+          "title": ""
+        }
+      }
+    }
+  }
+
+}

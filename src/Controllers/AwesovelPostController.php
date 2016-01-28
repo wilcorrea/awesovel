@@ -77,7 +77,7 @@ class AwesovelPostController
             | App Requests
             |--------------------------------------------------------------------------
             |
-            | index, create, show, edit
+            | create, read, update, delete
             |
             | {language}/app/{module}/{entity}/{operation?}/{id?}
             | All requests need pass here

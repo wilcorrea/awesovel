@@ -1,0 +1,55 @@
+{
+  "table": "products",
+  "primaryKey": "id",
+  "alias": [
+  ],
+  "items": [
+    {
+      "id": "id",
+      "type": "int",
+      "behavior": "pk",
+      "dao": {
+        "create": false,
+        "read": true,
+        "update": true,
+        "delete": true
+      }
+    },
+    {
+      "id": "name",
+      "type": "string",
+      "behavior": "upper",
+      "required": true,
+      "dao": {
+        "create": true,
+        "read": true,
+        "update": true,
+        "delete": false
+      }
+    },
+    {
+      "id": "category_id",
+      "type": "int",
+      "behavior": "relationship",
+      "dao": {
+        "create": false,
+        "read": true,
+        "update": true,
+        "delete": false
+      }
+    }
+  ],
+  "relationships": [
+    {
+      "id": "category_id",
+      "method": "category",
+      "meta": {
+        "type": "many-to-one",
+        "module": "Main",
+        "entity": "Category",
+        "key": "id",
+        "local": "category_id"
+      }
+    }
+  ]
+}

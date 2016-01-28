@@ -4,13 +4,18 @@
 
 <ul class="nav nav-stacked">
     <li>
-        <a href="{{ awesovel_link('Register', 'Category', 'index') }}">
+        <a href="{{ awesovel_link('Main', 'Category', 'index') }}">
             <i class="glyphicon glyphicon-flash"></i> Categorias
         </a>
     </li>
     <li>
-        <a href="{{ awesovel_link('Site', 'Pagina', 'index') }}">
-            <i class="glyphicon glyphicon-link"></i> Páginas
+        <a href="{{ awesovel_link('Register', 'Concourse', 'index') }}">
+            <i class="glyphicon glyphicon-link"></i> Concursos
+        </a>
+    </li>
+    <li>
+        <a href="{{ awesovel_link('Register', 'ConcourseStatus', 'index') }}">
+            <i class="glyphicon glyphicon-link"></i> Status
         </a>
     </li>
     <li>
