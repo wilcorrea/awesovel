@@ -1,5 +1,5 @@
 
-<nav class="navbar navbar-default navbar-fixed-top">
+<nav class="navbar navbar-default navbar-static-top">
 
     <div class="container">
 
@@ -12,7 +12,7 @@
                 <i class="material-icons collapse-button">menu</i>
             </button>
 
-            <a class="navbar-brand font-roboto" href="{{ awesovel_route('home') }}"> {{ awesovel_config('brand') }} </a>
+            {{--<a class="navbar-brand font-roboto" href="{{ awesovel_route('home') }}"> {{ awesovel_config('brand') }} </a>--}}
         </div>
 
         <div class="collapse navbar-collapse navbar-collapse-top" id="navbar">

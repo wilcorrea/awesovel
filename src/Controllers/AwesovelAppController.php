@@ -49,7 +49,7 @@ class AwesovelAppController extends Controller
     /**
      * @var StdClass
      */
-    protected $operation;
+    protected $action;
 
     /**
      * @var array
@@ -71,77 +71,12 @@ class AwesovelAppController extends Controller
         $this->model = new $path();
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-
-        $total = isset($this->parameters['total']) ? $this->parameters['total'] : awesovel_config('total');
-
-        $this->data['collection'] = $this->api('HEAD', 'paginate', $total);
-
-
-        return $this->view($this->operation->layout, ['items' => $this->model->getItems()]);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        $this->data['collection'] = (object)[];
-
-        return $this->view($this->operation->layout);
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        $this->data['collection'] = $this->api('HEAD', 'find', $id);
-
-        return $this->view($this->operation->layout);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        $this->data['collection'] = $this->api('HEAD', 'find', $id);
-
-        return $this->view($this->operation->layout);
-    }
-
-    /**
-     * Show the form for remove the specified resource.
-     *
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function remove($id)
-    {
-        $this->data['collection'] = $this->api('HEAD', 'find', $id);
-
-        return $this->view($this->operation->layout);
-    }
 
     /**
      * @return object
      */
-    private function actions() {
+    private function actions()
+    {
 
         $positions = [
             'top' => [],
@@ -149,33 +84,92 @@ class AwesovelAppController extends Controller
             'bottom' => []
         ];
 
-        foreach ($this->operation->actions as $action) {
+        //dd($this->operation->actions);
+
+        foreach ($this->action->actions as $action) {
 
             foreach ($positions as $key => $available) {
 
-                if (is_array($action->position) && in_array($key, $action->position)) {
-                    $positions[$key][] = $action;
+                //dd($action);
+
+                if (isset($action->position) && isset($action->position->$key)) {
+                    $positions[$key][$action->position->$key] = $action;
                 }
+
+                ksort($positions[$key]);
             }
         }
 
-        return (object) $positions;
+        ksort($positions);
+        //dd($positions);
+
+        return (object)$positions;
     }
 
     /**
-     * @param $layout
-     * @param $parameters
+     *
+     * @param $index
+     * @param $id
+     *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    private function view($layout, $parameters = null) {
+    protected function view($index, $id = null)
+    {
 
-        $this->data['_colletion'] = null;
-        $this->data['actions'] = $this->actions();
+        $layout = 'none';
+        $parameters = null;
+        $view = awesovel_app('layouts.error');
 
-        $this->data['module'] = $this->module;
-        $this->data['entity'] = $this->entity;
+        if ($this->action) {
 
-        return view(awesovel_app('layouts.' . $layout), $this->data, $this->errors, $parameters);
+            $this->data['collection'] = (object)[];
+
+            $layout = $this->action->layout;
+
+            switch ($index) {
+                case 'index':
+
+                    $total = isset($this->parameters['total']) ? $this->parameters['total'] : awesovel_config('total');
+                    $this->data['collection'] = $this->api('HEAD', 'paginate', $total);
+
+                    $layout = $this->action->layout;
+                    $parameters = ['items' => $this->model->getItems()];
+                    break;
+                case 'add':
+
+                    break;
+                case 'show':
+
+                    $this->data['collection'] = $this->api('HEAD', 'find', $id);
+
+                    $layout = $this->action->layout;
+                    break;
+                case 'edit':
+
+                    $this->data['collection'] = $this->api('HEAD', 'find', $id);
+
+                    $layout = $this->action->layout;
+                    break;
+                case 'remove':
+
+                    $this->data['collection'] = $this->api('HEAD', 'find', $id);
+
+                    $layout = $this->action->layout;
+                    break;
+            }
+
+            $this->data['_colletion'] = null;
+            $this->data['actions'] = $this->actions();
+
+            $this->data['module'] = $this->module;
+            $this->data['entity'] = $this->entity;
+
+            if (view()->exists($view)) {
+                $view = awesovel_app('layouts.' . $layout);
+            }
+        }
+
+        return view($view, $this->data, $this->errors, $parameters);
     }
 
 }

@@ -6,11 +6,11 @@
 
     <body>
 
-        @include('awesovel.templates.portal.includes.nav')
-
         @if(isset($page) && $page->header)
             @include('awesovel.templates.portal.includes.header')
         @endif
+
+        @include('awesovel.templates.portal.includes.nav')
 
         @yield('content')
 

@@ -1,34 +1,34 @@
 {
-  "id":"create",
+  "id": "create",
   "layout": "form",
   "items": {
-    "id": {},
-    "description": {}
+    "name": {
+    }
   },
-  "actions": [
-    {
+  "actions": {
+    "create": {
       "id": "create",
       "type": "backend",
       "action": "create",
-      "position": [
-        "top",
-        "bottom"
-      ],
+      "position": {
+        "top": 0,
+        "bottom": 0
+      },
       "parameters": [],
       "className": "btn-primary",
       "classIcon": ""
     },
-    {
+    "index": {
       "id": "index",
       "type": "frontend",
       "action": "index",
-      "position": [
-        "top",
-        "bottom"
-      ],
+      "position": {
+        "top": 1,
+        "bottom": 1
+      },
       "parameters": [],
       "className": "",
       "classIcon": ""
     }
-  ]
+  }
 }

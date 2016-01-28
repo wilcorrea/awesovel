@@ -2,12 +2,13 @@
 
 namespace Awesovel\Providers;
 
+use Illuminate\Console\AppNamespaceDetectorTrait;
 use Illuminate\Routing\Router;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 
 class AwesovelServiceProvider extends ServiceProvider
 {
-    use \Illuminate\Console\AppNamespaceDetectorTrait;
+    use AppNamespaceDetectorTrait;
 
     /**
      * This namespace is applied to the controller routes in your routes file.

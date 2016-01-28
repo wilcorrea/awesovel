@@ -14,7 +14,14 @@
 
             <hr>
             <div>
-                {{ var_dump($operation->items) }}
+
+                @if(isset($operation->items))
+                    @foreach($operation->items as $item)
+                        @if(isset($item->component) && View::exists('awesovel.app.html.components.' . $item->component))
+                            @include('awesovel.app.html.components.' . $item->component)
+                        @endif
+                    @endforeach
+                @endif
             </div>
             <hr>
 

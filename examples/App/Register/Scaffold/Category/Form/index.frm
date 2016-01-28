@@ -13,26 +13,26 @@
     "id": {},
     "name": {}
   },
-  "actions": [
-    {
-      "id": "create",
-      "action": "create",
+  "actions": {
+    "add": {
+      "id": "add",
+      "action": "add",
       "type": "frontend",
-      "position": [
-        "top",
-        "bottom"
-      ],
+      "position": {
+        "top": 0,
+        "bottom": 0
+      },
       "parameters": [],
       "className": "",
       "classIcon": "glyphicon glyphicon-plus"
     },
-    {
+    "show": {
       "id": "show",
       "action": "show",
       "type": "frontend",
-      "position": [
-        "middle"
-      ],
+      "position": {
+        "middle": 0
+      },
       "conditions": [],
       "parameters": [
         "id"
@@ -40,13 +40,13 @@
       "className": "",
       "classIcon": "glyphicon glyphicon-search"
     },
-    {
+    "edit": {
       "id": "edit",
       "action": "edit",
       "type": "frontend",
-      "position": [
-        "middle"
-      ],
+      "position": {
+        "middle": 1
+      },
       "conditions": [],
       "parameters": [
         "id"
@@ -54,13 +54,13 @@
       "className": "",
       "classIcon": "glyphicon glyphicon-edit"
     },
-    {
+    "remove": {
       "id": "remove",
       "action": "remove",
       "type": "frontend",
-      "position": [
-        "middle"
-      ],
+      "position": {
+        "middle": 2
+      },
       "conditions": [],
       "parameters": [
         "id"
@@ -68,7 +68,7 @@
       "className": "",
       "classIcon": "glyphicon glyphicon-trash"
     }
-  ],
+  },
   "events": [
     {
       "before": {
@@ -77,7 +77,7 @@
         "operation": "read",
         "parameters": ""
       },
-      "after":""
+      "after": ""
     }
   ]
 }
