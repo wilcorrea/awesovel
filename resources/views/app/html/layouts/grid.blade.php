@@ -1,62 +1,86 @@
 @extends('awesovel.app.html.index')
 
+@section('head')
+
+    @include('awesovel.app.html.head')
+
+@endsection
+
 @section('layout')
 
     <div class="row card">
 
+        <form ng-controller="FormController">
 
-{{--{{ dd($operation) }}--}}
+            <h5>@{{ vm.language.label }}</h5>
 
-        <h3>{{ isset($operation->label) ? $operation->label : '' }}</h3>
+            <div class="formly-fieldset">
 
-        @foreach($actions->top as $action)
-            @include('awesovel.app.html.partials.action')
-        @endforeach
+                <div class="formly-toolbar">
+                    <span ng-repeat="_action in vm.form.actions.top">
+                        <button class="btn btn-raised btn-default" title="@{{ _action.title }}" type="button"
+                                ng-class="_action.className"
+                                ng-click="vm.resolve(_action)">
+                            <span class="@{{ _action.classIcon }}" ng-show="_action.classIcon"></span>
+                            @{{ _action.label }}
+                        </button>
+                    </span>
+                </div>
 
-        <br><br>
+                <div class="grid-container-responsive--wrapper">
 
-        <div style="width: 100%; overflow-x: auto; overflow-y: auto">
+                    <div class="grid-container-responsive">
 
-            <div style="min-width: 500px;">
+                        <div class="grid-container">
 
-                <table class="table table-striped table-bordered">
-                    <thead>
-                        <tr>
-                            <th>{{ "Opções" }}</th>
-                            @foreach($operation->items as $item)
-                                <th>{{ isset($item->label) ? $item->label : '' }}</th>
-                            @endforeach
-                        </tr>
-                    </thead>
-                    <tbody>
-                    @foreach($collection as $_collection)
-                        <tr>
-                            <td>
-                                @foreach($actions->middle as $action)
-                                    @include('awesovel.app.html.partials.action')
-                                @endforeach
-                            </td>
+                            <div class="grid-head col-sm-12">
+                                <div class="col-sm-2 grid-head-toolbar">
+                                    {{ "Opções" }}
+                                </div>
+                                <div ng-repeat="_field in vm.fields" class="grid-head-column"
+                                     ng-class="_field.className">
+                                    @{{ _field.templateOptions.label }}
+                                </div>
+                            </div>
 
-                            @foreach($operation->items as $item)
+                            <div class="grid-body col-sm-12">
+                                <div class="col-sm-2 grid-body-toolbar">
+                                    <span ng-repeat="_action in vm.form.actions.middle">
+                                        <button class="btn btn-raised btn-default" title="@{{ _action.title }}" type="button"
+                                                ng-class="_action.className"
+                                                ng-click="vm.resolve(_action)">
+                                            <span class="@{{ _action.classIcon }}" ng-show="_action.classIcon"></span>
+                                            @{{ _action.label }}
+                                        </button>
+                                    </span>
+                                </div>
+                                <div ng-repeat="_field in vm.fields" class="grid-body-column"
+                                     ng-class="_field.className">
+                                    -//-
+                                </div>
+                            </div>
+                            <br class="grid-bottom"/>
 
-                                <td> {{ awesovel_out($_collection, $item->id)  }} </td>
-                            @endforeach
-                        </tr>
-                    @endforeach
-                    </tbody>
-                </table>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="formly-toolbar">
+                    <span ng-repeat="_action in vm.form.actions.bottom">
+                        <button class="btn btn-raised btn-default" title="@{{ _action.title }}" type="button"
+                                ng-class="_action.className"
+                                ng-click="vm.resolve(_action)">
+                            <span class="@{{ _action.classIcon }}" ng-show="_action.classIcon"></span>
+                            @{{ _action.label }}
+                        </button>
+                    </span>
+                </div>
 
             </div>
-        </div>
 
-        {!! $collection->render() !!}
+        </form>
 
-        <br style="clear: both" />
-
-        @foreach($actions->bottom as $action)
-            @include('awesovel.app.html.partials.action')
-        @endforeach
     </div>
-
 
 @endsection

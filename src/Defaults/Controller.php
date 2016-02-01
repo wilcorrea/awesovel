@@ -2,12 +2,56 @@
 
 namespace Awesovel\Defaults;
 
+use Validator;
 use Awesovel\Helpers\Json;
-use Awesovel\Controllers\AwesovelAppController;
 use Awesovel\Helpers\Parse;
+use Illuminate\Foundation\Bus\DispatchesJobs;
+use Illuminate\Routing\Controller AS IlluminateController;
+use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
-class Controller extends AwesovelAppController
+use Awesovel\Helpers\Path;
+
+class Controller extends IlluminateController
 {
+
+    use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+
+    /**
+     * @var
+     */
+    protected $data;
+
+    /**
+     * @var
+     */
+    protected $errors;
+
+    /**
+     * @var
+     */
+    protected $module;
+
+    /**
+     * @var
+     */
+    protected $entity;
+
+    /**
+     * @var array
+     */
+    protected $parameters;
+
+    /**
+     * Controller constructor.
+     * @param $module
+     * @param $entity
+     */
+    public function __construct($module, $entity)
+    {
+        $this->module = Parse::camelize($module, true);
+        $this->entity = Parse::camelize($entity, true);
+    }
 
     /**
      *
@@ -15,44 +59,62 @@ class Controller extends AwesovelAppController
      *
      * @param $version
      * @param $operation
-     * @param null $id
+     * @param null $data
      * @param null $relationships
-     * @param null $json
+     *
      * @return mixed
      */
-    public function api($version, $operation, $id = null, $relationships = null, $json = null)
+    public function api($version, $operation, $data = null, $relationships = null)
+    {
+        return ($this->create($data));
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @return Response
+     */
+    public function create($data)
     {
 
-        if (is_null($id)) {
+        $path = Path::name($this->module, $this->entity);
 
-            $collection = $this->model->$operation();
-        } else {
+        $status = 'E';
+        $result = false;
 
-            $collection = $this->model->$operation($id);
+        if (class_exists($path)) {
+
+            $model = new $path();
+
+            $validator = Validator::make($data, [
+                'name' => 'required',
+            ]);
+
+            if (!$validator->fails()) {
+
+
+                $items = $model->getItems();
+
+                foreach ($items as $item) {
+
+                    $id = $item->id;
+
+                    if (isset($data[$id])) {
+                        $model->$id = $data[$id];
+                    }
+                }
+
+                $status = $model->save() ? 'S' : 'F';
+
+                $result = $model->id;
+
+            } else {
+
+                $result = $validator->errors()->all();
+            }
         }
 
-        if ($relationships) {
-
-            if (is_array($collection)) {
-                $collection = $collection[0];
-            }
-
-            $relationships = explode(',', $relationships);
-            foreach ($relationships as $relationship) {
-                $collection->$relationship = $collection->$relationship;
-            }
-        }
-
-        if ($version === 'debug') {
-
-            dd(Json::decode(Json::encode($collection)));
-        } else {
-
-            if ($json) {
-                $collection = Json::decode(Json::encode($collection));
-            }
-            return $collection;
-        }
+        return Json::encode(array('status' => $status, 'result' => $result));
     }
 
     /**
@@ -71,52 +133,36 @@ class Controller extends AwesovelAppController
             $index = 'index';
         }
 
-        $this->action = Parse::operation($this->module, $this->entity, $index, $language);
-
-        $this->parameters = $parameters;
-
-        $this->parameters['id'] = $id;
-
-        $this->data = [
-            'operation' => $this->action,
-            'language' => $language
-        ];
         $this->errors = [];
 
-        return $this->view($index, $id);
+        $view = awesovel_app('layouts.error');
+        $actions = [];
+
+        $_form = Parse::form($this->module, $this->entity, $index);
+
+        $form = '';
+
+        if ($_form) {
+
+            //$actions = $this->actions($form);
+            $form = $_form->id;
+
+            $layout = $_form->layout;
+
+            if (view()->exists($view)) {
+                $view = awesovel_app('layouts.' . $layout);
+            }
+        }
+
+        $this->data = [
+            'module' => $this->module,
+            'entity' => $this->entity,
+            'form' => $form,
+            'language' => $language,
+            'parameters' => $parameters
+        ];
+
+        return view($view, $this->data, $this->errors, $parameters);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
 }

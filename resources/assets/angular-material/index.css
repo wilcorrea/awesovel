@@ -1,0 +1,36 @@
+html {
+    height: 100% !important;
+}
+
+body, html {
+    background-color: rgb(240, 240, 240);
+    min-height: 0;
+}
+
+body {
+    height: initial !important;
+    width: 100% !important;
+    position: initial !important;
+    line-height: initial;
+    top: 0 !important;
+
+    box-sizing: border-box;
+    color: rgb(102, 102, 102);
+    display: block;
+    font-family: Roboto, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: 13px;
+    letter-spacing: 0.1px;
+    margin-bottom: 60px;
+    margin-left: 0px;
+    margin-right: 0px;
+    margin-top: 0px;
+    -webkit-font-smoothing: antialiased;
+}
+
+.md-button {
+    text-transform: none;
+}
+
+md-datepicker.md-default-theme, md-datepicker {
+    background: transparent;
+}

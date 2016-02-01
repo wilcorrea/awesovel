@@ -8,10 +8,9 @@
 
 namespace Awesovel\Controllers;
 
-
-use Awesovel\Controllers\AwesovelRequestController;
 use Awesovel\Defaults\Controller;
 use Awesovel\Helpers\File;
+use Awesovel\Helpers\Json;
 use Awesovel\Helpers\Parse;
 use Awesovel\Helpers\Path;
 use Awesovel\Providers\AwesovelServiceProvider;
@@ -51,9 +50,28 @@ class AwesovelGetController
             */
             case awesovel_config('static'):
 
+                AwesovelServiceProvider::$ENVIRONMENT = 'static';
+
                 array_shift($route);
 
                 return self::resources($route);
+                break;
+            /*
+            |--------------------------------------------------------------------------
+            | Static Requests
+            |--------------------------------------------------------------------------
+            |
+            | That requests are parsed to control the assets
+            | All requests need pass here
+            |
+            */
+            case 'ng':
+
+                AwesovelServiceProvider::$ENVIRONMENT = 'static';
+
+                array_shift($route);
+
+                return self::angular($route);
                 break;
             /*
             |--------------------------------------------------------------------------
@@ -83,6 +101,47 @@ class AwesovelGetController
                 return self::standard($language, $route);
                 break;
         }
+    }
+
+    /**
+     *
+     * Sets up the components to Angular API
+     *
+     * @param $route
+     *
+     * @return string
+     */
+    public static function angular($route) {
+
+        $angular = '';
+
+        $service = $route[0];
+        switch ($service) {
+
+            case 'controller':
+
+                if (count($route) >= 5) {
+
+                    $spell = $route[1];
+                    $module = $route[2];
+                    $entity = $route[3];
+                    $index = $route[4];
+                    $template = $route[5];
+
+                    $angular = File::get(Path::base(['resources', 'assets', 'awesovel', '@', 'templates', $template]));
+
+                    $form = Parse::form($module, $entity, $index, true);
+                    $language = Parse::language($module, $entity, $spell, $index);
+
+                    $angular = str_replace('{{module}}', ($module), $angular);
+                    $angular = str_replace('{{entity}}', ($entity), $angular);
+                    $angular = str_replace('\'{{form}}\'', Json::encode($form), $angular);
+                    $angular = str_replace('\'{{language}}\'', Json::encode($language), $angular);
+                }
+                break;
+        }
+
+        return $angular;
     }
 
     /**
@@ -120,6 +179,8 @@ class AwesovelGetController
             */
             case 'auth':
 
+                AwesovelServiceProvider::$ENVIRONMENT = 'auth';
+
                 array_shift($route);
 
                 $page = ["page" => $homeController->page($route, $language, $input)];
@@ -139,6 +200,8 @@ class AwesovelGetController
             |
             */
             case 'password':
+
+                AwesovelServiceProvider::$ENVIRONMENT = 'password';
 
                 array_shift($route);
 
@@ -160,9 +223,11 @@ class AwesovelGetController
             */
             case awesovel_config('app'):
 
+                AwesovelServiceProvider::$ENVIRONMENT = 'app';
+
                 if (!Auth::check()) {
 
-                    //return redirect()->guest('auth/login');
+                    return redirect()->guest('auth/login');
                 }
 
                 if (isset($route[1]) && isset($route[2])) {
@@ -193,6 +258,8 @@ class AwesovelGetController
             |
             */
             default:
+
+                AwesovelServiceProvider::$ENVIRONMENT = 'pages';
 
                 $page_route = [];
                 $parameters = [];

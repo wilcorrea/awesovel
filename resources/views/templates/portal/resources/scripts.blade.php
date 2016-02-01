@@ -1,15 +1,15 @@
 <script src="{{ awesovel_asset('bootstrap/js/bootstrap.min.js') }}"></script>
 
 <script>
-    $(function () {
+    jQuery(function () {
 
-        if (false) {
+        var
+            $window = jQuery(window),
+            $body = jQuery('body'),
+            $top = jQuery('body > .navbar.navbar-default'),
+            platform = navigator.platform.toLowerCase();
 
-            var
-                    $window = jQuery(window),
-                    $body = jQuery('body'),
-                    $top = jQuery('body > .navbar.navbar-default'),
-                    platform = navigator.platform.toLowerCase();
+        @if(awesovel_environment() !== awesovel_config('app'))
 
             $window.scroll(function () {
                 if ($window.scrollTop() > 75) {
@@ -21,12 +21,12 @@
                 }
             });
 
-            if (platform.indexOf('win') == 0 || platform.indexOf('linux') == 0) {
-                if ($.browser.webkit) {
-                    $.srSmoothscroll();
-                }
-            }
+        @endif
 
+        if (platform.indexOf('win') == 0 || platform.indexOf('linux') == 0) {
+            if ($.browser.webkit) {
+                //$.srSmoothscroll();
+            }
         }
 
     });

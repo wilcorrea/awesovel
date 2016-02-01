@@ -20,6 +20,15 @@ class AwesovelServiceProvider extends ServiceProvider
     public static $NAMESPACE;
 
     /**
+     * This namespace is applied to the controller routes in your routes file.
+     *
+     * In addition, it is set as the URL generator's root namespace.
+     *
+     * @var string
+     */
+    public static $ENVIRONMENT;
+
+    /**
      * @var string
      */
     public static $LANGUAGE;

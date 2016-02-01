@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html lang="{{ \Awesovel\Providers\AwesovelServiceProvider::$LANGUAGE }}">
+<html lang="{{ \Awesovel\Providers\AwesovelServiceProvider::$LANGUAGE }}" ng-app="app">
     <head>
         @include('awesovel.templates.portal.head.index')
+        @yield('head')
     </head>
 
     <body>

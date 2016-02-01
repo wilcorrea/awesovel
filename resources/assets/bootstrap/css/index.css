@@ -1,6 +1,18 @@
 .navbar .dropdown-menu, .navbar.navbar-default .dropdown-menu {
     border-radius: 0 0 2px 2px;
 }
+.navbar-collapse-top .navbar-right .dropdown-menu li a {
+    padding: 6px 12px;
+}
+.navbar-collapse-top .navbar-right .dropdown-menu li.divider {
+    padding: 0;
+    margin: 0
+}
+.navbar-collapse-top .navbar-right .dropdown-menu li a i {
+    margin: 3px 4px 0 0;
+    font-size: 16px;
+    vertical-align: top;
+}
 section .card {
     margin-top: 0;
     background-color: #fff;

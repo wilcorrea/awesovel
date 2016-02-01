@@ -70,17 +70,40 @@
 ```
 10- Crie a pasta "Src" em "app" e insira as classes que precisa seguindo o padrao
 ```
-Src
-  |- Module
-    |- Entidade
+[nome]
+    |-app
+        |- Src
+            |- App
+                |- Module
+                    |- Entidade
 ```
   ou para ver nossos exemplos
 ```
 ~/[nome]: ls -s ~/[nome]/vendor/awesovel/examples/ ~/[nome]/app/Src
 ```
   e em seguida importe o banco "database.sql" para sua base de dados
-  
+
 Nao se esqueça de configurar o ".env" corretamente
 
- 
+11- O CMS vai pesquisar pelos controllers alocacos em 
+```
+[nome]
+    |-app
+        |- Src
+            |- Pages
+                |- ([...])
+                    |- [Slug]Controller
+```
+    e pelas paginas alocadas
+```
+[nome]
+    |-resources
+        |- views
+            |- awesovel
+                |- templates
+                    |- {template}
+                        |- pages
+                            |- ([...])
+                                |- [slug].blade.php
+```
 
