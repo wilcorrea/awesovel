@@ -30,4 +30,13 @@
 
 <link href="{{ awesovel_asset('@/css/index.css') }}" rel="stylesheet">
 
+<!-- Formly Api-Check -->
+<script src="{{ awesovel_asset('formly/api-check.js') }}"></script>
+
+<script src="{{ awesovel_asset('angular/angular.min.js') }}"></script>
+<script src="{{ awesovel_asset('formly/formly.js') }}"></script>
+
+<script src="{{ awesovel_asset('@/app/App.js') }}"></script>
+<script src="{{ awesovel_asset('@/app/core/Angular.js') }}"></script>
+
 <meta name="viewport" content="width=device-width, initial-scale=1">

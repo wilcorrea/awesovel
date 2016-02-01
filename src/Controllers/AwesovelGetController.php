@@ -51,9 +51,28 @@ class AwesovelGetController
             */
             case awesovel_config('static'):
 
+                AwesovelServiceProvider::$ENVIRONMENT = 'static';
+
                 array_shift($route);
 
                 return self::resources($route);
+                break;
+            /*
+            |--------------------------------------------------------------------------
+            | Static Requests
+            |--------------------------------------------------------------------------
+            |
+            | That requests are parsed to control the assets
+            | All requests need pass here
+            |
+            */
+            case 'ng':
+
+                AwesovelServiceProvider::$ENVIRONMENT = 'static';
+
+                array_shift($route);
+
+                return self::angular($route);
                 break;
             /*
             |--------------------------------------------------------------------------
@@ -83,6 +102,40 @@ class AwesovelGetController
                 return self::standard($language, $route);
                 break;
         }
+    }
+
+    /**
+     *
+     * Sets up the components to Angular API
+     *
+     * @param $route
+     *
+     * @return string
+     */
+    public static function angular($route) {
+
+        $angular = '';
+
+        $service = $route[0];
+        switch ($service) {
+
+            case 'controller':
+
+                if (count($route) >= 4) {
+
+                    $module = $route[1];
+                    $entity = $route[2];
+                    $form = $route[3];
+                    $template = $route[4];
+
+                    $angular = File::get(Path::base(['resources', 'assets', 'awesovel', 'angular', 'templates', $template]));
+
+                    $angular = str_replace('{{entity}}', $entity, $angular);
+                }
+                break;
+        }
+
+        return $angular;
     }
 
     /**
@@ -120,6 +173,8 @@ class AwesovelGetController
             */
             case 'auth':
 
+                AwesovelServiceProvider::$ENVIRONMENT = 'auth';
+
                 array_shift($route);
 
                 $page = ["page" => $homeController->page($route, $language, $input)];
@@ -140,6 +195,8 @@ class AwesovelGetController
             */
             case 'password':
 
+                AwesovelServiceProvider::$ENVIRONMENT = 'password';
+
                 array_shift($route);
 
                 $page = ["page" => $homeController->page($route, $language, $input)];
@@ -159,6 +216,8 @@ class AwesovelGetController
             |
             */
             case awesovel_config('app'):
+
+                AwesovelServiceProvider::$ENVIRONMENT = 'app';
 
                 if (!Auth::check()) {
 
@@ -193,6 +252,8 @@ class AwesovelGetController
             |
             */
             default:
+
+                AwesovelServiceProvider::$ENVIRONMENT = 'pages';
 
                 $page_route = [];
                 $parameters = [];

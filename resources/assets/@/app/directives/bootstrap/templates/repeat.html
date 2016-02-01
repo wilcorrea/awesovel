@@ -1,0 +1,29 @@
+
+
+<div class="{{ hideRepeat }} mdl-form-repeat">
+
+    <p class="mdl-form-repeat--top">
+        {{ to.label }} <button type="button" class="mdl-button mdl-js-button mdl-js-ripple-effect" ng-click="addRow()"> {{ to.btnAdd ? to.btnAdd : '+' }}</button>
+    </p>
+
+    <div ng-repeat="_field in to.fields" ng-class="_field.className">
+      <label class="control-label">{{ _field.templateOptions.labelTop ? _field.templateOptions.labelTop : _field.key }}</label>
+    </div>
+    <br style="clear: both;">
+
+    <div class="mdl-form-repeat--container">
+
+        <!--<div class="mdl-form-repeat--norecords" ng-show="!model[options.key].length">{{ to.noRecors ? to.noRecors : '-//-' }}</div>-->
+
+        <div class="mdl-form-repeat--item" ng-repeat="element in model[options.key]" ng-init="fields = copyFields(to.fields)">
+
+            <formly-form fields="fields" model="element" form="form"></formly-form>
+
+            <button type="button" class="mdl-form-repeat--remove" ng-click="removeRow(model[options.key], $index, $event)">{{ to.btnRemove ? to.btnRemove : '-' }}</button>
+            <br style="clear: both;">
+        </div>
+
+    </div>
+
+</div>
+

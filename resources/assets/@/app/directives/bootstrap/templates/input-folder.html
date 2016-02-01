@@ -1,0 +1,26 @@
+<div class="form-group">
+
+    <label class="control-label" for="{{ options.id }}" title="{{ to.placeholder }}" ng-show="to.label">
+        {{ to.label }} {{ to.required ? '*' : '' }}</label>
+
+    <div class="form-file--wraper">
+
+        <div class="form-control--container" ng-class="to._active ? 'form-control--container-is-active' : ''">
+            <input type="text" class="form-control" id="{{ options.id }}" ng-readonly="to.readonly"
+                   ng-disabled="to.disabled"
+                   ng-model="model[options.key]"
+                   ng-change="vm.onchange(options, model)"
+                   onfocus="angular.element(this).scope().vm.onfocus(angular.element(this))"
+                   onblur="angular.element(this).scope().vm.onblur(angular.element(this))">
+            <span class="form-control--bar"></span>
+        </div>
+
+        <div class="mdl-button mdl-button--primary mdl-button--icon mdl-button--file">
+            <i class="material-icons">folder</i>
+            <input type="file" resource="folder" target="{{ options.key }}" webkitdirectory directory multiple
+                   onchange="angular.element(this).scope().vm.update(this)"/>
+
+        </div>
+    </div>
+
+</div>

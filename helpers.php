@@ -176,3 +176,12 @@ function awesovel_link($module, $entity, $button = null, $data = null)
 
     return awesovel_route($link);
 }
+
+/**
+ *
+ * @return mixed
+ */
+function awesovel_environment()
+{
+    return \Awesovel\Providers\AwesovelServiceProvider::$ENVIRONMENT;
+}

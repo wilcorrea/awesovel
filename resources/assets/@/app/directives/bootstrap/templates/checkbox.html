@@ -1,0 +1,12 @@
+<div class="form-group">
+
+    <label class="control-label" for="{{options.id}}" title="{{ to.placeholder }}" ng-show="to.label">{{ to.label }}</label>
+
+    <div class="checkbox">
+        <label>
+            <input type="checkbox" id="{{options.id}}" ng-readonly="to.readonly" ng-disabled="to.disabled"
+                   ng-model="model[options.key]"
+                   ng-change="vm.onchange(options, model)"> <small> {{ to.placeholder }}</small>
+        </label>
+    </div>
+</div>

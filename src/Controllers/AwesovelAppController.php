@@ -68,7 +68,10 @@ class AwesovelAppController extends Controller
 
         $path = Path::name($this->module, $this->entity);
 
-        $this->model = new $path();
+        if (class_exists($path)) {
+
+            $this->model = new $path();
+        }
     }
 
 
@@ -122,43 +125,10 @@ class AwesovelAppController extends Controller
 
         if ($this->action) {
 
-            $this->data['collection'] = (object)[];
-
             $layout = $this->action->layout;
 
-            switch ($index) {
-                case 'index':
+            $parameters = ['items' => $this->model->getItems()];
 
-                    $total = isset($this->parameters['total']) ? $this->parameters['total'] : awesovel_config('total');
-                    $this->data['collection'] = $this->api('HEAD', 'paginate', $total);
-
-                    $layout = $this->action->layout;
-                    $parameters = ['items' => $this->model->getItems()];
-                    break;
-                case 'add':
-
-                    break;
-                case 'show':
-
-                    $this->data['collection'] = $this->api('HEAD', 'find', $id);
-
-                    $layout = $this->action->layout;
-                    break;
-                case 'edit':
-
-                    $this->data['collection'] = $this->api('HEAD', 'find', $id);
-
-                    $layout = $this->action->layout;
-                    break;
-                case 'remove':
-
-                    $this->data['collection'] = $this->api('HEAD', 'find', $id);
-
-                    $layout = $this->action->layout;
-                    break;
-            }
-
-            $this->data['_colletion'] = null;
             $this->data['actions'] = $this->actions();
 
             $this->data['module'] = $this->module;

@@ -23,33 +23,19 @@
                     <thead>
                         <tr>
                             <th>{{ "Opções" }}</th>
-                            @foreach($operation->items as $item)
-                                <th>{{ isset($item->label) ? $item->label : '' }}</th>
-                            @endforeach
                         </tr>
                     </thead>
                     <tbody>
-                    @foreach($collection as $_collection)
                         <tr>
                             <td>
-                                @foreach($actions->middle as $action)
-                                    @include('awesovel.app.html.partials.action')
-                                @endforeach
+                                &nbsp;
                             </td>
-
-                            @foreach($operation->items as $item)
-
-                                <td> {{ awesovel_out($_collection, $item->id)  }} </td>
-                            @endforeach
                         </tr>
-                    @endforeach
                     </tbody>
                 </table>
 
             </div>
         </div>
-
-        {!! $collection->render() !!}
 
         <br style="clear: both" />
 

@@ -2,35 +2,33 @@
 
 @section('layout')
 
+    <script src="{{ url('ng/controller/'. $module . '/' . $entity . '/' . $operation->id. '/Controller.js') }}"></script>
+
     <div class="row card">
 
-        <form id="form" method="post" action="{{ awesovel_link($module, $entity) }}">
+        {{--<form id="form" method="post" action="{{ awesovel_link($module, $entity) }}">--}}
 
-            <h3>{{ $operation->label }}</h3>
+        <h3>{{ $operation->label }}</h3>
+
+        <div ng-controller="{{ $module }}Ctrl">
 
             @foreach($actions->top as $action)
                 @include('awesovel.app.html.partials.action')
             @endforeach
 
             <hr>
-            <div>
 
-                @if(isset($operation->items))
-                    @foreach($operation->items as $item)
-                        @if(isset($item->component) && View::exists('awesovel.app.html.components.' . $item->component))
-                            @include('awesovel.app.html.components.' . $item->component)
-                        @endif
-                    @endforeach
-                @endif
-            </div>
+            <formly-form form="vm.form" model="vm.data" fields="vm.fields"></formly-form>
+
             <hr>
 
             @foreach($actions->bottom as $action)
                 @include('awesovel.app.html.partials.action')
             @endforeach
+        </div>
 
-            <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
-        </form>
+        <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
+        {{--</form>--}}
     </div>
 
 @endsection

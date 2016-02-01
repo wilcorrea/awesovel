@@ -1,0 +1,7 @@
+.md-button {
+    text-transform: none;
+}
+
+md-datepicker.md-default-theme, md-datepicker {
+    background: transparent;
+}
