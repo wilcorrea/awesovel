@@ -11,55 +11,55 @@ App.angular
 
             formlyConfig.setType({
                 name: 'input-text',
-                templateUrl: 'app/directives/bootstrap/templates/input-text.html',
+                templateUrl: App.templates('bootstrap', 'input-text.html'),
                 controller: 'BootstrapController'
             });
 
             formlyConfig.setType({
                 name: 'input-folder',
-                templateUrl: 'app/directives/bootstrap/templates/input-folder.html',
+                templateUrl: App.templates('bootstrap', 'input-folder.html'),
                 controller: 'BootstrapController'
             });
 
             formlyConfig.setType({
                 name: 'input-file',
-                templateUrl: 'app/directives/bootstrap/templates/input-file.html',
+                templateUrl: App.templates('bootstrap', 'input-file.html'),
                 controller: 'BootstrapController'
             });
 
             formlyConfig.setType({
                 name: 'select',
-                templateUrl: 'app/directives/bootstrap/templates/select.html',
+                templateUrl: App.templates('bootstrap', 'select.html'),
                 controller: 'BootstrapController'
             });
 
             formlyConfig.setType({
                 name: 'dropdown',
-                templateUrl: 'app/directives/bootstrap/templates/dropdown.html',
+                templateUrl: App.templates('bootstrap', 'dropdown.html'),
                 controller: 'BootstrapController'
             });
 
             formlyConfig.setType({
                 name: 'textarea',
-                templateUrl: 'app/directives/bootstrap/templates/textarea.html',
+                templateUrl: App.templates('bootstrap', 'textarea.html'),
                 controller: 'BootstrapController'
             });
 
             formlyConfig.setType({
                 name: 'checkbox',
-                templateUrl: 'app/directives/bootstrap/templates/checkbox.html',
+                templateUrl: App.templates('bootstrap', 'checkbox.html'),
                 controller: 'BootstrapController'
             });
 
             formlyConfig.setType({
                 name: 'checkbox-multiple',
-                templateUrl: 'app/directives/bootstrap/templates/checkbox-multiple.html',
+                templateUrl: App.templates('bootstrap', 'checkbox-multiple.html'),
                 controller: 'BootstrapController'
             });
 
             formlyConfig.setType({
                 name: 'autocomplete',
-                templateUrl: 'app/directives/bootstrap/templates/autocomplete.html',
+                templateUrl: App.templates('bootstrap', 'autocomplete.html'),
                 controller: 'BootstrapController'
             });
 
@@ -69,14 +69,14 @@ App.angular
              */
             formlyConfig.setType({
                 name: 'select.project.items',
-                templateUrl: 'app/directives/bootstrap/templates/custom/select.project.items.html',
+                templateUrl: App.templates('bootstrap', 'custom/select.project.items.html'),
                 controller: 'BootstrapController'
             });
 
             var unique = 1;
             formlyConfig.setType({
                 name: 'repeat',
-                templateUrl: 'app/directives/bootstrap/templates/repeat.html',
+                templateUrl: App.templates('bootstrap', 'repeat.html'),
                 controller: ['$scope', 'ServiceDialog',function($scope, ServiceDialog) {
 
                     $scope.formOptions = {formState: $scope.formState};

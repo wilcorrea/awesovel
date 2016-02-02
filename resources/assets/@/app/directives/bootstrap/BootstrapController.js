@@ -23,7 +23,7 @@ App.angular
         var type = $scope.options.type;
 
         vm.onchange = function (options, model) {
-            console.log(options, model);
+            //console.log(options, model);
         };
 
         vm.onfocus = function ($$element, scope) {

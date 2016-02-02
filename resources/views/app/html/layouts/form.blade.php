@@ -1,34 +1,49 @@
 @extends('awesovel.app.html.index')
 
-@section('layout')
+@section('head')
 
-    <script src="{{ url('ng/controller/'. $module . '/' . $entity . '/' . $operation->id. '/Controller.js') }}"></script>
+    @include('awesovel.app.html.head')
+
+@endsection
+
+@section('layout')
 
     <div class="row card">
 
-        {{--<form id="form" method="post" action="{{ awesovel_link($module, $entity) }}">--}}
+        <form ng-controller="FormController">
 
-        <h3>{{ $operation->label }}</h3>
+            <h5>@{{ vm.language.label }}</h5>
 
-        <div ng-controller="{{ $module }}Ctrl">
+            <div class="formly-fieldset">
 
-            @foreach($actions->top as $action)
-                @include('awesovel.app.html.partials.action')
-            @endforeach
+                <div class="formly-toolbar">
+                    <span ng-repeat="_action in vm.form.actions.top">
+                        <button class="btn btn-raised btn-default" title="@{{ _action.title }}" type="button"
+                                ng-class="_action.className"
+                                ng-click="vm.resolve(_action)">
+                            <span class="@{{ _action.classIcon }}" ng-show="_action.classIcon"></span>
+                            @{{ _action.label }}
+                        </button>
+                    </span>
+                </div>
 
-            <hr>
+                <formly-form form="vm.__form" model="vm.data" fields="vm.fields"></formly-form>
 
-            <formly-form form="vm.form" model="vm.data" fields="vm.fields"></formly-form>
+                <div class="formly-toolbar">
+                    <span ng-repeat="_action in vm.form.actions.bottom">
+                        <button class="btn btn-raised btn-default" title="@{{ _action.title }}" type="button"
+                                ng-class="_action.className"
+                                ng-click="vm.resolve(_action)">
+                            <span class="@{{ _action.classIcon }}" ng-show="_action.classIcon"></span>
+                            @{{ _action.label }}
+                        </button>
+                    </span>
+                </div>
 
-            <hr>
+            </div>
 
-            @foreach($actions->bottom as $action)
-                @include('awesovel.app.html.partials.action')
-            @endforeach
-        </div>
+        </form>
 
-        <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
-        {{--</form>--}}
     </div>
 
 @endsection

@@ -8,10 +8,9 @@
 
 namespace Awesovel\Controllers;
 
-
-use Awesovel\Controllers\AwesovelRequestController;
 use Awesovel\Defaults\Controller;
 use Awesovel\Helpers\File;
+use Awesovel\Helpers\Json;
 use Awesovel\Helpers\Parse;
 use Awesovel\Helpers\Path;
 use Awesovel\Providers\AwesovelServiceProvider;
@@ -121,16 +120,23 @@ class AwesovelGetController
 
             case 'controller':
 
-                if (count($route) >= 4) {
+                if (count($route) >= 5) {
 
-                    $module = $route[1];
-                    $entity = $route[2];
-                    $form = $route[3];
-                    $template = $route[4];
+                    $spell = $route[1];
+                    $module = $route[2];
+                    $entity = $route[3];
+                    $index = $route[4];
+                    $template = $route[5];
 
-                    $angular = File::get(Path::base(['resources', 'assets', 'awesovel', 'angular', 'templates', $template]));
+                    $angular = File::get(Path::base(['resources', 'assets', 'awesovel', '@', 'templates', $template]));
 
-                    $angular = str_replace('{{entity}}', $entity, $angular);
+                    $form = Parse::form($module, $entity, $index, true);
+                    $language = Parse::language($module, $entity, $spell, $index);
+
+                    $angular = str_replace('{{module}}', ($module), $angular);
+                    $angular = str_replace('{{entity}}', ($entity), $angular);
+                    $angular = str_replace('\'{{form}}\'', Json::encode($form), $angular);
+                    $angular = str_replace('\'{{language}}\'', Json::encode($language), $angular);
                 }
                 break;
         }
@@ -221,7 +227,7 @@ class AwesovelGetController
 
                 if (!Auth::check()) {
 
-                    //return redirect()->guest('auth/login');
+                    return redirect()->guest('auth/login');
                 }
 
                 if (isset($route[1]) && isset($route[2])) {

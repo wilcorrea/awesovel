@@ -33,10 +33,11 @@ class Parse
      * @param $module
      * @param $entity
      * @param $index
+     * @param $merge
      *
      * @return type
      */
-    public static function form($module, $entity, $index)
+    public static function form($module, $entity, $index, $merge = false)
     {
 
         $filename = Path::app([awesovel_config('root_app'), $module, 'Scaffold', $entity, 'Form', $index . '.frm']);
@@ -48,7 +49,69 @@ class Parse
             $content = File::get($filename);
         }
 
-        return Json::decode($content);
+        $form = Json::decode($content);
+
+        if ($merge && $form) {
+
+            $scaffold = self::scaffold($module, $entity);
+
+            if (isset($form->fields)) {
+
+                foreach ($form->fields as $row) {
+
+                    if (isset($row->fieldGroup)) {
+
+                        $fieldGroup = $row->fieldGroup;
+
+                        foreach ($fieldGroup as $field) {
+
+                            $key = $field->key;
+
+                            if (isset($scaffold->items->$key)) {
+
+                                $field->templateOptions = self::merge($scaffold->items->$key, $field->templateOptions);
+                            }
+                        }
+                    }
+                }
+            }
+
+            $form->actions = self::actions($form);
+        }
+
+        return $form;
+    }
+
+    /**
+     *
+     * @param $form
+     *
+     * @return object
+     */
+    private static function actions($form)
+    {
+
+        $positions = [
+            'top' => [],
+            'middle' => [],
+            'bottom' => []
+        ];
+
+        foreach ($form->actions as $action) {
+
+            foreach ($positions as $key => $available) {
+
+                if (isset($action->position) && isset($action->position->$key)) {
+                    $positions[$key][$action->position->$key] = $action;
+                }
+
+                ksort($positions[$key]);
+            }
+        }
+
+        ksort($positions);
+
+        return (object)$positions;
     }
 
     /**
@@ -59,7 +122,7 @@ class Parse
      *
      * @return mixed
      */
-    private static function language($module, $entity, $spell, $index = 'default')
+    public static function language($module, $entity, $spell, $index = 'default')
     {
         $__default = 'default';
 
@@ -77,12 +140,11 @@ class Parse
 
             $translations = Json::decode($content);
 
-            if (isset($translations->$index)) {
+            $language = $translations->$__default;
 
-                $language = $translations->$index;
-            } else if (isset($translations->forms->$index)) {
+            if (isset($translations->forms->$index)) {
 
-                $language = $translations->forms->$index;
+                $language = self::merge($language, $translations->forms->$index);
             }
         }
 
@@ -107,16 +169,6 @@ class Parse
 
         if ($form) {
 
-            $scaffold = self::scaffold($module, $entity);
-
-            foreach ($scaffold->items as $key => $value) {
-                if (!isset($form->items->$key)) {
-                    unset($scaffold->items->$key);
-                }
-            }
-
-            $form->items = self::merge($scaffold->items, $form->items);
-
             $language_default = self::language($module, $entity, $spell, 'default');
             $language_form = self::language($module, $entity, $spell, $index);
 
@@ -134,11 +186,7 @@ class Parse
                 }
             }
 
-            //dd([$language->actions, $form->actions]);
-
             $operation = self::merge($language, $form);
-
-            //dd([$operation, $form, $scaffold, $language]);
         }
 
         return $operation;

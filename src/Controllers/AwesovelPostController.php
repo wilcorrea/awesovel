@@ -35,15 +35,30 @@ class AwesovelPostController
             | Api Requests
             |--------------------------------------------------------------------------
             |
+            | create, read, update, delete (, etc...)
+            |
             | That requests are parsed to control the assets
             | All requests need pass here
             |
             */
             case awesovel_config('api'):
 
-                //$controller = new \Awesovel\Defaults\Controller($module, $entity);
+                array_shift($route);
 
-                //return $controller->api($version, $operation, $id, $relationships);
+                if (count($route) >= 3) {
+
+                    $data = Input::all();
+
+                    $version = $route[0];
+                    $module = $route[1];
+                    $entity = $route[2];
+                    $operation = $route[3];
+                    $relationships = isset($route[4]) ? $route[4] : null;
+
+                    $controller = new Controller($module, $entity);
+
+                    return $controller->api($version, $operation, $data, $relationships);
+                }
                 break;
             /*
             |--------------------------------------------------------------------------
@@ -70,29 +85,6 @@ class AwesovelPostController
             */
             case 'password':
 
-
-                break;
-            /*
-            |--------------------------------------------------------------------------
-            | App Requests
-            |--------------------------------------------------------------------------
-            |
-            | create, read, update, delete
-            |
-            | {language}/app/{module}/{entity}/{operation?}/{id?}
-            | All requests need pass here
-            |
-            */
-            case awesovel_config('app'):
-
-                if (!Auth::check()) {
-
-                    return redirect()->guest('auth/login');
-                }
-
-                return var_dump(Input::all());
-
-                return view(awesovel_app('index'), ["page" => (object)['header' => false]]);
 
                 break;
         }

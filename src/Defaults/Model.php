@@ -18,7 +18,7 @@ class Model extends EloquentModel
      *
      * @var type
      */
-    protected $items = [];
+    protected $_items;
 
     /**
      *
@@ -34,7 +34,8 @@ class Model extends EloquentModel
         $this->connection = awesovel_config('database');
 
         if ($module && $entity) {
-            $this->setScaffold($module, $entity);
+
+            $this->scaffold($module, $entity);
         }
     }
 
@@ -43,13 +44,15 @@ class Model extends EloquentModel
      * @param type $module
      * @param type $entity
      */
-    public function setScaffold($module, $entity)
+    public function scaffold($module, $entity)
     {
 
-        $config = Parse::scaffold($module, $entity);
+        $scaffold = Parse::scaffold($module, $entity);
 
-        foreach ($config as $prop => $value) {
-            $this->$prop = $value;
+        $this->_items = $scaffold->items;
+
+        foreach ($scaffold->extends as $property => $value) {
+            $this->$property = $value;
         }
     }
 
@@ -96,7 +99,7 @@ class Model extends EloquentModel
     public function __call($name, $args)
     {
 
-        foreach ($this->items as $item) {
+        foreach ($this->_items as $item) {
             switch ($item->behavior) {
                 case 'relationship':
                     if ($name === $item->relationship->method) {
@@ -135,7 +138,7 @@ class Model extends EloquentModel
         $instance = new static;
 
         $fields = [];
-        foreach ($instance->items as $item) {
+        foreach ($instance->_items as $item) {
             $retrieve = true;
 
             if (isset($item->dao)) {
@@ -183,7 +186,7 @@ class Model extends EloquentModel
      */
     public function getItems()
     {
-        return $this->items;
+        return $this->_items;
     }
 
 }

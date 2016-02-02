@@ -17,16 +17,16 @@ use \Awesovel\Providers\AwesovelServiceProvider;
 $namespace = AwesovelServiceProvider::$NAMESPACE;
 
 // Authentication routes...
-Route::post('auth/login', $namespace .'\Http\Controllers\Auth\AuthController@postLogin');
+Route::post('auth/login', $namespace . '\Http\Controllers\Auth\AuthController@postLogin');
 
 // Registration routes...
-Route::post('auth/register', $namespace .'\Http\Controllers\Auth\AuthController@postRegister');
+Route::post('auth/register', $namespace . '\Http\Controllers\Auth\AuthController@postRegister');
 
 // Password reset link request routes...
-Route::post('password/email', $namespace .'\Http\Controllers\Auth\PasswordController@postEmail');
+Route::post('password/email', $namespace . '\Http\Controllers\Auth\PasswordController@postEmail');
 
 // Password reset routes...
-Route::post('password/reset', $namespace .'\Http\Controllers\Auth\PasswordController@postReset');
+Route::post('password/reset', $namespace . '\Http\Controllers\Auth\PasswordController@postReset');
 
 
 //Route::get('/' . awesovel_config('api') . '/{version}/{module}/{entity}/{operation}/{id?}/{relationships?}', function ($version, $module, $entity, $operation, $id = null, $relationships = null) {
@@ -64,6 +64,16 @@ Route::get('{path?}', function ($path = 'home') {
  */
 Route::post('{path?}', function ($path = null) {
 
+    if (Request::header('X-CSRF-Token')) {
+
+        if (Session::token() !== Request::header('X-CSRF-Token')) {
+
+            throw new Illuminate\Session\TokenMismatchException;
+        }
+    } else if (Session::token() !== Input::get('_token')) {
+
+        throw new Illuminate\Session\TokenMismatchException;
+    }
 
     return AwesovelPostController::route($path);
 

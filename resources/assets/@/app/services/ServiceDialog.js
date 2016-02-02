@@ -7,7 +7,7 @@
 App.angular
 
 
-    .factory('ServiceDialog', ['$location', '$mdDialog', '$mdMedia', function ($location, $mdDialog, $mdMedia) {
+    .factory('ServiceDialog', ['$mdDialog', '$mdMedia', function ($mdDialog, $mdMedia) {
 
         var ServiceDialog = {
 

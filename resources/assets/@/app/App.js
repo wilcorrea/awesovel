@@ -10,13 +10,21 @@ window.App = {
 
     /**
      *
-     * @param str
+     * @param string
      * @returns {string|XML}
      */
-    camelize: function (str) {
-        return str.replace(/(?:^\w|[A-Z]|\b\w)/g, function (letter, index) {
-            return /*index == 0 ? letter.toLowerCase() :*/ letter.toUpperCase();
+    camelize: function (string, firstLower) {
+        return string.replace(/(?:^\w|[A-Z]|\b\w)/g, function (letter, index) {
+            return firstLower ? (index == 0 ? letter.toLowerCase() : letter.toUpperCase()) : letter.toUpperCase();
         }).replace(/\s+/g, '');
+    },
+    /**
+     *
+     * @param string
+     * @returns {XML}
+     */
+    uncamelize: function (string) {
+        return string.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
     },
     /**
      *
@@ -37,6 +45,17 @@ window.App = {
         }
         return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
             s4() + '-' + s4() + s4() + s4();
+    },
+    /**
+     *
+     * @param directive
+     * @param file
+     *
+     * @returns {string}
+     */
+    templates: function (directive, file) {
+
+        return App.url + '/static/assets/@/app/directives/' + directive + '/templates/' + file
     },
     /**
      *
