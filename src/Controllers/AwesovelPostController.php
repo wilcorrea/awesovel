@@ -8,8 +8,8 @@
 
 namespace Awesovel\Controllers;
 
-use Awesovel\Controllers\AwesovelRequestController;
 use Awesovel\Defaults\Controller;
+use Awesovel\Helpers\Path;
 use Awesovel\Providers\AwesovelServiceProvider;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
@@ -55,7 +55,15 @@ class AwesovelPostController
                     $operation = $route[3];
                     $relationships = isset($route[4]) ? $route[4] : null;
 
-                    $controller = new Controller($module, $entity);
+                    $path = Path::name($module, $entity, 'Controller');
+
+                    if (class_exists($path)) {
+
+                        $controller = new $path($module, $entity);
+                    } else {
+
+                        $controller = new Controller($module, $entity);
+                    }
 
                     return $controller->api($version, $operation, $data, $relationships);
                 }

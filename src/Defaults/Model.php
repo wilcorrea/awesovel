@@ -18,7 +18,7 @@ class Model extends EloquentModel
      *
      * @var type
      */
-    protected $_items;
+    protected $items;
 
     /**
      *
@@ -49,7 +49,9 @@ class Model extends EloquentModel
 
         $scaffold = Parse::scaffold($module, $entity);
 
-        $this->_items = $scaffold->items;
+        $this->items = $scaffold->items;
+
+        $this->extends = $scaffold->extends;
 
         foreach ($scaffold->extends as $property => $value) {
             $this->$property = $value;
@@ -75,6 +77,13 @@ class Model extends EloquentModel
     }
 
     /**
+     * @return \Illuminate\Database\Eloquent\Collection|static[]
+     */
+    public function search() {
+        return \Delivery\Src\App\Main\Model\Category::all();
+    }
+
+    /**
      * Get all of the models from the database.
      *
      * @param  array|mixed $columns
@@ -83,9 +92,9 @@ class Model extends EloquentModel
     public static function all($columns = ['*'])
     {
 
-        if (func_num_args() === 0) {
-            $columns = self::fields();
-        }
+//        if (func_num_args() === 0) {
+//            $columns = self::fields();
+//        }
 
         return parent::all($columns);
     }
@@ -99,7 +108,7 @@ class Model extends EloquentModel
     public function __call($name, $args)
     {
 
-        foreach ($this->_items as $item) {
+        foreach ($this->items as $item) {
             switch ($item->behavior) {
                 case 'relationship':
                     if ($name === $item->relationship->method) {
@@ -138,7 +147,7 @@ class Model extends EloquentModel
         $instance = new static;
 
         $fields = [];
-        foreach ($instance->_items as $item) {
+        foreach ($instance->items as $item) {
             $retrieve = true;
 
             if (isset($item->dao)) {
@@ -186,7 +195,7 @@ class Model extends EloquentModel
      */
     public function getItems()
     {
-        return $this->_items;
+        return $this->items;
     }
 
 }

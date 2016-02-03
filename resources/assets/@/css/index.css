@@ -120,6 +120,8 @@
 
 section.app {
     margin: 75px 0 80px 0;
+    /* z-index: 100; */
+    /* position: absolute; */
 }
 
 .formly-card {
@@ -181,17 +183,33 @@ section.app {
     margin: 0 20px 0 0;
 }
 .grid-head {
-    display: block;
-    width: 100%;
+    padding: 0;
     border-width: 0 0 1px 0;
     border-style: solid;
     border-color: #EBEBEB;
+    /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#f9f9f9+0,f9f9f9+50,f4f6f7+51,ebecee+100 */
+    background: #f9f9f9;/* Old browsers *//* FF3.6-15 *//* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom,  #f9f9f9 0%,#f9f9f9 60%,#F9F7F7 61%,#ebecee 100%);/* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f9f9f9', endColorstr='#ebecee',GradientType=0 );/* IE6-9 */
 }
-.grid-head-toolbar, .grid-head-column, .grid-body-column, .grid-body-toolbar {
+.grid-head-toolbar, .grid-head-column, .grid-body-toolbar {
     padding: 7px 10px;
+}
+.grid-body-column {
+    padding: 15px 10px 0 10px;
 }
 .grid-body, .grid-bottom {
     clear: both;
+    padding: 0;
+}
+.grid-body-row {
+    padding: 0;
+    border-width: 0 0 1px 0;
+    border-color: #EBEBEB;
+    border-style: solid;
+}
+.grid-body-toolbar .btn {
+    padding: 2px 10px;
 }
 
 

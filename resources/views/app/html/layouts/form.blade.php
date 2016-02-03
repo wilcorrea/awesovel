@@ -27,7 +27,7 @@
                     </span>
                 </div>
 
-                <formly-form form="vm.__form" model="vm.data" fields="vm.fields"></formly-form>
+                <formly-form form="vm.__form" model="vm.collection" fields="vm.fields"></formly-form>
 
                 <div class="formly-toolbar">
                     <span ng-repeat="_action in vm.form.actions.bottom">

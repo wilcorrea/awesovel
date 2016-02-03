@@ -239,7 +239,7 @@ class AwesovelGetController
 
                     $controller = new Controller($module, $entity);
 
-                    return $controller->resolve($operation, $id, $language, $input);
+                    return $controller->view($operation, $id, $language, $input);
                 } else {
 
                     $page = ["page" => $homeController->page($route, $language, $input)];

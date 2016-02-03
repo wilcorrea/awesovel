@@ -44,19 +44,24 @@
                             </div>
 
                             <div class="grid-body col-sm-12">
-                                <div class="col-sm-2 grid-body-toolbar">
-                                    <span ng-repeat="_action in vm.form.actions.middle">
-                                        <button class="btn btn-raised btn-default" title="@{{ _action.title }}" type="button"
-                                                ng-class="_action.className"
-                                                ng-click="vm.resolve(_action)">
-                                            <span class="@{{ _action.classIcon }}" ng-show="_action.classIcon"></span>
-                                            @{{ _action.label }}
-                                        </button>
-                                    </span>
-                                </div>
-                                <div ng-repeat="_field in vm.fields" class="grid-body-column"
-                                     ng-class="_field.className">
-                                    -//-
+                                <div class="grid-body-row col-sm-12" ng-repeat="_row in vm.collection">
+
+                                    <div class="col-sm-2 grid-body-toolbar">
+                                        <span ng-repeat="_action in vm.form.actions.middle">
+                                            <button class="btn btn-raised btn-default" title="@{{ _action.title }}"
+                                                    type="button"
+                                                    ng-class="_action.className"
+                                                    ng-click="vm.resolve(_action, _row)">
+                                                <span class="@{{ _action.classIcon }}" ng-show="_action.classIcon"></span>
+                                                @{{ _action.label }}
+                                            </button>
+                                        </span>
+                                    </div>
+
+                                    <div ng-repeat="_field in vm.fields" class="grid-body-column"
+                                         ng-class="_field.className">
+                                        @{{ _row[_field.key] }}
+                                    </div>
                                 </div>
                             </div>
                             <br class="grid-bottom"/>

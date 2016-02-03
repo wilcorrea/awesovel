@@ -7,7 +7,7 @@
 App.angular
 
 
-    .factory('ServiceDialog', ['$mdDialog', '$mdMedia', function ($mdDialog, $mdMedia) {
+    .factory('ServiceDialog', [function () {
 
         var ServiceDialog = {
 
@@ -20,24 +20,9 @@ App.angular
              */
             confirm: function(title, message, success, cancel) {
 
-                var _confirm = $mdDialog.confirm()
-                    .title(title)
-                    .textContent(message)
-                    //.ariaLabel('Lucky day')
-                    //.targetEvent(ev)
-                    .ok('Confirm')
-                    .cancel('Cancel');
-
-                $mdDialog.show(_confirm).then(function() {
-
-                    if (angular.isFunction(success)) {
-                        success.call();
-                    }
-
-                }, function() {
-                    if (angular.isFunction(cancel)) {
-                        cancel.call();
-                    }
+                BootstrapDialog.show({
+                    title: title,
+                    message: message
                 });
             },
 
@@ -50,12 +35,10 @@ App.angular
              */
             alert: function(title, message) {
 
-                var _alert = $mdDialog.confirm()
-                    .title(title)
-                    .textContent(message)
-                    .ok('Close');
-                    
-                $mdDialog.show(_alert);
+                BootstrapDialog.show({
+                    title: title,
+                    message: message.toString()
+                });
             }
         };
 
