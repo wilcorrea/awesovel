@@ -13,6 +13,7 @@
 use \Awesovel\Controllers\AwesovelGetController;
 use \Awesovel\Controllers\AwesovelPostController;
 use \Awesovel\Providers\AwesovelServiceProvider;
+use \Awesovel\Helpers\Json;
 
 $namespace = AwesovelServiceProvider::$NAMESPACE;
 
@@ -28,13 +29,6 @@ Route::post('password/email', $namespace . '\Http\Controllers\Auth\PasswordContr
 // Password reset routes...
 Route::post('password/reset', $namespace . '\Http\Controllers\Auth\PasswordController@postReset');
 
-
-//Route::get('/' . awesovel_config('api') . '/{version}/{module}/{entity}/{operation}/{id?}/{relationships?}', function ($version, $module, $entity, $operation, $id = null, $relationships = null) {
-//
-//    $controller = new \Awesovel\Defaults\Controller($module, $entity);
-//
-//    return $controller->api($version, $operation, $id, $relationships);
-//});
 
 /*
   |--------------------------------------------------------------------------
@@ -75,6 +69,6 @@ Route::post('{path?}', function ($path = null) {
         throw new Illuminate\Session\TokenMismatchException;
     }
 
-    return AwesovelPostController::route($path);
+    return Json::encode(AwesovelPostController::route($path));
 
 })->where('path', '.+');

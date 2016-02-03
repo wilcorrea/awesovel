@@ -9,8 +9,8 @@
 App.angular =
 
     angular
-        .module('app', ['ngRoute', 'ngAnimate', 'ngMaterial', 'formly'])//
-        /*, 'mdl'*//*, 'formlyMaterial'*//*, 'formlyBootstrap'*/
+        .module('app', ['formly'])//
+        /*'ngRoute', 'ngAnimate', 'ngMaterial', , 'mdl'*//*, 'formlyMaterial'*//*, 'formlyBootstrap'*/
 
         .config(function ($controllerProvider) {
 

@@ -58,63 +58,326 @@ class Controller extends IlluminateController
      * Process api operations of Model
      *
      * @param $version
-     * @param $operation
+     * @param $index
      * @param null $data
      * @param null $relationships
      *
      * @return mixed
      */
-    public function api($version, $operation, $data = null, $relationships = null)
+    public function api($version, $index, $data = null, $relationships = null)
     {
-        return ($this->create($data));
+        return $this->operation($this->module, $this->entity, $version, $index, $data, $relationships);
     }
 
     /**
-     * Store a newly created resource in storage.
+     * @param $module
+     * @param $entity
+     * @param $version
+     * @param $index
+     * @param $data
+     * @param $relates
      *
-     * @return Response
+     * @return mixed
      */
-    public function create($data)
+    private function operation($module, $entity, $version, $index, $data, $relates)
     {
+        $operation = Parse::operation($module, $entity, $index);
+
+        $action = $operation->action;
 
         $path = Path::name($this->module, $this->entity);
 
-        $status = 'E';
-        $result = false;
-
         if (class_exists($path)) {
+
+            $values = [];
 
             $model = new $path();
 
-            $validator = Validator::make($data, [
-                'name' => 'required',
-            ]);
+            $relationships = [];
 
-            if (!$validator->fails()) {
+            if ($relates) {
 
+                $relationships = explode(',', $relates);
 
-                $items = $model->getItems();
+                foreach ($relationships as $i => $relationship) {
 
-                foreach ($items as $item) {
+                    if (isset($data[$relationship])) {
 
-                    $id = $item->id;
+                        $values[$relationship] = $data[$relationship];
+                        unset($data[$relationship]);
+                    }
 
-                    if (isset($data[$id])) {
-                        $model->$id = $data[$id];
+                    if (isset($model->relationships) && is_array($model->relationships)) {
+
+                        foreach ($model->relationships as $relation) {
+                            dd($relation);
+                            if ($relation->id === $relationship) {
+
+                                $relationships[$i] = $relation;
+                            }
+                        }
                     }
                 }
+            }
 
-                $status = $model->save() ? 'S' : 'F';
 
-                $result = $model->id;
+            $response = $this->response($model, $index, $version, $action, $relationships, $data, $values);
+        }
 
+        return $response;
+    }
+
+    /**
+     * @param $model
+     * @param $index
+     * @param $version
+     * @param $action
+     * @param $relationships
+     * @param $data
+     * @param $values
+     *
+     * @return mixed
+     */
+    private function response($model, $index, $version, $action, $relationships, $data, $values)
+    {
+        $response = null;
+
+        $before = $this->before($model, $index, $version, $data);
+        if ($before) {
+
+            $response = $this->$action($model, $data);
+
+            $after = $this->after($model, $index, $version, $data, $response);
+            if (!$after) {
+                /*
+                 * todo: merda no after
+                 */
             } else {
+                $responses = [];
+                foreach ($relationships as $relationship) {
 
-                $result = $validator->errors()->all();
+                    $id = $relationship->id;
+                    $responses[$id] = $this->relationships($index, $version, $relationship, $response, $values[$id]);
+                }
+
+                $response->relationships = $responses;
+            }
+        } else {
+            /**
+             * todo: merda no before
+             */
+        }
+
+        return $response;
+    }
+
+    /**
+     * @param $index
+     * @param $version
+     * @param $relationship
+     * @param $response
+     * @param $values
+     *
+     * @return array
+     */
+    private function relationships($index, $version, $relationship, $response, $values)
+    {
+        $path = Path::name($relationship->module, $relationship->entity, 'Controller');
+
+        if (class_exists($path)) {
+
+            $controller = new $path($relationship->module, $relationship->entity);
+
+        } else {
+
+            $controller = new Controller($relationship->module, $relationship->entity);
+        }
+
+        $responses = [];
+
+        foreach ($values as $data) {
+
+            $key = $relationship->key;
+            $local = $relationship->local;
+            $data[$key] = $response->result->$local;
+
+            $responses[] = $controller->api($version, $index, $data);
+        }
+
+        return $responses;
+    }
+
+    /**
+     * @param $model
+     * @param $index
+     * @param $version
+     * @param $data
+     *
+     * @return bool
+     */
+    protected function before($model, $index, $version, $data)
+    {
+        return true;
+    }
+
+    /**
+     * @param $model
+     * @param $index
+     * @param $version
+     * @param $data
+     * @param $response
+     *
+     * @return bool
+     */
+    protected function after($model, $index, $version, $data, $response)
+    {
+        return true;
+    }
+
+    /**
+     * @param \Awesovel\Defaults\Model $model
+     * @param array $data
+     *
+     * @return \Awesovel\Helpers\type
+     */
+    public function read(Model $model, $data)
+    {
+        $status = 'S';
+
+        $items = $model->getItems();
+
+        $where = [];
+
+        foreach ($items as $item) {
+
+            $id = $item->id;
+            if (($item->dao->select) && isset($data[$id])) {
+                $where[$id] = (int) $data[$id];
             }
         }
 
-        return Json::encode(array('status' => $status, 'result' => $result));
+        $result = $model::where($where)->take(5)->skip(0)->get();
+
+        return (object)(array('status' => $status, 'result' => $result, 'log' => [$data, $where]));
+    }
+
+    /**
+     * @param \Awesovel\Defaults\Model $model
+     * @param array $data
+     *
+     * @return \Awesovel\Helpers\type
+     */
+    public function create(Model $model, $data)
+    {
+        $status = 'E';
+
+        if (!isset($data[$model->extends->primaryKey])) {
+
+            $result = $this->isValid($model, $data);
+
+            if (count($result) === 0) {
+
+                $record = $this->populate($model, $data);
+
+                $status = $record->save() ? 'S' : 'F';
+
+                $result = $record->id;
+            }
+
+        } else {
+
+            return $this->update($model, $data);
+        }
+
+        return (object)(array('status' => $status, 'result' => $result, 'log' => []));
+    }
+
+    /**
+     * @param \Awesovel\Defaults\Model $model
+     * @param array $data
+     *
+     * @return \Awesovel\Helpers\type
+     */
+    public function update(Model $model, $data)
+    {
+        $status = 'E';
+
+        if (isset($data[$model->extends->primaryKey])) {
+
+            $record = $model::find($data[$model->extends->primaryKey]);
+
+            $result = $this->isValid($record, $data);
+
+            if (count($result) === 0) {
+
+                $record = $this->populate($record, $data);
+
+                $status = $record->save() ? 'S' : 'F';
+
+                $result = $record->id;
+            }
+
+        } else {
+
+            return $this->create($model, $data);
+        }
+
+        return (object)(array('status' => $status, 'result' => $result, 'log' => []));
+    }
+
+    /**
+     * @param Model $model
+     * @param $data
+     *
+     * @return Model
+     */
+    private function populate(Model $model, $data) {
+
+        $items = $model->getItems();
+
+        foreach ($items as $item) {
+
+            $id = $item->id;
+
+            if (isset($data[$id])) {
+                $model->$id = $data[$id];
+            }
+        }
+
+        return $model;
+    }
+
+    /**
+     *
+     * @param Model $model
+     * @param $data
+     *
+     * @return array
+     */
+    private function isValid(Model $model, $data) {
+
+        $messages = [];
+
+        $rules = [];
+
+        $items = $model->getItems();
+
+        foreach ($items as $item) {
+
+            $id = $item->id;
+            if ($item->required) {
+                $rules[$id] = 'required';
+            }
+        }
+
+        $validator = Validator::make($data, $rules);
+
+        if ($validator->fails()) {
+
+            $messages = $validator->errors()->all();
+        }
+
+        return $messages;
     }
 
     /**
@@ -126,7 +389,7 @@ class Controller extends IlluminateController
      * @param array $parameters
      * @return mixed
      */
-    public function resolve($index = null, $id = null, $language = null, $parameters = [])
+    public function view($index = null, $id = null, $language = null, $parameters = [])
     {
 
         if (is_null($index)) {
@@ -136,7 +399,6 @@ class Controller extends IlluminateController
         $this->errors = [];
 
         $view = awesovel_app('layouts.error');
-        $actions = [];
 
         $_form = Parse::form($this->module, $this->entity, $index);
 
@@ -144,7 +406,6 @@ class Controller extends IlluminateController
 
         if ($_form) {
 
-            //$actions = $this->actions($form);
             $form = $_form->id;
 
             $layout = $_form->layout;

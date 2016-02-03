@@ -5,6 +5,7 @@ html {
 body, html {
     background-color: rgb(240, 240, 240);
     min-height: 0;
+    overflow: auto !important;
 }
 
 body {
@@ -20,7 +21,6 @@ body {
     font-family: Roboto, 'Helvetica Neue', Helvetica, Arial, sans-serif;
     font-size: 13px;
     letter-spacing: 0.1px;
-    margin-bottom: 60px;
     margin-left: 0px;
     margin-right: 0px;
     margin-top: 0px;

@@ -76,42 +76,38 @@ class Parse
                 }
             }
 
-            $form->actions = self::actions($form);
+            $form->actions = self::actions($module, $entity, $form);
         }
 
         return $form;
     }
 
     /**
+     * @param $module
+     * @param $entity
+     * @param $index
      *
-     * @param $form
-     *
-     * @return object
+     * @return type
      */
-    private static function actions($form)
+    public static function operation($module, $entity, $index)
     {
 
-        $positions = [
-            'top' => [],
-            'middle' => [],
-            'bottom' => []
-        ];
+        $filename = Path::app([awesovel_config('root_app'), $module, 'Scaffold', $entity, 'Operation', $index . '.opr']);
 
-        foreach ($form->actions as $action) {
+        $content = null;
 
-            foreach ($positions as $key => $available) {
+        if (File::exists($filename)) {
 
-                if (isset($action->position) && isset($action->position->$key)) {
-                    $positions[$key][$action->position->$key] = $action;
-                }
+            $content = File::get($filename);
 
-                ksort($positions[$key]);
+            $operation = Json::decode($content);
+
+            if (isset($operation->action) && !$operation->action) {
+                $operation->action = $operation->id;
             }
         }
 
-        ksort($positions);
-
-        return (object)$positions;
+        return $operation;
     }
 
     /**
@@ -151,6 +147,45 @@ class Parse
         return $language;
     }
 
+    /**
+     * @param $module
+     * @param $entity
+     * @param $form
+     *
+     * @return object
+     */
+    private static function actions($module, $entity, $form)
+    {
+
+        $positions = [
+            'top' => [],
+            'middle' => [],
+            'bottom' => []
+        ];
+
+        foreach ($form->actions as $i => $action) {
+
+            $frm = self::form($module, $entity, $i, false);
+
+            if ($frm) {
+                $action = self::merge($action, $frm->templateOptions);
+            }
+
+            foreach ($positions as $key => $available) {
+
+                if (isset($action->position) && isset($action->position->$key)) {
+
+                    $positions[$key][$action->position->$key] = $action;
+                }
+
+                ksort($positions[$key]);
+            }
+        }
+
+        ksort($positions);
+
+        return (object)$positions;
+    }
 
     /**
      *
@@ -161,7 +196,7 @@ class Parse
      *
      * @return array|object
      */
-    public static function operation($module, $entity, $index, $spell)
+    public static function undefined($module, $entity, $index, $spell)
     {
         $operation = null;
 
@@ -221,19 +256,19 @@ class Parse
 
     /**
      * Translates a string with underscores into camel case (e.g. first_name -&gt; firstName)
-     * @param    string $str String in underscore format
+     * @param    string $string String in underscore format
      * @param    bool $capitalise_first_char If true, capitalise the first char in $str
      * @return   string                              $str translated into camel caps
      */
-    public static function camelize($str, $capitalise_first_char = false)
+    public static function camelize($string, $capitalise_first_char = false)
     {
         if ($capitalise_first_char) {
-            $str[0] = strtoupper($str[0]);
+            $string[0] = strtoupper($string[0]);
         }
 
         $func = create_function('$c', 'return strtoupper($c[1]);');
 
-        return preg_replace_callback('/\-([a-z])/', $func, $str);
+        return preg_replace_callback('/\-([a-z])/', $func, $string);
     }
 
     /**

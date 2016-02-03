@@ -61,13 +61,11 @@
     {
       "id": "products",
       "method": "products",
-      "meta": {
-        "type": "one-to-many",
-        "module": "Main",
-        "entity": "Product",
-        "key": "category_id",
-        "local": "id"
-      }
+      "type": "one-to-many",
+      "module": "Main",
+      "entity": "Product",
+      "key": "category_id",
+      "local": "id"
     }
   ]
 }

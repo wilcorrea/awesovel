@@ -10,15 +10,26 @@ App
 
         var module = '{{module}}';
         var entity = '{{entity}}';
-        var _token = $('meta[name="csrf-token"]').attr('content');
+        var token = $('meta[name="csrf-token"]').attr('content');
 
 
         vm.fields = [];
         vm.actions = [];
-        vm.data = {};
+
 
         vm.form = '{{form}}';
         vm.language = '{{language}}';
+
+
+        vm.collection = {};
+        if (vm.form.templateOptions.recover) {
+            ServiceApi.collection(token, module, entity, vm.form.templateOptions.recover, vm.form.templateOptions.parameters, function (status, response) {
+                vm.collection = response.data.result;
+                if (vm.form.templateOptions.limit) {
+                    vm.collection = response.data.result[vm.form.templateOptions.limit - 1];
+                }
+            });
+        }
 
 
         if (angular.isArray(vm.form.fields)) {
@@ -46,9 +57,11 @@ App
         vm.actions = actions;
 
 
-        vm.resolve = function (action) {
+        vm.resolve = function (action, data) {
 
-            ServiceApi.resolve(_token, action.type, module, entity, action.id, vm.data, function (status, response) {
+            console.log(vm.collection);
+
+            ServiceApi.resolve(token, action.type, module, entity, action, data, vm.collection, function (status, response) {
 
                 ServiceDialog.alert('title', response.data);
             });
