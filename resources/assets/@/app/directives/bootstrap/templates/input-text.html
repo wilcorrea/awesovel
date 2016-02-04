@@ -3,7 +3,7 @@
     <label class="control-label" for="{{ options.id }}" title="{{ to.placeholder }}" ng-show="to.label">
         {{ to.label }} {{ to.required ? '*' : '' }}</label>
 
-    <div class="form-control--container" ng-class="to._active ? 'form-control--container-is-active' : ''">
+    <div class="form-control--container">
         <input type="text" class="form-control" id="{{ options.id }}" ng-readonly="to.readonly" ng-disabled="to.disabled"
                ng-model="model[options.key]" ng-change="vm.onchange(options, model)"
                onfocus="angular.element(this).scope().vm.onfocus(angular.element(this))"

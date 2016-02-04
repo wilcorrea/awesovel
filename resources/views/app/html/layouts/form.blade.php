@@ -20,7 +20,8 @@
                     <span ng-repeat="_action in vm.form.actions.top">
                         <button class="btn btn-raised btn-default" title="@{{ _action.title }}" type="button"
                                 ng-class="_action.className"
-                                ng-click="vm.resolve(_action)">
+                                ng-click="vm.resolve(_action)"
+                                ng-disabled="_action.type === 'backend' ? vm.__form.$invalid : false">
                             <span class="@{{ _action.classIcon }}" ng-show="_action.classIcon"></span>
                             @{{ _action.label }}
                         </button>
@@ -33,7 +34,8 @@
                     <span ng-repeat="_action in vm.form.actions.bottom">
                         <button class="btn btn-raised btn-default" title="@{{ _action.title }}" type="button"
                                 ng-class="_action.className"
-                                ng-click="vm.resolve(_action)">
+                                ng-click="vm.resolve(_action)"
+                                ng-disabled="_action.type === 'backend' ? vm.__form.$invalid : false">
                             <span class="@{{ _action.classIcon }}" ng-show="_action.classIcon"></span>
                             @{{ _action.label }}
                         </button>

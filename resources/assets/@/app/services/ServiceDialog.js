@@ -16,13 +16,24 @@ App.angular
              * @param title
              * @param message
              * @param success
-             * @param cancel
+             * @param action
              */
-            confirm: function(title, message, success, cancel) {
+            confirm: function(title, message, success, action) {
 
                 BootstrapDialog.show({
                     title: title,
-                    message: message
+                    message: message,
+                    buttons: [{
+                        label: success ? success : 'Confirm',
+                        cssClass: 'btn-primary',
+                        action: function(self) {
+                            try {
+                                action.call(this, self);
+                            } catch (e) {
+
+                            }
+                        }
+                    }]
                 });
             },
 
@@ -37,7 +48,14 @@ App.angular
 
                 BootstrapDialog.show({
                     title: title,
-                    message: message.toString()
+                    message: message,
+                    buttons: [{
+                        label: 'Close',
+                        cssClass: 'btn-primary',
+                        action: function(self){
+                            self.close();
+                        }
+                    }]
                 });
             }
         };

@@ -1,0 +1,85 @@
+{
+  "language": "pt-BR",
+
+  "default": {
+    "label": "Categoria",
+    "items": {
+      "id": {
+        "label": "Código",
+        "title": "",
+        "options": []
+      },
+      "name": {
+        "label": "Nome"
+      },
+      "active": {
+        "label": "Ativo"
+      }
+    },
+
+
+    "actions": {
+
+      "add": {
+        "label": "Nova",
+        "title": ""
+      },
+      "edit": {
+        "label": "",
+        "title": "Editar"
+      },
+      "index": {
+        "label": "Voltar",
+        "title": ""
+      },
+      "remove": {
+        "label": "",
+        "title": "Apagar"
+      },
+      "show": {
+        "label": "",
+        "title": "Visualizar"
+      },
+
+      "create": {
+        "label": "Salvar",
+        "title": "",
+        "messages": {
+          "success": "Registro salvo com sucesso",
+          "error": "Whoops! Algo deu errado",
+          "warning": "Notificaçoes encontrados ao tentar salvar este item"
+        }
+      },
+      "delete": {
+        "label": "Apagar",
+        "title": "",
+        "messages": {
+          "success": "Registro apagado com sucesso",
+          "error": "Whoops! Algo deu errado",
+          "warning": "Notificaçoes encontrados ao tentar apagar este item"
+        }
+      },
+      "read": {
+        "label": "Listar",
+        "title": "",
+        "messages": {
+          "success": "Lista recuperada com sucesso",
+          "error": "Whoops! Algo deu errado",
+          "warning": ""
+        }
+      },
+      "update": {
+        "label": "Atualizar",
+        "title": "",
+        "messages": {
+          "success": "Registro atualizado com sucesso",
+          "error": "Whoops! Algo deu errado",
+          "warning": "Notificaçoes encontrados ao tentar atualizar este item"
+        }
+      }
+    }
+  },
+  "forms": {
+
+  }
+}

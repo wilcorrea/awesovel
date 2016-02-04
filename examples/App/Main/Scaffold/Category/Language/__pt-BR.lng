@@ -6,8 +6,7 @@
       "id": {
         "label": "Código",
         "title": "",
-        "options": [
-        ]
+        "options": []
       },
       "name": {
         "label": "Nome"
@@ -17,12 +16,42 @@
       }
     },
     "actions": {
+
       "add": {
         "label": "Nova",
         "title": ""
       },
+      "edit": {
+        "label": "",
+        "title": "Editar"
+      },
       "index": {
         "label": "Voltar",
+        "title": ""
+      },
+      "remove": {
+        "label": "Apagar",
+        "title": ""
+      },
+      "show": {
+        "label": "Visualizar",
+        "title": ""
+      },
+
+      "create": {
+        "label": "Salvar",
+        "title": ""
+      },
+      "delete": {
+        "label": "Apagar",
+        "title": ""
+      },
+      "read": {
+        "label": "Listar",
+        "title": ""
+      },
+      "update": {
+        "label": "Atualizar",
         "title": ""
       }
     }
@@ -35,8 +64,7 @@
         "id": {
           "label": "Código",
           "title": "",
-          "options": [
-          ]
+          "options": []
         },
         "name": {
           "label": "Nome"
@@ -66,10 +94,6 @@
       "actions": {
         "create": {
           "label": "Salvar",
-          "title": ""
-        },
-        "index": {
-          "label": "Voltar",
           "title": ""
         }
       }
@@ -102,5 +126,4 @@
       }
     }
   }
-
 }

@@ -9,22 +9,16 @@
 App.angular =
 
     angular
-        .module('app', ['formly'])//
-        /*'ngRoute', 'ngAnimate', 'ngMaterial', , 'mdl'*//*, 'formlyMaterial'*//*, 'formlyBootstrap'*/
+        .module('app', ['formly'])
+        /* 'ngRoute', 'ngAnimate', 'ngMaterial', , 'mdl', 'formlyMaterial', 'formlyBootstrap' */
 
         .config(function ($controllerProvider) {
 
             App.register = $controllerProvider.register;
         })
 
-        .config(function($httpProvider) {
-            //
-            //$httpProvider.defaults.xsrfCookieName = 'csrftoken';
-            //$httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
-        })
-
-        .config(function($interpolateProvider) {
-
-            //$interpolateProvider.startSymbol('[[');
-            //$interpolateProvider.endSymbol(']]');
-        });
+        .filter("sanitize", ['$sce', function($sce) {
+            return function(htmlCode){
+                return $sce.trustAsHtml(htmlCode);
+            }
+        }]);

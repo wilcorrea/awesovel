@@ -9,13 +9,13 @@
         </a>
     </li>
     <li>
-        <a href="{{ awesovel_link('Register', 'Concourse', 'index') }}">
-            <i class="glyphicon glyphicon-link"></i> Concursos
+        <a href="{{ awesovel_link('Principal', 'ConcursoSituacao', 'index') }}">
+            <i class="glyphicon glyphicon-link"></i> Situação
         </a>
     </li>
     <li>
-        <a href="{{ awesovel_link('Register', 'ConcourseStatus', 'index') }}">
-            <i class="glyphicon glyphicon-link"></i> Status
+        <a href="{{ awesovel_link('Principal', 'Concurso', 'index') }}">
+            <i class="glyphicon glyphicon-link"></i> Concursos
         </a>
     </li>
     <li>

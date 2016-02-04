@@ -1,4 +1,18 @@
 
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+    display: none !important;
+}
+
+a {
+    color: #04A999;
+    text-decoration: none;
+}
+a:hover, a:focus {
+    color: #066D63;
+    text-decoration: none;
+}
+
+
 .navbar-default .navbar-toggle {
     margin: 18px 15px 0 0;
     padding: 0;
@@ -210,6 +224,89 @@ section.app {
 }
 .grid-body-toolbar .btn {
     padding: 2px 10px;
+}
+
+ul.pagination {
+    margin: 0 20px;
+}
+ul.pagination > li > a {
+    color: #009587;
+    font-weight: bold;
+    font-family: cursive;
+}
+ul.pagination > li > input {
+    float: left;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
+    height: 37px;
+    width: 50px;
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+    text-align: center;
+    border-width: 1px 1px 0 0;
+    border-style: solid;
+    border-color: #DDD;
+    outline: none;
+    font-size: 13px;
+}
+ul.pagination > li > input:focus {
+    box-shadow: inset 0 -1px 0 #ddd, inset 1px 2px 2px 1px rgba(0,0,0,0.05);*
+    border-width: 1px 1px 1px 0;*
+    border-style: solid;
+}
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    /*opacity: 1;*/
+}
+
+
+
+
+
+
+.autocomplete {
+    position: absolute;
+    z-index: 20000;
+    background: #fff;
+    width: 100%;
+    width: calc(100% - 10px);
+    border-radius: 0 0 2px 2px;
+}
+.autocomplete.--visible {
+    box-shadow: 1px 0 2px 1px rgba(0, 0, 0, 0.1), -1px 0px 3px -1px rgba(0, 0, 0, 0.3), 0 3px 5px 0 rgba(0, 0, 0, 0.3);
+}
+.autocomplete-item {
+    color: #303946;
+    display: block;
+    padding: 5px 10px;
+    cursor: pointer;
+    /*border-top: 1px solid #ECECEC;*/
+}
+.autocomplete-item i {
+    background-color: rgba(255, 255, 0, 0.5);
+    text-decoration: underline;
+    margin: 0 1px;
+}
+.autocomplete-item:hover, .autocomplete-item.--selected {
+    background-color: #f0f0f0;
+}
+.autocomplete-item.--footer {
+    cursor: default;
+    padding: 10px 10px;
+    border-top: 1px solid #ECECEC;
+}
+.autocomplete-include-more.--separated {
+    margin: 10px 0 0 0;
+    border-top: 1px dotted #ccc;
+    padding: 10px 0 0 0;
+}
+.autocomplete-include-more .btn {
+    padding: 0 10px;
+}
+.autocomplete-item.--footer:hover {
+    background-color: transparent;
 }
 
 

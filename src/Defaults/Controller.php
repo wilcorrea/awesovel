@@ -43,6 +43,21 @@ class Controller extends IlluminateController
     protected $parameters;
 
     /**
+     * @var string
+     */
+    public static $STATUS_SUCCESS = 'success';
+
+    /**
+     * @var string
+     */
+    public static $STATUS_ERROR = 'error';
+
+    /**
+     * @var string
+     */
+    public static $STATUS_WARNING = 'warning';
+
+    /**
      * Controller constructor.
      * @param $module
      * @param $entity
@@ -242,23 +257,50 @@ class Controller extends IlluminateController
      */
     public function read(Model $model, $data)
     {
-        $status = 'S';
+        $status = self::$STATUS_SUCCESS;
 
         $items = $model->getItems();
 
-        $where = [];
+        $wheres = [];
 
-        foreach ($items as $item) {
+        if (isset($data['search'])) {
 
-            $id = $item->id;
-            if (($item->dao->select) && isset($data[$id])) {
-                $where[$id] = (int) $data[$id];
+            $search = $data['search'];
+
+            foreach ($items as $item) {
+
+                $id = $item->id;
+                if (($item->dao->select) && isset($search[$id])) {
+
+                    switch ($item->type) {
+                        case 'string':
+                            $wheres[] = '(`' . $id . '` LIKE "%' . addslashes($search[$id]) . '%")';
+                            break;
+
+                        default:
+                            $wheres[] = '(`' . $id . '` = ' . (int) $search[$id] . ')';
+                            break;
+                    }
+                }
             }
         }
 
-        $result = $model::where($where)->take(5)->skip(0)->get();
+        $take = isset($data['take']) ? $data['take'] : 5;
+        $skip = isset($data['skip']) ? $data['skip'] : 0;
 
-        return (object)(array('status' => $status, 'result' => $result, 'log' => [$data, $where]));
+        if (count($wheres) > 0) {
+
+            $where = implode(' OR ', $wheres);
+        } else {
+
+            $where = 'TRUE';
+        }
+
+        $result = $model::whereRaw($where)->take($take)->skip($skip)->get();
+
+        $total = $model::whereRaw($where)->count();
+
+        return (object)(array('status' => $status, 'result' => (object) ['collection' => $result, 'total' => $total], 'log' => [$data, $where]));
     }
 
     /**
@@ -269,9 +311,11 @@ class Controller extends IlluminateController
      */
     public function create(Model $model, $data)
     {
-        $status = 'E';
+        $status = self::$STATUS_WARNING;
 
-        if (!isset($data[$model->extends->primaryKey])) {
+        $primaryKey = $model->getProperties()->primaryKey;
+
+        if (!isset($data[$primaryKey])) {
 
             $result = $this->isValid($model, $data);
 
@@ -279,9 +323,9 @@ class Controller extends IlluminateController
 
                 $record = $this->populate($model, $data);
 
-                $status = $record->save() ? 'S' : 'F';
+                $status = $record->save() ? self::$STATUS_SUCCESS : self::$STATUS_ERROR;
 
-                $result = $record->id;
+                $result = $record->$primaryKey;
             }
 
         } else {
@@ -300,11 +344,13 @@ class Controller extends IlluminateController
      */
     public function update(Model $model, $data)
     {
-        $status = 'E';
+        $status = self::$STATUS_WARNING;
 
-        if (isset($data[$model->extends->primaryKey])) {
+        $primaryKey = $model->getProperties()->primaryKey;
 
-            $record = $model::find($data[$model->extends->primaryKey]);
+        if (isset($data[$primaryKey])) {
+
+            $record = $model::find($data[$primaryKey]);
 
             $result = $this->isValid($record, $data);
 
@@ -312,9 +358,9 @@ class Controller extends IlluminateController
 
                 $record = $this->populate($record, $data);
 
-                $status = $record->save() ? 'S' : 'F';
+                $status = $record->save() ? self::$STATUS_SUCCESS : self::$STATUS_ERROR;
 
-                $result = $record->id;
+                $result = $record->$primaryKey;
             }
 
         } else {
@@ -323,6 +369,30 @@ class Controller extends IlluminateController
         }
 
         return (object)(array('status' => $status, 'result' => $result, 'log' => []));
+    }
+
+    /**
+     * @param \Awesovel\Defaults\Model $model
+     * @param array $data
+     *
+     * @return \Awesovel\Helpers\type
+     */
+    public function delete(Model $model, $data)
+    {
+        $status = self::$STATUS_WARNING;
+        $result = 'Record not found';
+
+        $primaryKey = $model->getProperties()->primaryKey;
+
+        if (isset($data[$primaryKey])) {
+
+            $result = $data[$primaryKey];
+
+            $status = $model->destroy($data[$primaryKey]) ? self::$STATUS_SUCCESS : self::$STATUS_ERROR;
+
+        }
+
+        return (object)(array('status' => $status, 'result' => $result, 'log' => [$data, $primaryKey]));
     }
 
     /**
@@ -384,12 +454,12 @@ class Controller extends IlluminateController
      * Resolve app requests
      *
      * @param null $index
-     * @param null $id
+     * @param null $data
      * @param null $language
      * @param array $parameters
      * @return mixed
      */
-    public function view($index = null, $id = null, $language = null, $parameters = [])
+    public function view($index = null, $data = null, $language = null, $parameters = [])
     {
 
         if (is_null($index)) {
@@ -420,7 +490,8 @@ class Controller extends IlluminateController
             'entity' => $this->entity,
             'form' => $form,
             'language' => $language,
-            'parameters' => $parameters
+            'parameters' => $parameters,
+            'data' => $data
         ];
 
         return view($view, $this->data, $this->errors, $parameters);

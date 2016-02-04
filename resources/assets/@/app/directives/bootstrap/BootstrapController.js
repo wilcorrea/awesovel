@@ -16,7 +16,7 @@ App.angular
      * |                                                                  |
      * --------------------------------------------------------------------
      */
-    .controller('BootstrapController', ['$scope', '$timeout', function ($scope, $timeout) {
+    .controller('BootstrapController', ['$scope', '$timeout', 'ServiceApi', function ($scope, $timeout, ServiceApi) {
 
         var vm = this;
 
@@ -60,16 +60,6 @@ App.angular
 
         switch (type) {
 
-            /**
-             * --------------------------------------------------------------------
-             * | Input File                                                       |
-             * --------------------------------------------------------------------
-             * |                                                                  |
-             * | The component input[type="text"] is adapted to get the path      |
-             * |   what is taken by default input to this (input[type="file"]     |
-             * |                                                                  |
-             * --------------------------------------------------------------------
-             */
             case 'input-file':
             case 'input-folder':
 
@@ -102,9 +92,10 @@ App.angular
                     }
                 };
                 break;
+
             case 'dropdown':
 
-                $timeout(function() {
+                $timeout(function () {
                     componentHandler.upgradeDom();
                 }, 1000);
 
@@ -114,11 +105,14 @@ App.angular
                 };
 
                 if (angular.isObject($scope.model)) {
+
                     var option = {
                             value: $scope.model[$scope.options.key],
                             label: ''
                         },
                         items = $scope.options.templateOptions.items;
+
+
                     if (angular.isArray(items)) {
                         items.forEach(function (item) {
                             if (item.value === option.value) {
@@ -126,183 +120,410 @@ App.angular
                             }
                         });
                     }
+
                     vm.dropdown(option, $scope.model, $scope.options.key, $scope.options.templateOptions);
                 }
 
                 break;
+
             case 'autocomplete':
 
-                /**
-                 * --------------------------------------------------------------------
-                 * | Autocomplete (Just a Demo by the way)                            |
-                 * --------------------------------------------------------------------
-                 * |                                                                  |
-                 * | The component is a widget of Angular Material Library and is     |
-                 * |   being adapted to be used together with bootstrap components    |
-                 * |                                                                  |
-                 * --------------------------------------------------------------------
-                 */
-                var self = this;
+                var autocomplete = {
+                    /**
+                     * ng-model
+                     */
+                    text: "",
+                    /**
+                     * @var boolean
+                     */
+                    visible: false,
+                    /**
+                     * store to original selected text
+                     */
+                    original: "",
+                    /**
+                     * temp storage to search term
+                     */
+                    searching: "",
+                    /**
+                     * temp storage to search term
+                     */
+                    position: -1,
+                    /**
+                     * @var object TemplateOptions cast
+                     */
+                    to: $scope.options.templateOptions.autocomplete,
+                    /**
+                     * @var take records per page
+                     */
+                    take: 5,
+                    /**
+                     * @var skip records in pagination
+                     */
+                    skip: 0,
+                    /**
+                     * init component
+                     */
+                    init: function (tries) {
 
-                self.simulateQuery = false;
-                self.isDisabled = false;
-                // list of `state` value/display objects
-                self.querySearch = querySearch;
-                self.selectedItemChange = selectedItemChange;
-                self.searchTextChange = searchTextChange;
-                self.newState = newState;
+                        tries = !tries ? 0 : tries;
 
-                var _allStates = [{"value": "alabama", "display": "Alabama"}, {
-                    "value": "alaska",
-                    "display": "Alaska"
-                }, {"value": "arizona", "display": "Arizona"}, {
-                    "value": "arkansas",
-                    "display": "Arkansas"
-                }, {"value": "california", "display": "California"}, {
-                    "value": "colorado",
-                    "display": "Colorado"
-                }, {"value": "connecticut", "display": "Connecticut"}, {
-                    "value": "delaware",
-                    "display": "Delaware"
-                }, {"value": "florida", "display": "Florida"}, {"value": "georgia", "display": "Georgia"}, {
-                    "value": "hawaii",
-                    "display": "Hawaii"
-                }, {"value": "idaho", "display": "Idaho"}, {"value": "illinois", "display": "Illinois"}, {
-                    "value": "indiana",
-                    "display": "Indiana"
-                }, {"value": "iowa", "display": "Iowa"}, {"value": "kansas", "display": "Kansas"}, {
-                    "value": "kentucky",
-                    "display": "Kentucky"
-                }, {"value": "louisiana", "display": "Louisiana"}, {"value": "maine", "display": "Maine"}, {
-                    "value": "maryland",
-                    "display": "Maryland"
-                }, {"value": "massachusetts", "display": "Massachusetts"}, {
-                    "value": "michigan",
-                    "display": "Michigan"
-                }, {"value": "minnesota", "display": "Minnesota"}, {
-                    "value": "mississippi",
-                    "display": "Mississippi"
-                }, {"value": "missouri", "display": "Missouri"}, {
-                    "value": "montana",
-                    "display": "Montana"
-                }, {"value": "nebraska", "display": "Nebraska"}, {
-                    "value": "nevada",
-                    "display": "Nevada"
-                }, {"value": "new_hampshire", "display": "New Hampshire"}, {
-                    "value": "new_jersey",
-                    "display": "New Jersey"
-                }, {"value": "new_mexico", "display": "New Mexico"}, {
-                    "value": "new_york",
-                    "display": "New York"
-                }, {"value": "north_carolina", "display": "North Carolina"}, {
-                    "value": "north_dakota",
-                    "display": "North Dakota"
-                }, {"value": "ohio", "display": "Ohio"}, {"value": "oklahoma", "display": "Oklahoma"}, {
-                    "value": "oregon",
-                    "display": "Oregon"
-                }, {"value": "pennsylvania", "display": "Pennsylvania"}, {
-                    "value": "rhode_island",
-                    "display": "Rhode Island"
-                }, {"value": "south_carolina", "display": "South Carolina"}, {
-                    "value": "south_dakota",
-                    "display": "South Dakota"
-                }, {"value": "tennessee", "display": "Tennessee"}, {"value": "texas", "display": "Texas"}, {
-                    "value": "utah",
-                    "display": "Utah"
-                }, {"value": "vermont", "display": "Vermont"}, {
-                    "value": "virginia",
-                    "display": "Virginia"
-                }, {"value": "washington", "display": "Washington"}, {
-                    "value": "west_virginia",
-                    "display": "West Virginia"
-                }, {"value": "wisconsin", "display": "Wisconsin"}, {"value": "wyoming", "display": "Wyoming"}];
+                        //console.log($scope.model[$scope.options.key], tries, document.readyState);
 
+                        if ($scope.model[$scope.options.key] === undefined) {
 
-                _allStates.forEach(function (_state) {
+                            tries = tries + 1;
 
-                    if (_state.value === $scope.model[$scope.options.key]) {
+                            $timeout(function () {
+                                if (tries < 10) {
+                                    autocomplete.init(tries);
+                                }
+                            }, 200);
 
-                        self.searchText = _state.display;
-                    }
-                });
+                        } else {
 
-                function newState(state) {
+                            var value = $scope.model[$scope.options.key],
+                                show = '',
+                                search = {};
 
-                    var value = state.toLowerCase().replace(' ', '_');
+                            if (value) {
 
-                    _allStates.push({
-                        "value": value, "display": state
-                    });
+                                search[autocomplete.to.value] = value;
 
-                    self.states = loadAll();
+                                autocomplete._search(search, function (response) {
 
-                    console.log(self.states);
+                                    var collection = response.collection,
+                                        selected = {};
 
-                    self.searchText = state;
+                                    if (angular.isArray(collection)) {
 
-                    //$scope.$apply();
-                }
+                                        selected = collection[0];
 
-                    // ******************************
-                    // Internal methods
-                    // ******************************
-                /**
-                 * Search for states... use $timeout to simulate
-                 * remote dataservice call.
-                 */
-                function querySearch(query) {
-                    var results = query ? self.states.filter(createFilterFor(query)) : self.states,
-                        deferred;
-                    if (false && self.simulateQuery) {
-                        deferred = $q.defer();
+                                        show = selected[autocomplete.to.show];
+
+                                        autocomplete.original = show;
+                                        autocomplete.text = show;
+                                    }
+                                });
+                            }
+                        }
+                    },
+                    /**
+                     *
+                     * @param typed
+                     * @param callback
+                     * @private
+                     */
+                    _search: function (typed, callback) {
+
+                        var to = autocomplete.to,
+                            params = {},
+                            search = {};
+
+                        if (typeof typed === 'string') {
+
+                            autocomplete.searching = typed;
+
+                            if (angular.isArray(to.search)) {
+                                to.search.forEach(function (s) {
+                                    search[s] = typed;
+                                });
+                            }
+                        } else if (typed) {
+
+                            search = typed;
+                        }
+
+                        console.log(autocomplete.take, autocomplete.skip, search);
+
+                        var pagination = App.pagination(autocomplete.take, autocomplete.skip, search);
+
+                        ServiceApi.collection(App.token, to.module, to.entity, to.recover, params, pagination,
+                            function (status, response) {
+
+                                if (response.data.result) {
+
+                                    autocomplete.collection = response.data.result.collection;
+                                    autocomplete.total = response.data.result.total;
+                                    autocomplete.last = Math.ceil(response.data.result.total / autocomplete.take);
+
+                                    //autocomplete.visible = true;
+                                    if (angular.isFunction(callback)) {
+                                        callback.call(this, response.data.result);
+                                    }
+                                }
+                            });
+
+                    },
+                    /**
+                     *
+                     */
+                    keyup: function ($event) {
+
+                        //console.log($event.keyCode);
+
+                        switch ($event.keyCode) {
+
+                            /* ESC */
+                            case 27:
+
+                                autocomplete.hide();
+                                break;
+
+                            /* ARROW UP */
+                            case 38:
+
+                                autocomplete.visible = true;
+
+                                autocomplete.arrow(-1);
+                                break;
+
+                            /* ARROW DOWN */
+                            case 40:
+
+                                autocomplete.visible = true;
+
+                                autocomplete.arrow(1);
+                                break;
+
+                            /* ARROW RIGHT */
+                            case 39:
+
+                                if (autocomplete.visible && autocomplete.position > -1) {
+
+                                    var search = false,
+                                        skip = ((autocomplete.skip / autocomplete.take) + 1) * autocomplete.take,
+                                        last = (autocomplete.last - 1) * autocomplete.take;
+
+                                    console.log('arrow-right', skip, last);
+
+                                    if (skip > last) {
+                                        skip = last;
+                                    } else {
+                                        search = true;
+                                    }
+
+                                    autocomplete.skip = skip;
+
+                                    if (search) {
+                                        autocomplete._search(autocomplete.searching, function () {
+                                            autocomplete.position = -1;
+                                            autocomplete.arrow(1);
+                                        });
+                                    }
+
+                                    autocomplete.prevent($event.currentTarget);
+                                }
+                                break;
+
+                            /* ARROW LEFT */
+                            case 37:
+
+                                if (autocomplete.visible && autocomplete.position > -1) {
+
+                                    var search = false,
+                                        skip = autocomplete.skip - autocomplete.take;
+
+                                    if (skip < 0) {
+                                        skip = 0;
+                                    } else {
+                                        search = true;
+                                    }
+
+                                    autocomplete.skip = skip;
+
+                                    if (search) {
+                                        autocomplete._search(autocomplete.searching, function () {
+                                            autocomplete.position = -1;
+                                            autocomplete.arrow(1);
+                                        });
+                                    }
+
+                                    autocomplete.prevent($event.currentTarget);
+                                }
+                                break;
+
+                            /* ENTER */
+                            case 13:
+
+                                if (angular.isArray(autocomplete.collection)) {
+
+                                    autocomplete.collection.forEach(function (c) {
+                                        if (c.selected) {
+                                            autocomplete.select(c);
+                                        }
+                                    });
+                                }
+                                break;
+
+                            default:
+
+                                autocomplete.skip = 0;
+
+                                autocomplete.searching = autocomplete.text;
+
+                                autocomplete._search(autocomplete.searching);
+                                break;
+                        }
+                    },
+                    /**
+                     *
+                     * @param arrow
+                     */
+                    arrow: function (factor) {
+
+                        var _arrow = function (arrow) {
+
+                            var index = (autocomplete.position + arrow),
+                                min = 0,
+                                max = autocomplete.collection.length - 1;
+
+                            if (index < min) {
+                                index = min;
+                            } else if (index > max) {
+                                index = max;
+                            }
+
+                            autocomplete.position = index;
+
+                            //console.log(index, min, max);
+
+                            autocomplete.collection.forEach(function (c) {
+                                c.selected = false;
+                            });
+
+                            if (autocomplete.collection[index]) {
+                                autocomplete.collection[index].selected = true;
+                            }
+                        };
+
+                        if (angular.isArray(autocomplete.collection)) {
+
+                            if (autocomplete.collection.length) {
+                                _arrow.call(this, factor);
+                            } else {
+                                autocomplete._search(autocomplete.searching, function () {
+                                    _arrow.call(this, factor);
+                                });
+                            }
+                        }
+                    },
+                    /**
+                     *
+                     * @param model
+                     * @param selected
+                     */
+                    select: function (selected) {
+
+                        autocomplete.visible = false;
+
+                        var show = autocomplete.to.show,
+                            value = autocomplete.to.value;
+
+                        $scope.model[$scope.options.key] = selected[value];
+
+                        autocomplete.searching = "";
+                        autocomplete.original = selected[show];
+                        autocomplete.text = selected[show];
+                        autocomplete.position = -1;
+
+                        autocomplete.collection = [];
+                    },
+                    /**
+                     *
+                     */
+                    focus: function () {
+
+                        autocomplete.visible = true;
+                        autocomplete.position = -1;
+
+                        if (autocomplete.searching) {
+
+                            autocomplete.text = autocomplete.searching;
+                        } else {
+
+                            autocomplete._search("");
+
+                            autocomplete.original = autocomplete.text;
+                        }
+                    },
+                    /**
+                     *
+                     */
+                    blur: function () {
+
                         $timeout(function () {
-                            deferred.resolve(results);
-                        }, Math.random() * 1000, false);
-                        return deferred.promise;
-                    } else {
-                        return results;
+                            autocomplete.hide();
+                        }, 250);
+
+                        if (autocomplete.searching) {
+                            autocomplete.text = autocomplete.original;
+                        }
+                    },
+                    /**
+                     *
+                     */
+                    hide: function () {
+
+                        autocomplete.position = -1;
+                        autocomplete.visible = false;
+                    },
+                    /**
+                     *
+                     */
+                    add: function (text) {
+                        alert(text);
+                        // call api,
+                        // save the item,
+                        // get the id and put in the model
+                    },
+                    /**
+                     *
+                     * @param row
+                     * @returns {*}
+                     */
+                    item: function (row) {
+
+                        function preg_quote(str) {
+                            return (str + '').replace(/([\\\.\+\*\?\[\^\]\$\(\)\{\}\=\!\<\>\|\:])/g, "\\$1");
+                        }
+
+                        var show = row[autocomplete.to.show],
+                            search = autocomplete.searching;
+
+                        if (search) {
+                            show = show.replace(new RegExp("(" + preg_quote(search) + ")", 'gi'), "<i>$1</i>");
+                        }
+                        return show;
+                    },
+                    /**
+                     *
+                     * @param target
+                     */
+                    prevent: function(target) {
+
+                        var e = angular.element(target)[0];
+
+                        if (autocomplete.text) {
+
+                            if (e.createTextRange) {
+                                var range = e.createTextRange();
+                                range.move('character', autocomplete.text.length);
+                                range.select();
+                            } else {
+                                if (e.setSelectionRange) {
+                                    e.setSelectionRange(autocomplete.text.length, autocomplete.text.length);
+                                }
+                            }
+                        }
                     }
-                }
+                };
 
-                function searchTextChange(text) {
-                    console.info('Text changed to ' + text);
-                    //document.querySelector('md-virtual-repeat-container').classList.remove('ng-hide');
-                }
+                $scope.autocomplete = autocomplete;
 
-                function selectedItemChange(item) {
-
-                    console.info('Item changed to ' + JSON.stringify(item));
-
-                    if (item && item.value.length) {
-                        $scope.model[$scope.options.key] = item.value;
-                    }
-                }
-
-                /**
-                 * Build `states` list of key/value pairs
-                 */
-                function loadAll() {
-
-                    return _allStates;
-                }
-
-                /**
-                 * Create filter function for a query string
-                 */
-                function createFilterFor(query) {
-                    var lowercaseQuery = angular.lowercase(query);
-                    return function filterFn(state) {
-                        return (state.value.indexOf(lowercaseQuery) === 0);
-                    };
-                }
-
-
-                self.states = loadAll();
-
-                $scope.self = self;
-
-                break;
+                $scope.autocomplete.init();
         }
+
 
         $scope.vm = vm;
     }]);

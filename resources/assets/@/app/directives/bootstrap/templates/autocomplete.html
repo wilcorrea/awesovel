@@ -1,28 +1,44 @@
 <div class="form-group">
 
-    <label class="control-label" for="{{ options.id }}" title="{{ to.placeholder }}" ng-show="to.label">
+    <label class="control-label" for="{{ options.id + '_autocomplete' }}" title="{{ to.placeholder }}" ng-show="to.label">
         {{ to.label }} {{ to.required ? '*' : '' }}</label>
 
-    <div class="form-control--container" ng-class="to._active ? 'form-control--container-is-active' : ''">
-        <md-autocomplete
-                ng-disabled="self.isDisabled"
-                md-no-cache="self.noCache"
-                md-selected-item="self.selectedItem"
-                md-search-text-change="self.searchTextChange(self.searchText)"
-                md-search-text="self.searchText"
-                md-selected-item-change="self.selectedItemChange(item)"
-                md-items="item in self.querySearch(self.searchText)"
-                md-item-text="item.display"
-                md-min-length="0"
-                placeholder="What is your favorite US state?">
-            <md-item-template>
-                <span md-highlight-text="self.searchText" md-highlight-flags="^i">{{ item.display }}</span>
-            </md-item-template>
-            <md-not-found>
-                <a ng-click="self.newState(self.searchText)" href="javascript:void(0);">Create a new one!</a>
-                No states matching "{{ self.searchText }}" were found
-            </md-not-found>
-        </md-autocomplete>
+    <div class="form-control--container">
+
+        <input type="text" class="form-control" id="{{ options.id + '_autocomplete' }}"
+               ng-readonly="to.readonly"
+               ng-disabled="to.disabled"
+               ng-model="autocomplete.text"
+               ng-keyup="autocomplete.keyup($event)"
+               ng-blur="autocomplete.blur()"
+               ng-focus="autocomplete.focus()"
+               onfocus="angular.element(this).scope().vm.onfocus(angular.element(this))"
+               onblur="angular.element(this).scope().vm.onblur(angular.element(this))"
+               autocomplete="off">
+        <span class="form-control--bar"></span>
+    </div>
+
+    <div class="autocomplete" ng-show="autocomplete.visible" ng-class="{'--visible':autocomplete.visible}">
+
+        <div ng-repeat="_collection in autocomplete.collection">
+            <a class="autocomplete-item" ng-click="autocomplete.select(_collection)" ng-class="{'--selected':_collection.selected}">
+                <span ng-bind-html="autocomplete.item( _collection) | sanitize"></span>
+            </a>
+        </div>
+
+        <div class="autocomplete-item --footer">
+            <div class="autocomplete-not-found" ng-show="!autocomplete.collection.length && autocomplete.searching">
+                {{ to.autocompleteNotFound ? to.autocompleteNotFound : '' }}
+            </div>
+            <div class="autocomplete-include-more" ng-show="to.autocompleteMore" ng-class="{'--separated':(!autocomplete.collection.length && autocomplete.searching)}">
+                <span ng-show="autocomplete.searching">{{ to.autocompleteMore }}: '{{ autocomplete.searching }}'.</span>
+                <input type="button" class="btn btn-default" ng-disabled="!autocomplete.searching" ng-click="autocomplete.add(autocomplete.searching)" value="+"/>
+
+                <span class="pull-right">{{(autocomplete.skip / autocomplete.take) + 1 }} / {{ autocomplete.last }}</span>
+            </div>
+        </div>
 
     </div>
+
+    <input type="hidden" id="{{ options.id }}" ng-model="model[options.key]" ng-change="vm.onchange(options, model)"/>
 </div>
