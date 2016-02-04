@@ -15,6 +15,7 @@
 
 <script src="{{ awesovel_asset('@/app/directives/bootstrap/BootstrapController.js') }}"></script>
 <script src="{{ awesovel_asset('@/app/directives/bootstrap/FormlyDirective.js') }}"></script>
+{{--<script src="{{ awesovel_asset('@/app/directives/ValidValuesDirective.js') }}"></script>--}}
 
 <script src="{{ url('ng/controller/' . (isset($language) && $language ? $language : 'default')
             . '/'. $module . '/' . $entity . '/' . $form . '/Controller.js') }}"></script>

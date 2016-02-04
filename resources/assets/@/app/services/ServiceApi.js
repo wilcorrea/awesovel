@@ -95,21 +95,28 @@ App.angular
             },
             /**
              *
+             * @param token
              * @param module
              * @param entity
              * @param recover
+             * @param parameters
+             * @param pagination
+             * @param callback
              */
-            collection: function (token, module, entity, recover, parameters, callback) {
+            collection: function (token, module, entity, recover, parameters, pagination, callback) {
 
-                var route = ServiceApi.route(),
-                    data = {};
+                var route = ServiceApi.route();
 
                 for(var i = 0; i < 4; i++) {
                     route.shift();
                 }
 
+                pagination.search = pagination.search ? pagination.search : {};
+
                 route.forEach(function (route, i) {
-                    data[parameters[i]] = route;
+                    if (parameters[i]) {
+                        pagination.search[parameters[i]] = route;
+                    }
                 });
 
                 var request = {
@@ -118,7 +125,7 @@ App.angular
                     headers: {
                         'X-CSRF-Token': token
                     },
-                    data: data
+                    data: pagination
                 };
 
                 $http(request).then(

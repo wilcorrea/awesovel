@@ -14,11 +14,24 @@ class Model extends EloquentModel
      * @var string
      */
     protected $connection = 'mysql';
+
     /**
      *
      * @var type
      */
     protected $items;
+
+    /**
+     *
+     * @var type
+     */
+    public $timestamps = false;
+
+    /**
+     *
+     * @var type
+     */
+    private $properties;
 
     /**
      *
@@ -44,16 +57,16 @@ class Model extends EloquentModel
      * @param type $module
      * @param type $entity
      */
-    public function scaffold($module, $entity)
+    public final function scaffold($module, $entity)
     {
 
         $scaffold = Parse::scaffold($module, $entity);
 
         $this->items = $scaffold->items;
 
-        $this->extends = $scaffold->extends;
+        $this->properties = $scaffold->properties;
 
-        foreach ($scaffold->extends as $property => $value) {
+        foreach ($scaffold->properties as $property => $value) {
             $this->$property = $value;
         }
     }
@@ -64,13 +77,17 @@ class Model extends EloquentModel
      * @param  string $key
      * @return mixed
      */
-    public function getRelationValue($key)
+    public final function getRelationValue($key)
     {
+        $return = false;
 
-        $return = parent::getRelationValue($key);
+        if ($key !== 'properties') {
 
-        if (is_null($return)) {
-            $return = $this->getRelationshipFromMethod($key);
+            $return = parent::getRelationValue($key);
+
+            if (is_null($return)) {
+                $return = $this->getRelationshipFromMethod($key);
+            }
         }
 
         return $return;
@@ -141,7 +158,7 @@ class Model extends EloquentModel
      *
      * @return array
      */
-    protected static function fields()
+    protected final static function fields()
     {
 
         $instance = new static;
@@ -167,7 +184,7 @@ class Model extends EloquentModel
      * @param type $item
      * @return type
      */
-    public function relationshipDefaultModel($item)
+    public final function relationshipDefaultModel($item)
     {
 
         $relationship = $item->relationship;
@@ -198,4 +215,11 @@ class Model extends EloquentModel
         return $this->items;
     }
 
+    /**
+     * @return type
+     */
+    public function getProperties()
+    {
+        return $this->properties;
+    }
 }

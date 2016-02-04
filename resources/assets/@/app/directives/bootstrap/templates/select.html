@@ -3,7 +3,7 @@
     <label class="control-label" for="{{ options.id }}" title="{{ to.placeholder }}" ng-show="to.label">
         {{ to.label }} {{ to.required ? '*' : '' }}</label>
 
-    <div class="form-control--container" ng-class="to._active ? 'form-control--container-is-active' : ''">
+    <div class="form-control--container">
         <select type="text" class="form-control" id="{{ options.id }}" ng-readonly="to.readonly"
                 ng-disabled="to.disabled"
                 ng-model="model[options.key]"

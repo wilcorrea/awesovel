@@ -10,6 +10,29 @@ window.App = {
 
     /**
      *
+     * @returns {*|jQuery}
+     */
+    token: function () {
+        return $('meta[name="csrf-token"]').attr('content');
+    },
+    /**
+     *
+     * @param take
+     * @param skip
+     * @param search
+     *
+     * @returns {{take: *, skip: *, search: *}}
+     */
+    pagination: function (take, skip, search) {
+
+        return {
+            'take': take,
+            'skip': skip,
+            'search': search
+        };
+    },
+    /**
+     *
      * @param string
      * @returns {string|XML}
      */
@@ -30,8 +53,8 @@ window.App = {
      *
      * @param url
      */
-    open: function(url) {
-      window.location.href = url;
+    open: function (url) {
+        window.location.href = url;
     },
     /**
      *
@@ -43,6 +66,7 @@ window.App = {
                 .toString(16)
                 .substring(1);
         }
+
         return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
             s4() + '-' + s4() + s4() + s4();
     },

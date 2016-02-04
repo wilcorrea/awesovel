@@ -1,18 +1,45 @@
 {
   "id": "index",
   "layout": "grid",
-  "config": {
+  "templateOptions": {
+    "recover": "read",
+    "limit": 0,
+    "parameters": [
+    ],
+    "options": {
+      "className": "col-sm-2"
+    },
     "items": {
       "id": {
         "width": 50,
-        "parser": "void"
+        "parser": "void",
+        "search": true
+      },
+      "name": {
+        "search": true
       }
     }
   },
-  "items": {
-    "id": {},
-    "name": {}
-  },
+  "fields": [
+    {
+      "key": "id",
+      "type": "input-text",
+      "className": "col-sm-4",
+      "templateOptions": {
+        "label": "Label",
+        "placeHolder": "PlaceHolder"
+      }
+    },
+    {
+      "key": "name",
+      "type": "input-text",
+      "className": "col-sm-6",
+      "templateOptions": {
+        "label": "Label",
+        "placeHolder": "PlaceHolder"
+      }
+    }
+  ],
   "actions": {
     "add": {
       "id": "add",
@@ -22,7 +49,6 @@
         "top": 0,
         "bottom": 0
       },
-      "parameters": [],
       "className": "",
       "classIcon": "glyphicon glyphicon-plus"
     },
@@ -34,9 +60,6 @@
         "middle": 0
       },
       "conditions": [],
-      "parameters": [
-        "id"
-      ],
       "className": "",
       "classIcon": "glyphicon glyphicon-search"
     },
@@ -48,9 +71,6 @@
         "middle": 1
       },
       "conditions": [],
-      "parameters": [
-        "id"
-      ],
       "className": "",
       "classIcon": "glyphicon glyphicon-edit"
     },
@@ -62,10 +82,7 @@
         "middle": 2
       },
       "conditions": [],
-      "parameters": [
-        "id"
-      ],
-      "className": "",
+      "className": "btn-primary",
       "classIcon": "glyphicon glyphicon-trash"
     }
   },

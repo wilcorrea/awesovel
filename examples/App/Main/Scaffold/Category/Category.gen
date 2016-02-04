@@ -1,0 +1,44 @@
+{
+  "properties": {
+    "table": "categories",
+    "primaryKey": "id",
+    "prefix": "ctg",
+    "alias": [
+      {
+        "id": "list",
+        "operation": "index"
+      },
+      {
+        "id": "add",
+        "operation": "create"
+      }
+    ]
+  },
+  "items": {
+    "id": {
+      "id": "id",
+      "type": "int",
+      "component": "input-text",
+      "behavior": "pk",
+      "dao": {
+        "select": true,
+        "update": false,
+        "insert": false
+      },
+      "required": false,
+      "unique": true
+    },
+    "name": {
+      "id": "name",
+      "type": "string",
+      "component": "input-text",
+      "behavior": "upper",
+      "required": true,
+      "dao": {
+        "select": true,
+        "update": true,
+        "insert": true
+      }
+    }
+  }
+}

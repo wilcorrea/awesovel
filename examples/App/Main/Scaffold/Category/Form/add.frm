@@ -1,10 +1,27 @@
 {
-  "id": "create",
+  "id": "add",
   "layout": "form",
-  "items": {
-    "name": {
-    }
+  "templateOptions": {
+    "recover": false,
+    "parameters": [
+    ]
   },
+  "fields": [
+    {
+      "className": "formly-row",
+      "fieldGroup": [
+        {
+          "key": "name",
+          "type": "input-text",
+          "className": "col-sm-12",
+          "templateOptions": {
+            "label": "Label",
+            "placeHolder": "PlaceHolder"
+          }
+        }
+      ]
+    }
+  ],
   "actions": {
     "create": {
       "id": "create",
@@ -14,7 +31,6 @@
         "top": 0,
         "bottom": 0
       },
-      "parameters": [],
       "className": "btn-primary",
       "classIcon": ""
     },
@@ -26,7 +42,6 @@
         "top": 1,
         "bottom": 1
       },
-      "parameters": [],
       "className": "",
       "classIcon": ""
     }
